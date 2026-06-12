@@ -1329,7 +1329,7 @@ createApp({
         const r = await api('/ask-ai', {
           method: 'POST',
           body: JSON.stringify({
-            title: currentPQ.value.title,
+            title: currentPQ.value.question,
             userAnswer: practiceSelectedOption.value,
             correctAnswer: currentPQ.value.answer
           })
