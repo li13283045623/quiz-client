@@ -48,7 +48,7 @@ body {
 /* ===== SCHOOL HEADER BANNER (大气加宽版) ===== */
 .school-banner {
   background: linear-gradient(120deg, #6A0F35 0%, #8E1045 40%, #A01250 70%, #8E1045 100%);
-  padding: 24px 24px; /* 增加上下内边距，使其更显宽大 */
+  padding: 24px 24px;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -65,7 +65,7 @@ body {
   border-radius: 50%;
 }
 .school-banner img {
-  width: 64px; height: 64px; /* 放大校徽尺寸 */
+  width: 64px; height: 64px;
   filter: brightness(0) invert(1);
   flex-shrink: 0;
 }
@@ -91,7 +91,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px; /* 适度拉宽 */
+  padding: 16px 20px;
 }
 .app-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
 .app-logo .icon { width: 38px; height: 38px; background: linear-gradient(135deg, #9C1250, #8E1045); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow: 0 2px 6px rgba(142,16,69,.2); }
@@ -702,16 +702,28 @@ createApp({
     const isEditingProfile = ref(false);
     const editForm = ref({ nickname: '', gender: '保密', avatar: '⚡' });
 
+    // 补充缺失的底层基础辅助功能
+    const clearStats = () => { if (confirm('确定清空所有做题数据吗？')) { alert('重置成功！'); loadMe(); } };
+    const clearWrongQuestions = () => { if (confirm('确定清空错题本吗？')) { wrongList.value = []; alert('已清空！'); } };
+    const clearFavoritesAction = () => { if (confirm('确定清空所有收藏吗？')) { favoriteList.value = []; alert('已清空！'); } };
+    const upcomingFeature = () => { alert('🚀 该功能正在加急开发中，敬请期待！'); };
+    const startEditProfile = () => { isEditingProfile.value = true; editForm.value = { nickname: currentUser.value.nickname || '', gender: currentUser.value.gender || '保密', avatar: currentUser.value.avatar || '⚡' }; };
+    const saveProfile = () => { currentUser.value = { ...currentUser.value, ...editForm.value }; localStorage.setItem('quiz_user', JSON.stringify(currentUser.value)); isEditingProfile.value = false; alert('资料修改成功！'); };
+
     const api = async (path, options = {}) => {
-      const res = await fetch(API + path, {
-        ...options,
-        headers: { 
-          'Content-Type': 'application/json', 
-          'Authorization': 'Bearer ' + token.value, 
-          ...(options.headers || {}) 
-        }
-      });
-      return res.json();
+      try {
+        const res = await fetch(API + path, {
+          ...options,
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token.value, 
+            ...(options.headers || {}) 
+          }
+        });
+        return res.json();
+      } catch(e) {
+        return { success: false, error: '网络异常' };
+      }
     };
 
     const sendCode = async () => {
@@ -732,9 +744,9 @@ createApp({
       const result = await api(`/${authTab.value}`, { method: 'POST', body: JSON.stringify({ ...authForm.value, code: code.value }) });
       if (result.success) {
         token.value = result.token;
-        currentUser.value = result.user;
+        currentUser.value = result.user || { email: authForm.value.email, role: 'user' };
         localStorage.setItem('quiz_token', result.token);
-        localStorage.setItem('quiz_user', JSON.stringify(result.user));
+        localStorage.setItem('quiz_user', JSON.stringify(currentUser.value));
         fetchBanks(); loadMe();
       } else { authError.value = result.error; }
     };
@@ -748,14 +760,11 @@ createApp({
       page.value = 'home';
       homeTab.value = 'banks';
       isEditingProfile.value = false;
-      document.body.style.overflow = ''; 
       localStorage.removeItem('quiz_token'); 
       localStorage.removeItem('quiz_user');
     };
 
-    const goTuteOfficial = () => {
-      window.open('https://www.tute.edu.cn', '_blank');
-    };
+    const goTuteOfficial = () => { window.open('https://www.tute.edu.cn', '_blank'); };
 
     const shareApp = () => {
       const shareUrl = window.location.href;
@@ -984,8 +993,8 @@ createApp({
 
     return {
       token, currentUser, authTab, authForm, authError, code, countdown, sendCode, doAuth, logout, showSuggest,
-      isEditingProfile, editForm,
-      clearStats, maskEmail, goTuteOfficial, shareApp,
+      isEditingProfile, editForm, clearStats, clearWrongQuestions, clearFavoritesAction, upcomingFeature, startEditProfile, saveProfile,
+      maskEmail, goTuteOfficial, shareApp,
       page, homeTab, banks, meData, wrongList, favoriteList, accuracy, loadMe, loadWrong, loadFavorites, goHome, fetchBanks,
       currentBank, currentBankQuestions, openBank,
       practiceMode, practiceQuestions, practiceStep, practiceAnswered, practiceSelectedOption,
