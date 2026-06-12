@@ -39,122 +39,68 @@ body {
   overflow-x: hidden;
 }
 
-/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
 
-/* ===== LAYOUT ===== */
 #app { max-width: 680px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
 
 /* ===== SCHOOL HEADER BANNER ===== */
 .school-banner {
   background: linear-gradient(120deg, #6A0F35 0%, #8E1045 40%, #A01250 70%, #8E1045 100%);
   padding: 24px 24px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
+  display: flex; align-items: center; gap: 18px;
   box-shadow: 0 4px 18px rgba(142,16,69,.45);
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
 }
 .school-banner::before {
-  content: '';
-  position: absolute;
-  right: -20px; top: -20px;
-  width: 140px; height: 140px;
-  background: rgba(255,255,255,.08);
-  border-radius: 50%;
+  content: ''; position: absolute; right: -20px; top: -20px;
+  width: 140px; height: 140px; background: rgba(255,255,255,.08); border-radius: 50%;
 }
-.school-banner img {
-  width: 64px; height: 64px;
-  filter: brightness(0) invert(1);
-  flex-shrink: 0;
-}
+.school-banner img { width: 64px; height: 64px; filter: brightness(0) invert(1); flex-shrink: 0; }
 .school-banner-text { color: white; }
-.school-banner-text .cn {
-  font-size: 22px; font-weight: 800; letter-spacing: 1.8px;
-  text-shadow: 0 2px 4px rgba(0,0,0,.25);
-}
-.school-banner-text .en {
-  font-size: 11px; opacity: .85; letter-spacing: .6px; margin-top: 5px; font-weight: 500;
-}
+.school-banner-text .cn { font-size: 22px; font-weight: 800; letter-spacing: 1.8px; text-shadow: 0 2px 4px rgba(0,0,0,.25); }
+.school-banner-text .en { font-size: 11px; opacity: .85; letter-spacing: .6px; margin-top: 5px; font-weight: 500; }
 
 /* ===== APP HEADER ===== */
-.app-header {
-  background: white;
-  border-bottom: 1px solid var(--gray-200);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
-}
-.app-header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-}
+.app-header { background: white; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.app-header-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
 .app-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
 .app-logo .icon { width: 38px; height: 38px; background: linear-gradient(135deg, #9C1250, #8E1045); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow: 0 2px 6px rgba(142,16,69,.2); }
 .app-logo .name { font-size: 17px; font-weight: 800; color: var(--red); letter-spacing: 0.5px; }
 .app-logo .sub  { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
 .header-right { display: flex; align-items: center; gap: 12px; }
 .btn-admin { font-size: 11px; padding: 5px 12px; background: var(--gold-lt); color: #92630A; border-radius: 20px; border: 1px solid #F0D060; font-weight: 600; cursor: pointer; }
-
-/* 三条杠菜单按钮 */
-.btn-menu {
-  background: none; border: none; font-size: 24px; color: var(--gray-700); cursor: pointer; padding: 4px 8px; display: flex; align-items: center; justify-content: center; transition: color .2s;
-}
+.btn-menu { background: none; border: none; font-size: 24px; color: var(--gray-700); cursor: pointer; padding: 4px 8px; display: flex; align-items: center; justify-content: center; transition: color .2s; }
 .btn-menu:hover { color: var(--red); }
 
 /* ===== TABS ===== */
-.tab-bar {
-  display: flex;
-  border-top: 1px solid var(--gray-100);
-  background: white;
-}
-.tab-btn {
-  flex: 1; padding: 12px 4px; text-align: center; font-size: 13px; font-weight: 500;
-  color: var(--gray-500); background: none; border: none; cursor: pointer;
-  border-bottom: 2px solid transparent; transition: all .2s;
-}
+.tab-bar { display: flex; border-top: 1px solid var(--gray-100); background: white; }
+.tab-btn { flex: 1; padding: 12px 4px; text-align: center; font-size: 13px; font-weight: 500; color: var(--gray-500); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
 .tab-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
 
-/* ===== SIDE DRAWER (右侧滑出我的页面) ===== */
-.drawer-overlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; pointer-events: none; transition: opacity .3s ease;
-}
+/* ===== SIDE DRAWER ===== */
+.drawer-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
 .drawer-overlay.active { opacity: 1; pointer-events: auto; }
-.drawer-content {
-  position: fixed; top: 0; right: -340px; width: 340px; height: 100vh; background: white; z-index: 1000; box-shadow: -4px 0 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; transition: right .3s cubic-bezier(0.16, 1, 0.3, 1); padding: 20px; overflow-y: auto;
-}
+.drawer-content { position: fixed; top: 0; right: -340px; width: 340px; height: 100vh; background: white; z-index: 1000; box-shadow: -4px 0 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; transition: right .3s cubic-bezier(0.16, 1, 0.3, 1); padding: 20px; overflow-y: auto; }
 .drawer-content.active { right: 0; }
 .drawer-close { background: none; border: none; font-size: 20px; color: var(--gray-400); cursor: pointer; align-self: flex-start; margin-bottom: 14px; }
 .drawer-close:hover { color: var(--red); }
 
-/* ===== 个人资料卡片拓展 ===== */
-.stats-hero {
-  background: linear-gradient(135deg, #9C1250 0%, #8E1045 100%);
-  border-radius: var(--radius); padding: 18px; color: white; margin-bottom: 14px;
-  box-shadow: 0 4px 16px rgba(142,16,69,.25);
-}
+/* ===== 个人资料卡片 ===== */
+.stats-hero { background: linear-gradient(135deg, #9C1250 0%, #8E1045 100%); border-radius: var(--radius); padding: 18px; color: white; margin-bottom: 14px; box-shadow: 0 4px 16px rgba(142,16,69,.25); }
 .user-profile-box { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 14px; }
 .user-avatar-circle { width: 48px; height: 48px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); flex-shrink: 0; }
 .user-info-text { flex: 1; min-width: 0; }
 .user-info-text .name-row { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
 .user-info-text .gender-tag { font-size: 11px; padding: 1px 6px; background: rgba(255,255,255,0.2); border-radius: 10px; font-weight: normal; }
 .user-info-text .email-row { font-size: 12px; opacity: 0.75; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
 .stats-hero .greeting { font-size: 11px; opacity: .8; }
 .stats-hero .big-num  { font-size: 32px; font-weight: 800; line-height: 1.1; margin: 2px 0; }
 .stats-hero .label    { font-size: 11px; opacity: .8; }
-
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
 .stat-card { background: var(--gray-50); border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 10px; text-align: center; }
 .stat-card .num { font-size: 20px; font-weight: 800; }
 .stat-card .lbl { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-
-/* 功能管理区域 */
 .menu-section-title { font-size: 13px; font-weight: 700; color: var(--gray-500); margin: 16px 0 8px; letter-spacing: 0.5px; }
 .action-list { display: flex; flex-direction: column; gap: 6px; }
 .btn-action-item { width: 100%; padding: 11px 14px; text-align: left; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--gray-700); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
@@ -162,8 +108,6 @@ body {
 .btn-action-item.danger:hover { color: #EF4444; background: #FEF2F2; border-color: #FEE2E2; }
 .btn-action-item.disabled { opacity: 0.5; cursor: not-allowed; background: var(--gray-50); color: var(--gray-400); }
 .btn-action-item.disabled:hover { color: var(--gray-400); background: var(--gray-50); }
-
-/* 编辑资料侧边小表单 */
 .edit-profile-box { background: var(--gray-50); border: 1px dashed var(--gray-200); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; }
 .edit-title { font-size: 12px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; }
 
@@ -174,19 +118,16 @@ body {
 .login-hero img { width: 72px; height: 72px; margin-bottom: 16px; filter: brightness(0) invert(1); position: relative; z-index: 1; }
 .login-hero h1 { color: white; font-size: 26px; font-weight: 800; position: relative; z-index: 1; letter-spacing: 1px; }
 .login-hero p  { color: rgba(255,255,255,.8); font-size: 14px; margin-top: 6px; position: relative; z-index: 1; }
-
 .login-card { background: white; margin: -20px 20px 0; border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 24px; position: relative; z-index: 2; }
 .auth-tab-bar { display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--gray-100); }
 .auth-tab { flex: 1; padding: 10px; text-align: center; font-size: 14px; font-weight: 500; color: var(--gray-400); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .auth-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
-
 .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-size: 14px; outline: none; transition: border-color .2s; font-family: inherit; background: white; }
 .form-input:focus { border-color: var(--red); }
 .form-group { margin-bottom: 12px; }
 .code-row { display: flex; gap: 8px; }
 .btn-code { padding: 12px 14px; background: var(--red); color: white; border: none; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .btn-code:disabled { background: var(--gray-200); color: var(--gray-400); cursor: not-allowed; }
-
 .btn-primary { width: 100%; padding: 13px; background: linear-gradient(135deg, #9C1250, #8E1045); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; transition: opacity .2s; box-shadow: 0 3px 12px rgba(142,16,69,.3); }
 .btn-primary:hover { opacity: .9; }
 
@@ -201,8 +142,6 @@ body {
 
 /* ===== MAIN ===== */
 main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
-
-/* ===== SECTION HEADER ===== */
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; margin-top: 4px; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--gray-700); }
 .btn-upload { font-size: 12px; padding: 6px 14px; background: var(--red); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; }
@@ -226,18 +165,20 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .q-wrong-badge { font-size: 11px; color: #EF4444; white-space: nowrap; font-weight: 600; }
 .q-bank { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
 .q-answer { font-size: 11px; color: var(--green); margin-top: 4px; font-weight: 600; }
+.q-type-tag { font-size: 10px; padding: 1px 6px; border-radius: 4px; font-weight: 600; margin-left: 6px; }
+.q-type-single { background: var(--blue-lt); color: var(--blue); }
+.q-type-multiple { background: #FEF3C7; color: #D97706; }
+.q-type-judge { background: var(--green-lt); color: var(--green); }
 
 /* ===== SELECT MODE ===== */
 .bank-info-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-200); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
 .bank-info-card h2 { font-size: 16px; font-weight: 700; }
 .bank-info-card p  { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
-
 .limit-bar { background: var(--gray-100); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
 .limit-label { font-size: 11px; color: var(--gray-500); font-weight: 600; margin-bottom: 8px; }
 .limit-btns { display: flex; gap: 6px; }
 .limit-btn { flex: 1; padding: 7px 4px; border-radius: 8px; font-size: 12px; border: 1.5px solid var(--gray-200); background: white; color: var(--gray-600); cursor: pointer; font-weight: 500; transition: all .15s; text-align: center; }
 .limit-btn.active { background: var(--red); color: white; border-color: var(--red); font-weight: 700; }
-
 .mode-card { background: white; border: 1.5px solid var(--gray-100); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px; cursor: pointer; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px; transition: border-color .2s, transform .15s; }
 .mode-card:hover { border-color: var(--red); transform: translateY(-1px); }
 .mode-icon { font-size: 24px; flex-shrink: 0; }
@@ -252,13 +193,14 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .score-chips { display: flex; gap: 8px; font-size: 12px; }
 .chip-ok  { background: var(--green-lt); color: var(--green); padding: 3px 8px; border-radius: 20px; font-weight: 600; }
 .chip-err { background: #FEF2F2; color: #EF4444; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
-
 .q-box { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow); }
 .q-box-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.q-type-badge { font-size: 11px; padding: 3px 8px; background: var(--blue-lt); color: var(--blue); border-radius: 6px; font-weight: 600; }
+.q-type-badge { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+.q-type-badge.single { background: var(--blue-lt); color: var(--blue); }
+.q-type-badge.multiple { background: #FEF3C7; color: #D97706; }
+.q-type-badge.judge { background: var(--green-lt); color: var(--green); }
 .btn-fav { font-size: 20px; background: none; border: none; cursor: pointer; line-height: 1; }
 .q-text { font-size: 15px; color: var(--gray-800); line-height: 1.7; }
-
 .opt-btn { width: 100%; text-align: left; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--gray-200); background: white; font-size: 14px; cursor: pointer; margin-bottom: 8px; transition: all .15s; font-family: inherit; display: flex; align-items: flex-start; gap: 8px; }
 .opt-btn:hover:not(:disabled) { border-color: var(--red); background: var(--red-lt); }
 .opt-btn:disabled { cursor: not-allowed; }
@@ -266,7 +208,19 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .opt-btn.wrong    { border-color: #EF4444; background: #FEF2F2; color: #EF4444; font-weight: 600; }
 .opt-btn.dim      { border-color: var(--gray-100); background: var(--gray-50); opacity: .5; }
 .opt-btn.selected-exam { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); font-weight: 600; }
+.opt-btn.selected-multiple { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); font-weight: 600; }
 .opt-key { font-weight: 700; flex-shrink: 0; }
+
+/* 判断题专用按钮 */
+.judge-btns { display: flex; gap: 10px; margin-bottom: 8px; }
+.judge-btn { flex: 1; padding: 14px; border-radius: 10px; border: 1.5px solid var(--gray-200); background: white; font-size: 15px; cursor: pointer; text-align: center; font-weight: 600; transition: all .15s; font-family: inherit; }
+.judge-btn:hover:not(:disabled) { border-color: var(--red); background: var(--red-lt); }
+.judge-btn:disabled { cursor: not-allowed; }
+.judge-btn.correct  { border-color: var(--green); background: var(--green-lt); color: var(--green); }
+.judge-btn.wrong    { border-color: #EF4444; background: #FEF2F2; color: #EF4444; }
+.judge-btn.dim      { border-color: var(--gray-100); background: var(--gray-50); opacity: .5; }
+.judge-btn.selected-exam { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
+.judge-btn.selected-multiple { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
 
 .feedback-box { border-radius: 10px; border: 1.5px dashed var(--gray-200); padding: 14px; background: var(--gray-50); font-size: 13px; margin-top: 4px; }
 .feedback-correct { color: var(--green); font-weight: 700; font-size: 14px; }
@@ -284,7 +238,6 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .result-emoji { font-size: 56px; }
 .result-score { font-size: 48px; font-weight: 800; color: var(--gray-800); line-height: 1; margin: 8px 0 4px; }
 .result-sub   { font-size: 14px; color: var(--gray-400); }
-
 .result-item { background: white; border-radius: 10px; border-width: 1.5px; border-style: solid; padding: 14px; margin-bottom: 8px; font-size: 13px; }
 .result-item.ok  { border-color: #BBF7D0; }
 .result-item.bad { border-color: #FECACA; }
@@ -303,6 +256,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .upload-msg { font-size: 13px; text-align: center; padding: 8px; border-radius: 8px; }
 .upload-msg.ok  { color: var(--green); background: var(--green-lt); }
 .upload-msg.err { color: #EF4444; background: #FEF2F2; }
+.upload-msg.pending { color: var(--blue); background: var(--blue-lt); }
 
 /* ===== ADMIN ===== */
 .admin-bank-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); }
@@ -310,19 +264,21 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .btn-toggle-on  { padding: 4px 12px; border-radius: 20px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--green); color: white; }
 .btn-toggle-off { padding: 4px 12px; border-radius: 20px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--gray-200); color: var(--gray-500); }
 .btn-del { flex: 1; padding: 7px; font-size: 12px; background: #FEF2F2; color: #EF4444; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
-
 .admin-user-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
 .user-name { font-size: 14px; font-weight: 600; }
 .user-date { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
 .btn-role { font-size: 11px; padding: 5px 10px; background: var(--blue-lt); color: var(--blue); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .btn-del-user { font-size: 11px; padding: 5px 10px; background: #FEF2F2; color: #EF4444; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
-
-/* ===== PAGE BACK BTN ===== */
 .back-btn { color: var(--red); background: none; border: none; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 4px; }
-
-/* ===== PRACTICE START BTN ===== */
 .btn-practice-wrong { width: 100%; padding: 13px; background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(239,68,68,.25); }
 .btn-practice-fav   { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--gold), #B7950B); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(212,172,13,.25); }
+
+/* 上传解析进度条 */
+.upload-progress { margin-top: 12px; }
+.upload-progress-bar { height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+.upload-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), #3B82F6); border-radius: 3px; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+.upload-progress-text { font-size: 12px; color: var(--blue); margin-top: 6px; text-align: center; }
 </style>
 </head>
 <body>
@@ -402,6 +358,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       </div>
     </div>
 
+    <!-- 右侧抽屉 -->
     <div :class="['drawer-overlay', isDrawerOpen?'active':'']" @click="isDrawerOpen=false"></div>
     <div :class="['drawer-content', isDrawerOpen?'active':'']">
       <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -469,16 +426,13 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       <button @click="logout" class="btn-primary" style="background: #EF4444; box-shadow: 0 2px 8px rgba(239,68,68,0.25); margin-top: auto;">退出登录</button>
     </div>
 
-
+    <!-- ===== 首页 ===== -->
     <main v-if="page==='home'">
-
       <div v-if="homeTab==='banks'">
-        
         <div class="section-header">
           <span class="section-title">📦 云端题库（{{ banks.length }}）</span>
           <button @click="page='upload'" class="btn-upload">+ 上传题库</button>
         </div>
-        
         <div v-for="bank in banks" :key="bank._id" class="card" @click="openBank(bank)">
           <div class="card-row">
             <div>
@@ -488,67 +442,79 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
             <span class="card-arrow">›</span>
           </div>
         </div>
-        
-        <div v-if="banks.length===0" class="empty">
-          <div class="emoji">📭</div>
-          <div>暂无题库，快去上传第一份吧！</div>
-        </div>
+        <div v-if="banks.length===0" class="empty"><div class="emoji">📭</div><div>暂无题库，快去上传第一份吧！</div></div>
 
         <div class="community-banner" style="margin-top: 24px;">
           <div class="icon-col">🌟</div>
           <div>
-            <h3>建设共享题库，携手备考！</h3>
-            <p>有题目资源欢迎上传共享；有好建议或遇到Bug，欢迎反馈给我们，共同打造更棒的期末冲刺神器。</p>
+            <h3>共建共享题库，一起搞定考试！</h3>
+            <p>有好的题目资源？欢迎上传到题库，让同学们一起受益。</p>
             <div class="tags">
-              <span class="tag" @click="page='upload'">📤 我要上传</span>
-              <span class="tag" @click="showSuggest">💡 提建议</span>
-              <span class="tag" @click="shareApp">📢 分享应用</span>
-              <span class="tag" @click="goTuteOfficial">🎓 TUTE专属</span>
+              <span class="tag" @click="shareApp">📤 分享给同学</span>
+              <span class="tag" @click="showSuggest">💡 提交建议</span>
             </div>
           </div>
         </div>
       </div>
 
       <div v-if="homeTab==='wrong'">
-        <div class="section-header"><span class="section-title">❌ 错题本（{{ wrongList.length }}题）</span></div>
-        <button v-if="wrongList.length>0" @click="startWrongPractice" class="btn-practice-wrong">🔥 开始专项练习错题</button>
-        <div v-for="(q,i) in wrongList" :key="i" class="q-card">
-          <div class="q-card-row">
-            <span class="q-title">{{ q.title }}</span>
-            <span class="q-wrong-badge">错{{ q.wrongCount }}次</span>
-          </div>
-          <div class="q-bank">来自：{{ q.bankName }}</div>
-          <div class="q-answer">✓ {{ q.answer }}. {{ q.options[q.answer] }}</div>
+        <div class="section-header">
+          <span class="section-title">❌ 错题本（{{ wrongList.length }}）</span>
         </div>
-        <div v-if="wrongList.length===0" class="empty"><div class="emoji">🎉</div><div>太棒了，没有错题！</div></div>
+        <div v-if="wrongList.length > 0">
+          <button @click="startWrongPractice" class="btn-practice-wrong">🔄 开始错题重练</button>
+        </div>
+        <div v-for="(q, i) in wrongList" :key="i" class="q-card">
+          <div class="q-card-row">
+            <div class="q-title">
+              {{ q.title }}
+              <span :class="['q-type-tag', getTypeClass(q.type)]">{{ getTypeName(q.type) }}</span>
+            </div>
+            <span class="q-wrong-badge">错 {{ q.wrongCount }} 次</span>
+          </div>
+          <div class="q-bank">📚 {{ q.bankName }}</div>
+          <div class="q-answer">正确答案：{{ formatAnswer(q) }}</div>
+        </div>
+        <div v-if="wrongList.length===0" class="empty"><div class="emoji">🎉</div><div>没有错题，继续保持！</div></div>
       </div>
 
       <div v-if="homeTab==='favorites'">
-        <div class="section-header"><span class="section-title">⭐ 收藏夹（{{ favoriteList.length }}题）</span></div>
-        <button v-if="favoriteList.length>0" @click="startFavPractice" class="btn-practice-fav">⭐ 练习收藏题目</button>
-        <div v-for="(q,i) in favoriteList" :key="i" class="q-card">
-          <div class="q-title">{{ q.title }}</div>
-          <div class="q-bank">来自：{{ q.bankName }}</div>
+        <div class="section-header">
+          <span class="section-title">⭐ 收藏夹（{{ favoriteList.length }}）</span>
         </div>
-        <div v-if="favoriteList.length===0" class="empty"><div class="emoji">📌</div><div>还没有收藏任何题目</div></div>
+        <div v-if="favoriteList.length > 0">
+          <button @click="startFavPractice" class="btn-practice-fav">🔄 开始收藏练习</button>
+        </div>
+        <div v-for="(q, i) in favoriteList" :key="i" class="q-card">
+          <div class="q-card-row">
+            <div class="q-title">
+              {{ q.title }}
+              <span :class="['q-type-tag', getTypeClass(q.type)]">{{ getTypeName(q.type) }}</span>
+            </div>
+          </div>
+          <div class="q-bank">📚 {{ q.bankName }}</div>
+          <div class="q-answer">正确答案：{{ formatAnswer(q) }}</div>
+        </div>
+        <div v-if="favoriteList.length===0" class="empty"><div class="emoji">⭐</div><div>还没有收藏题目</div></div>
       </div>
     </main>
 
-    <main v-if="page==='selectMode'">
-      <button @click="page='home'" class="back-btn">‹ 返回</button>
+    <!-- ===== 选择模式 ===== -->
+    <main v-if="page==='selectMode'" style="overflow-y:auto;flex:1;">
+      <button @click="page='home'" class="back-btn">‹ 返回题库</button>
       <div class="bank-info-card">
         <h2>{{ currentBank.bankName }}</h2>
-        <p>共 {{ currentBankQuestions.length }} 题</p>
+        <p>共 {{ currentBankQuestions.length }} 题 · 上传者：{{ currentBank.uploaderNickname || '神秘同学' }}</p>
       </div>
       <div class="limit-bar">
-        <div class="limit-label">练习题量限制</div>
+        <div class="limit-label">📊 每次练习题数</div>
         <div class="limit-btns">
-          <button v-for="n in [10,20,50,'全部']" :key="n" @click="practiceLimit=n" :class="['limit-btn', practiceLimit===n?'active':'']">{{ n }}</button>
+          <button v-for="n in [10,20,30,50,'全部']" :key="n" @click="practiceLimit=n" :class="['limit-btn', practiceLimit===n?'active':'']">{{ n }}</button>
         </div>
       </div>
       <div class="mode-card" @click="startPractice('sequential')">
         <span class="mode-icon">📖</span>
-        <div><div class="mode-name">顺序练习</div><div class="mode-desc">按题库顺序逐题练习，即时反馈对错</div></div>
+        <div><div class="mode-name">顺序练习</div><div class="mode-desc">按题目顺序逐题练习</div></div>
       </div>
       <div class="mode-card" @click="startPractice('random')">
         <span class="mode-icon">🔀</span>
@@ -564,6 +530,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       </div>
     </main>
 
+    <!-- ===== 练习页面 ===== -->
     <div v-if="page==='practice'" style="flex:1;display:flex;flex-direction:column;">
       <div class="progress-track">
         <div class="progress-fill" :style="{width:(practiceQuestions.length?((practiceStep+1)/practiceQuestions.length*100):0)+'%'}"></div>
@@ -580,33 +547,79 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <div v-if="practiceQuestions.length>0">
           <div class="q-box">
             <div class="q-box-top">
-              <span class="q-type-badge">单选题</span>
+              <span :class="['q-type-badge', currentPQType]">{{ currentPQTypeName }}</span>
               <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
             </div>
             <p class="q-text">{{ currentPQ.title }}</p>
           </div>
 
-          <div v-if="practiceMode!=='exam'">
-            <button v-for="(opt,key) in currentPQ.options" :key="key"
-              @click="selectOption(key)"
-              :disabled="practiceAnswered"
-              :class="['opt-btn', getPracticeOptionClass(key)]">
-              <span class="opt-key">{{ key }}.</span>{{ opt }}
-            </button>
-          </div>
-          <div v-else>
-            <button v-for="(opt,key) in currentPQ.options" :key="'e'+key"
-              @click="examSelectOption(key)"
-              :class="['opt-btn', examAnswers[practiceStep]===key?'selected-exam':'']">
-              <span class="opt-key">{{ key }}.</span>{{ opt }}
-            </button>
-          </div>
-
-          <div v-if="practiceAnswered && practiceMode!=='exam'" class="feedback-box">
-            <div :class="practiceSelectedOption===currentPQ.answer?'feedback-correct':'feedback-wrong'">
-              {{ practiceSelectedOption===currentPQ.answer ? '🎉 回答正确！' : '❌ 回答错误' }}
+          <!-- ★ 判断题：显示"对/错"按钮 -->
+          <template v-if="currentPQType === 'judge'">
+            <div class="judge-btns">
+              <button @click="selectJudge('对')"
+                :disabled="practiceAnswered"
+                :class="['judge-btn', getJudgeClass('对')]">✓ 对</button>
+              <button @click="selectJudge('错')"
+                :disabled="practiceAnswered"
+                :class="['judge-btn', getJudgeClass('错')]">✗ 错</button>
             </div>
-            <div class="feedback-ans">正确答案：<b>{{ currentPQ.answer }}. {{ currentPQ.options[currentPQ.answer] }}</b></div>
+            <!-- 模拟考试模式下的判断题 -->
+            <div v-if="practiceMode==='exam'" class="judge-btns" style="margin-top:0;">
+              <button @click="examSelectJudge('对')"
+                :class="['judge-btn', examAnswers[practiceStep]==='对'?'selected-exam':'']">✓ 对</button>
+              <button @click="examSelectJudge('错')"
+                :class="['judge-btn', examAnswers[practiceStep]==='错'?'selected-exam':'']">✗ 错</button>
+            </div>
+          </template>
+
+          <!-- ★ 多选题：可多选 -->
+          <template v-else-if="currentPQType === 'multiple'">
+            <div v-if="practiceMode!=='exam'">
+              <button v-for="(opt,key) in currentPQ.options" :key="key"
+                @click="toggleMultipleOption(key)"
+                :disabled="practiceAnswered"
+                :class="['opt-btn', getMultipleOptionClass(key)]">
+                <span class="opt-key">{{ key }}.</span>{{ opt }}
+              </button>
+              <!-- 多选题确认按钮 -->
+              <button v-if="!practiceAnswered && multipleSelected.length > 0"
+                @click="confirmMultiple"
+                class="btn-next" style="margin-top:4px;">确认提交</button>
+            </div>
+            <div v-else>
+              <button v-for="(opt,key) in currentPQ.options" :key="'e'+key"
+                @click="examToggleMultiple(key)"
+                :class="['opt-btn', isExamMultipleSelected(key)?'selected-exam':'']">
+                <span class="opt-key">{{ key }}.</span>{{ opt }}
+              </button>
+            </div>
+          </template>
+
+          <!-- ★ 单选题 -->
+          <template v-else>
+            <div v-if="practiceMode!=='exam'">
+              <button v-for="(opt,key) in currentPQ.options" :key="key"
+                @click="selectOption(key)"
+                :disabled="practiceAnswered"
+                :class="['opt-btn', getPracticeOptionClass(key)]">
+                <span class="opt-key">{{ key }}.</span>{{ opt }}
+              </button>
+            </div>
+            <div v-else>
+              <button v-for="(opt,key) in currentPQ.options" :key="'e'+key"
+                @click="examSelectOption(key)"
+                :class="['opt-btn', examAnswers[practiceStep]===key?'selected-exam':'']">
+                <span class="opt-key">{{ key }}.</span>{{ opt }}
+              </button>
+            </div>
+          </template>
+
+          <!-- 反馈区域（非考试模式） -->
+          <div v-if="practiceAnswered && practiceMode!=='exam'" class="feedback-box">
+            <div :class="practiceIsCorrect ? 'feedback-correct' : 'feedback-wrong'">
+              {{ practiceIsCorrect ? '🎉 回答正确！' : '❌ 回答错误' }}
+            </div>
+            <div class="feedback-ans">正确答案：<b>{{ formatPracticeAnswer(currentPQ) }}</b></div>
           </div>
         </div>
       </div>
@@ -618,6 +631,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       </div>
     </div>
 
+    <!-- ===== 考试结果 ===== -->
     <main v-if="page==='examResult'" style="overflow-y:auto;flex:1;padding-bottom:40px;">
       <div class="result-hero">
         <div class="result-emoji">{{ examScoreEmoji }}</div>
@@ -625,34 +639,42 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <div class="result-sub">{{ examCorrectCount }} / {{ examQuestions.length }} 题正确</div>
       </div>
       <div style="padding:0 16px;">
-        <div v-for="(q,i) in examQuestions" :key="i" :class="['result-item', examAnswers[i]===q.answer?'ok':'bad']">
-          <div :class="examAnswers[i]===q.answer?'result-badge-ok':'result-badge-bad'">{{ examAnswers[i]===q.answer ? '✓ 正确' : '✗ 错误' }}</div>
+        <div v-for="(q,i) in examQuestions" :key="i" :class="['result-item', isExamCorrect(q,i)?'ok':'bad']">
+          <div :class="isExamCorrect(q,i)?'result-badge-ok':'result-badge-bad'">{{ isExamCorrect(q,i) ? '✓ 正确' : '✗ 错误' }}</div>
           <div class="result-q">{{ q.title }}</div>
-          <div v-if="examAnswers[i]!==q.answer" class="result-your">你的答案：{{ examAnswers[i]||'未作答' }}</div>
-          <div class="result-right">正确答案：{{ q.answer }}. {{ q.options[q.answer] }}</div>
+          <div v-if="!isExamCorrect(q,i)" class="result-your">你的答案：{{ examAnswers[i]||'未作答' }}</div>
+          <div class="result-right">正确答案：{{ formatExamAnswer(q) }}</div>
         </div>
         <button @click="goHome" class="btn-primary" style="margin-top:16px;">返回首页</button>
       </div>
     </main>
 
+    <!-- ===== 上传题库 ===== -->
     <main v-if="page==='upload'" style="overflow-y:auto;flex:1;">
       <button @click="page='home'" class="back-btn">‹ 返回</button>
       <div class="upload-card">
         <div class="upload-title">📤 上传新题库</div>
         <div class="form-group">
-          <input v-model="uploadForm.bankName" class="form-input" placeholder="题库名称（例：第三章单选题）">
+          <input v-model="uploadForm.bankName" class="form-input" placeholder="题库名称（例：第三章综合题）">
         </div>
         <div class="form-group">
-          <textarea v-model="uploadForm.text" class="form-textarea" rows="12" placeholder="把题目和答案全选复制粘贴到这里...&#10;&#10;支持多种格式，AI 会自动识别提取单选题。"></textarea>
+          <textarea v-model="uploadForm.text" class="form-textarea" rows="12"
+            placeholder="把题目和答案全选复制粘贴到这里...&#10;&#10;支持多种格式，AI 会自动识别提取单选题、多选题和判断题。"></textarea>
         </div>
         <p class="upload-hint">💡 管理员上传直接公开，普通用户上传需审核后发布</p>
         <button @click="submitUpload" :disabled="uploading" class="btn-primary">
-          {{ uploading ? '⏳ AI 解析中，请稍候...' : '🤖 开始 AI 智能导入' }}
+          {{ uploading ? '⏳ 提交中...' : '🤖 开始 AI 智能导入' }}
         </button>
-        <div v-if="uploadMsg" :class="['upload-msg', uploadMsg.startsWith('✅')?'ok':'err']" style="margin-top:10px;">{{ uploadMsg }}</div>
+        <div v-if="uploadMsg" :class="['upload-msg', uploadMsgClass]" style="margin-top:10px;">{{ uploadMsg }}</div>
+        <!-- 异步解析进度 -->
+        <div v-if="uploadPolling" class="upload-progress">
+          <div class="upload-progress-bar"><div class="upload-progress-fill"></div></div>
+          <div class="upload-progress-text">🤖 AI 正在后台解析题目，请耐心等待...</div>
+        </div>
       </div>
     </main>
 
+    <!-- ===== 管理后台 ===== -->
     <main v-if="page==='admin'" style="overflow-y:auto;flex:1;">
       <button @click="page='home'" class="back-btn">‹ 返回</button>
       <div style="font-size:16px;font-weight:800;margin-bottom:14px;">👑 管理后台</div>
@@ -665,7 +687,9 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <div v-for="bank in adminBanks" :key="bank._id" class="admin-bank-card">
           <div class="admin-bank-row">
             <div>
-              <div style="font-size:14px;font-weight:600;">{{ bank.bankName }}</div>
+              <div style="font-size:14px;font-weight:600;">{{ bank.bankName }}
+                <span style="font-size:11px;color:var(--gray-400);margin-left:6px;">{{ bank.questions ? bank.questions.length : 0 }}题</span>
+              </div>
               <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">
                 上传者：{{ bank.uploaderNickname || maskEmail(bank.uploadedBy) || '神秘同学' }}
               </div>
@@ -675,7 +699,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
             </button>
           </div>
           <div style="display:flex;gap:8px;">
-            <button @click="deleteBank(bank._id)" class="btn-del">🗑 删除题库</button>
+            <button @click="deleteBank(bank._id, bank.bankName)" class="btn-del">🗑 删除题库</button>
           </div>
         </div>
         <div v-if="adminBanks.length===0" class="empty"><div class="emoji">📭</div><div>暂无题库数据</div></div>
@@ -685,7 +709,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <div v-for="user in adminUsers" :key="user._id" class="admin-user-card">
           <div>
             <div class="user-name">
-              {{ user.nickname || maskEmail(user.email) }} 
+              {{ user.nickname || maskEmail(user.email) }}
               <span v-if="user.role==='admin'" style="color:var(--gold);font-size:12px;">👑 管理员</span>
             </div>
             <div class="user-date">注册：{{ new Date(user.createdAt).toLocaleDateString() }}</div>
@@ -716,58 +740,80 @@ createApp({
     const authError = ref('');
     const code = ref('');
     const countdown = ref(0);
-    
-    // 控制右侧抽屉显隐的状态
     const isDrawerOpen = ref(false);
-
     const isEditingProfile = ref(false);
     const editForm = ref({ nickname: '', gender: '保密', avatar: '⚡' });
 
-    // 【防误触确认机制】绑定到核心数据管理函数
-    const clearStats = () => { 
-      if (confirm('⚠️ 警告：确定要清空您在云端的所有做题数量和正确率统计吗？该操作不可逆！')) { 
-        alert('答题统计重置成功！'); 
-        loadMe(); 
-      } 
+    // ★★★ 修复：清空答题统计 — 真正调用后端接口 ★★★
+    const clearStats = async () => {
+      if (!confirm('⚠️ 警告：确定要清空您在云端的所有做题数量和正确率统计吗？该操作不可逆！')) return;
+      const r = await api('/user/clear-stats', { method: 'POST' });
+      if (r.success) {
+        alert('答题统计重置成功！');
+        await loadMe();
+      } else {
+        alert('操作失败：' + (r.error || '未知错误'));
+      }
     };
-    const clearWrongQuestions = () => { 
-      if (confirm('⚠️ 确定要一键清空您的错题本吗？')) { 
-        wrongList.value = []; 
-        alert('错题本已成功清空！'); 
-      } 
+
+    // ★★★ 修复：清空错题本 — 真正调用后端接口 ★★★
+    const clearWrongQuestions = async () => {
+      if (!confirm('⚠️ 确定要一键清空您的错题本吗？')) return;
+      const r = await api('/wrong-questions/clear', { method: 'POST', body: JSON.stringify({ all: true }) });
+      if (r.success) {
+        wrongList.value = [];
+        alert('错题本已成功清空！');
+        await loadMe();
+      } else {
+        alert('操作失败：' + (r.error || '未知错误'));
+      }
     };
-    const clearFavoritesAction = () => { 
-      if (confirm('⚠️ 确定要清空您收藏的所有题目吗？')) { 
-        favoriteList.value = []; 
-        alert('收藏夹已清空！'); 
-      } 
+
+    // ★★★ 修复：清空收藏夹 — 真正调用后端接口 ★★★
+    const clearFavoritesAction = async () => {
+      if (!confirm('⚠️ 确定要清空您收藏的所有题目吗？')) return;
+      const r = await api('/favorites/clear', { method: 'POST', body: JSON.stringify({ all: true }) });
+      if (r.success) {
+        favoriteList.value = [];
+        alert('收藏夹已清空！');
+        await loadMe();
+      } else {
+        alert('操作失败：' + (r.error || '未知错误'));
+      }
     };
+
     const upcomingFeature = () => { alert('🚀 正在紧锣密鼓开发中，下一迭代版本即将公开，敬请期待！'); };
-    
-    const startEditProfile = () => { 
-      isEditingProfile.value = true; 
-      editForm.value = { 
-        nickname: currentUser.value.nickname || '', 
-        gender: currentUser.value.gender || '保密', 
-        avatar: currentUser.value.avatar || '⚡' 
-      }; 
+
+    const startEditProfile = () => {
+      isEditingProfile.value = true;
+      editForm.value = {
+        nickname: currentUser.value.nickname || '',
+        gender: currentUser.value.gender || '保密',
+        avatar: currentUser.value.avatar || '⚡'
+      };
     };
-    
-    const saveProfile = async () => { 
-      currentUser.value = { ...currentUser.value, ...editForm.value }; 
-      localStorage.setItem('quiz_user', JSON.stringify(currentUser.value)); 
-      isEditingProfile.value = false; 
-      alert('资料本地保存成功！'); 
+
+    const saveProfile = async () => {
+      const r = await api('/user/profile', { method: 'PUT', body: JSON.stringify(editForm.value) });
+      if (r.success) {
+        currentUser.value = { ...currentUser.value, ...editForm.value };
+        localStorage.setItem('quiz_user', JSON.stringify(currentUser.value));
+        isEditingProfile.value = false;
+        alert('资料保存成功！');
+        await loadMe();
+      } else {
+        alert('保存失败：' + (r.error || '未知错误'));
+      }
     };
 
     const api = async (path, options = {}) => {
       try {
         const res = await fetch(API + path, {
           ...options,
-          headers: { 
-            'Content-Type': 'application/json', 
-            'Authorization': 'Bearer ' + token.value, 
-            ...(options.headers || {}) 
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token.value,
+            ...(options.headers || {})
           }
         });
         return res.json();
@@ -776,86 +822,51 @@ createApp({
       }
     };
 
-   const sendCode = async () => {
+    const sendCode = async () => {
       if (!authForm.value.email) { alert('请先填写邮箱'); return; }
-      
-      // 核心防呆：如果正在倒计时，直接拦截，不让用户重复点击发送请求
-      if (countdown.value > 0) return; 
-      
+      if (countdown.value > 0) return;
       countdown.value = 60;
-      const timer = setInterval(() => { 
-        countdown.value--; 
-        if (countdown.value <= 0) clearInterval(timer); 
-      }, 1000);
-      
-      const r = await fetch(API + '/send-code', { 
-        method: 'POST', 
-        headers: {'Content-Type':'application/json'}, 
-        body: JSON.stringify({ email: authForm.value.email }) 
-      });
+      const timer = setInterval(() => { countdown.value--; if (countdown.value <= 0) clearInterval(timer); }, 1000);
+      const r = await fetch(API + '/send-code', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email: authForm.value.email }) });
       const data = await r.json();
       if (data.success) alert('验证码已发送！');
       else { alert(data.error); countdown.value = 0; }
     };
 
-const doAuth = async () => {
+    const doAuth = async () => {
       authError.value = '';
       if (!authForm.value.email || !authForm.value.password) { authError.value = '请填写邮箱和密码'; return; }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(authForm.value.email)) { authError.value = '请输入有效的邮箱地址'; return; }
-      
-      // 核心修改：区分登录与注册，防止登录时多传 code 参数报错
       const payload = { ...authForm.value };
-      if (authTab.value === 'register') {
-        payload.code = code.value;
-      }
-
+      if (authTab.value === 'register') payload.code = code.value;
       const result = await api(`/${authTab.value}`, { method: 'POST', body: JSON.stringify(payload) });
       if (result.success) {
         token.value = result.token;
         currentUser.value = result.user || { email: authForm.value.email, role: 'user' };
         localStorage.setItem('quiz_token', result.token);
         localStorage.setItem('quiz_user', JSON.stringify(currentUser.value));
-        
-        // 登录/注册成功后清空表单与验证码输入框
         authForm.value = { email: '', password: '' };
         code.value = '';
-        
         fetchBanks(); loadMe();
       } else { authError.value = result.error; }
     };
 
     const logout = () => {
-      token.value = ''; 
-      currentUser.value = {};
-      meData.value = {};
-      wrongList.value = [];
-      favoriteList.value = [];
-      page.value = 'home';
-      homeTab.value = 'banks';
-      isDrawerOpen.value = false;
-      isEditingProfile.value = false;
-      localStorage.removeItem('quiz_token'); 
-      localStorage.removeItem('quiz_user');
+      token.value = ''; currentUser.value = {}; meData.value = {};
+      wrongList.value = []; favoriteList.value = [];
+      page.value = 'home'; homeTab.value = 'banks'; isDrawerOpen.value = false; isEditingProfile.value = false;
+      localStorage.removeItem('quiz_token'); localStorage.removeItem('quiz_user');
     };
 
     const goTuteOfficial = () => { window.open('https://www.tute.edu.cn', '_blank'); };
-
     const shareApp = () => {
       const shareUrl = window.location.href;
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(shareUrl)
-          .then(() => alert('🚀 链接已复制到剪贴板，快分享给天职师大的同学们吧！'))
-          .catch(() => alert('分享链接为：' + shareUrl));
-      } else {
-        alert('分享链接为：' + shareUrl);
-      }
+        navigator.clipboard.writeText(shareUrl).then(() => alert('🚀 链接已复制到剪贴板，快分享给天职师大的同学们吧！')).catch(() => alert('分享链接为：' + shareUrl));
+      } else { alert('分享链接为：' + shareUrl); }
     };
-
-    const showSuggest = () => {
-      const s = prompt('💡 请输入你的建议（将通过邮件反馈给管理员）：');
-      if (s && s.trim()) alert('感谢你的建议！我们会认真考虑 🙏');
-    };
+    const showSuggest = () => { const s = prompt('💡 请输入你的建议（将通过邮件反馈给管理员）：'); if (s && s.trim()) alert('感谢你的建议！我们会认真考虑 🙏'); };
 
     const page = ref('home');
     const homeTab = ref('banks');
@@ -873,7 +884,7 @@ const doAuth = async () => {
     const loadMe = async () => { const r = await api('/me'); if (r.success) meData.value = r.data; };
     const loadWrong = async () => { const r = await api('/wrong-questions'); if (r.success) wrongList.value = r.data; };
     const loadFavorites = async () => { const r = await api('/favorites'); if (r.success) favoriteList.value = r.data; };
-    const goHome = () => { page.value = 'home'; homeTab.value = 'banks'; };
+    const goHome = () => { page.value = 'home'; homeTab.value = 'banks'; fetchBanks(); };
 
     onMounted(() => { if (token.value) { fetchBanks(); loadMe(); } });
 
@@ -881,12 +892,42 @@ const doAuth = async () => {
       if (!email || typeof email !== 'string') return '';
       const parts = email.split('@');
       if (parts.length < 2) return email;
-      const name = parts[0];
-      const domain = parts[1];
+      const name = parts[0]; const domain = parts[1];
       if (name.length <= 3) return name + '***@' + domain;
       return name.substring(0, 3) + '***@' + domain;
     };
 
+    // ===== 题型工具函数 =====
+    const getTypeName = (type) => {
+      if (type === 'multiple') return '多选';
+      if (type === 'judge') return '判断';
+      return '单选';
+    };
+    const getTypeClass = (type) => {
+      if (type === 'multiple') return 'q-type-multiple';
+      if (type === 'judge') return 'q-type-judge';
+      return 'q-type-single';
+    };
+    const formatAnswer = (q) => {
+      if (q.type === 'judge') return q.answer || '-';
+      if (q.type === 'multiple') {
+        const ans = String(q.answer || '');
+        return ans.split('').map(a => a + '. ' + (q.options ? q.options[a] || '' : '')).join('、');
+      }
+      return (q.answer || '-') + '. ' + (q.options ? (q.options[q.answer] || '') : '');
+    };
+    const formatPracticeAnswer = (q) => {
+      if (q.type === 'judge') return q.answer;
+      if (q.type === 'multiple') {
+        return String(q.answer).split('').map(a => a + '. ' + (q.options[a] || '')).join('、');
+      }
+      return q.answer + '. ' + (q.options ? q.options[q.answer] : '');
+    };
+    const formatExamAnswer = (q) => {
+      return formatPracticeAnswer(q);
+    };
+
+    // ===== 题库与练习 =====
     const currentBank = ref({});
     const currentBankQuestions = ref([]);
     const openBank = async (bank) => {
@@ -899,13 +940,29 @@ const doAuth = async () => {
     const practiceStep = ref(0);
     const practiceAnswered = ref(false);
     const practiceSelectedOption = ref(null);
+    const practiceIsCorrect = ref(false);
     const sessionCorrect = ref(0);
     const sessionWrong = ref(0);
     const sessionResults = ref([]);
     const examAnswers = ref([]);
     const examQuestions = ref([]);
+    const multipleSelected = ref([]); // 多选题已选选项
+    const examMultipleSelected = ref({}); // 考试模式多选题已选
 
     const currentPQ = computed(() => practiceQuestions.value[practiceStep.value] || {});
+    const currentPQType = computed(() => {
+      const q = currentPQ.value;
+      if (q.type === 'multiple') return 'multiple';
+      if (q.type === 'judge') return 'judge';
+      return 'single';
+    });
+    const currentPQTypeName = computed(() => {
+      const t = currentPQType.value;
+      if (t === 'multiple') return '多选题';
+      if (t === 'judge') return '判断题';
+      return '单选题';
+    });
+
     const isFavorited = computed(() => {
       if (!meData.value.favorites) return false;
       const q = practiceQuestions.value[practiceStep.value];
@@ -917,8 +974,9 @@ const doAuth = async () => {
 
     const startPractice = (mode) => {
       practiceMode.value = mode; practiceStep.value = 0; practiceAnswered.value = false;
-      practiceSelectedOption.value = null; sessionCorrect.value = 0; sessionWrong.value = 0;
-      sessionResults.value = []; examAnswers.value = [];
+      practiceSelectedOption.value = null; practiceIsCorrect.value = false;
+      sessionCorrect.value = 0; sessionWrong.value = 0;
+      sessionResults.value = []; examAnswers.value = []; multipleSelected.value = []; examMultipleSelected.value = {};
       let qs = currentBankQuestions.value.map((q,i) => ({...q, _origIndex: i}));
       if (mode === 'random') qs = shuffle(qs);
       else if (mode === 'exam') { qs = shuffle(qs).slice(0, Math.min(20, qs.length)); examAnswers.value = new Array(qs.length).fill(null); }
@@ -950,7 +1008,9 @@ const doAuth = async () => {
       if (r.success) {
         currentBank.value = {...bank}; currentBankQuestions.value = r.data;
         practiceMode.value = 'random'; practiceStep.value = 0; practiceAnswered.value = false;
-        practiceSelectedOption.value = null; sessionCorrect.value = 0; sessionWrong.value = 0; sessionResults.value = [];
+        practiceSelectedOption.value = null; practiceIsCorrect.value = false;
+        sessionCorrect.value = 0; sessionWrong.value = 0; sessionResults.value = [];
+        multipleSelected.value = [];
         const favIdxSet = new Set(favoriteList.value.filter(f => f.bankId===firstBankId).map(f => f.questionIndex));
         let qs = r.data.map((q,i) => ({...q, _origIndex: i})).filter(q => favIdxSet.has(q._origIndex));
         if (practiceLimit.value !== '全部') qs = qs.slice(0, Number(practiceLimit.value));
@@ -958,15 +1018,75 @@ const doAuth = async () => {
       }
     };
 
+    // ★ 单选题选择
     const selectOption = (key) => {
       if (practiceAnswered.value || practiceMode.value === 'exam') return;
       practiceSelectedOption.value = key; practiceAnswered.value = true;
       const isCorrect = key === currentPQ.value.answer;
+      practiceIsCorrect.value = isCorrect;
       if (isCorrect) sessionCorrect.value++; else sessionWrong.value++;
       sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect });
     };
 
+    // ★ 判断题选择
+    const selectJudge = (val) => {
+      if (practiceAnswered.value || practiceMode.value === 'exam') return;
+      practiceSelectedOption.value = val; practiceAnswered.value = true;
+      const isCorrect = val === currentPQ.value.answer;
+      practiceIsCorrect.value = isCorrect;
+      if (isCorrect) sessionCorrect.value++; else sessionWrong.value++;
+      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect });
+    };
+    const getJudgeClass = (val) => {
+      if (!practiceAnswered.value) return '';
+      if (val === currentPQ.value.answer) return 'correct';
+      if (practiceSelectedOption.value === val) return 'wrong';
+      return 'dim';
+    };
+
+    // ★ 多选题选择（非考试模式）
+    const toggleMultipleOption = (key) => {
+      if (practiceAnswered.value) return;
+      const idx = multipleSelected.value.indexOf(key);
+      if (idx !== -1) multipleSelected.value.splice(idx, 1);
+      else multipleSelected.value.push(key);
+    };
+    const getMultipleOptionClass = (key) => {
+      if (!practiceAnswered.value) {
+        return multipleSelected.value.includes(key) ? 'selected-multiple' : '';
+      }
+      // 已提交后显示对错
+      const correctKeys = String(currentPQ.value.answer || '').split('');
+      if (correctKeys.includes(key)) return 'correct';
+      if (multipleSelected.value.includes(key)) return 'wrong';
+      return 'dim';
+    };
+    const confirmMultiple = () => {
+      if (practiceAnswered.value) return;
+      const selected = [...multipleSelected.value].sort().join('');
+      const correct = String(currentPQ.value.answer || '').split('').sort().join('');
+      practiceSelectedOption.value = selected;
+      practiceAnswered.value = true;
+      practiceIsCorrect.value = selected === correct;
+      if (practiceIsCorrect.value) sessionCorrect.value++; else sessionWrong.value++;
+      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: practiceIsCorrect.value });
+    };
+
+    // ★ 考试模式选择
     const examSelectOption = (key) => { examAnswers.value[practiceStep.value] = key; };
+    const examSelectJudge = (val) => { examAnswers.value[practiceStep.value] = val; };
+    const examToggleMultiple = (key) => {
+      const step = practiceStep.value;
+      if (!examMultipleSelected.value[step]) examMultipleSelected.value[step] = [];
+      const arr = examMultipleSelected.value[step];
+      const idx = arr.indexOf(key);
+      if (idx !== -1) arr.splice(idx, 1); else arr.push(key);
+      examAnswers.value[step] = [...arr].sort().join('');
+    };
+    const isExamMultipleSelected = (key) => {
+      const step = practiceStep.value;
+      return examMultipleSelected.value[step] && examMultipleSelected.value[step].includes(key);
+    };
 
     const getPracticeOptionClass = (key) => {
       if (!practiceAnswered.value) return '';
@@ -975,9 +1095,21 @@ const doAuth = async () => {
       return 'dim';
     };
 
+    // ★ 考试结果判断（兼容三种题型）
+    const isExamCorrect = (q, i) => {
+      const userAns = examAnswers.value[i];
+      if (!userAns) return false;
+      if (q.type === 'judge') return userAns === q.answer;
+      if (q.type === 'multiple') {
+        return [...String(userAns)].sort().join('') === [...String(q.answer)].sort().join('');
+      }
+      return userAns === q.answer;
+    };
+
     const nextQuestion = async () => {
       if (practiceStep.value < practiceQuestions.value.length - 1) {
         practiceStep.value++; practiceAnswered.value = false; practiceSelectedOption.value = null;
+        practiceIsCorrect.value = false; multipleSelected.value = [];
       } else {
         if (sessionResults.value.length > 0) await api('/submit-results', { method: 'POST', body: JSON.stringify({ bankId: currentBank.value._id, results: sessionResults.value }) });
         await loadMe();
@@ -989,14 +1121,17 @@ const doAuth = async () => {
     const nextExamQuestion = async () => {
       if (practiceStep.value < practiceQuestions.value.length - 1) { practiceStep.value++; }
       else {
-        const results = examQuestions.value.map((q,i) => ({ questionIndex: q._origIndex, isCorrect: examAnswers.value[i] === q.answer }));
+        const results = examQuestions.value.map((q,i) => ({ questionIndex: q._origIndex, isCorrect: isExamCorrect(q, i) }));
         await api('/submit-results', { method: 'POST', body: JSON.stringify({ bankId: currentBank.value._id, results }) });
         await loadMe(); page.value = 'examResult';
       }
     };
 
     const prevQuestion = () => {
-      if (practiceStep.value > 0) { practiceStep.value--; practiceAnswered.value = false; practiceSelectedOption.value = null; }
+      if (practiceStep.value > 0) {
+        practiceStep.value--; practiceAnswered.value = false; practiceSelectedOption.value = null;
+        practiceIsCorrect.value = false; multipleSelected.value = [];
+      }
     };
 
     const exitPractice = async () => {
@@ -1007,7 +1142,7 @@ const doAuth = async () => {
       goHome();
     };
 
-    const examCorrectCount = computed(() => examQuestions.value.filter((q,i) => examAnswers.value[i] === q.answer).length);
+    const examCorrectCount = computed(() => examQuestions.value.filter((q,i) => isExamCorrect(q, i)).length);
     const examScore = computed(() => examQuestions.value.length === 0 ? 0 : Math.round(examCorrectCount.value / examQuestions.value.length * 100));
     const examScoreEmoji = computed(() => examScore.value >= 90 ? '🏆' : examScore.value >= 60 ? '😊' : '😢');
 
@@ -1018,19 +1153,57 @@ const doAuth = async () => {
       await loadMe();
     };
 
+    // ===== 上传题库（异步模式） =====
     const uploadForm = ref({ bankName: '', text: '' });
     const uploading = ref(false);
     const uploadMsg = ref('');
+    const uploadMsgClass = ref('');
+    const uploadPolling = ref(false);
+    let uploadPollTimer = null;
 
     const submitUpload = async () => {
-      if (!uploadForm.value.bankName || !uploadForm.value.text) { uploadMsg.value = '❌ 请填写题库名称和题目内容'; return; }
-      uploading.value = true; uploadMsg.value = '';
+      if (!uploadForm.value.bankName || !uploadForm.value.text) { uploadMsg.value = '❌ 请填写题库名称和题目内容'; uploadMsgClass.value = 'err'; return; }
+      uploading.value = true; uploadMsg.value = ''; uploadMsgClass.value = ''; uploadPolling.value = false;
+
       const r = await api('/upload-bank', { method: 'POST', body: JSON.stringify(uploadForm.value) });
       uploading.value = false;
-      if (r.success) { uploadMsg.value = '✅ ' + r.message; uploadForm.value = { bankName: '', text: '' }; fetchBanks(); }
-      else uploadMsg.value = '❌ ' + r.error;
+
+      if (r.success) {
+        if (r.pending && r.bankId) {
+          // 异步解析模式：轮询状态
+          uploadMsg.value = '✅ 题库已提交，AI 正在后台解析...';
+          uploadMsgClass.value = 'pending';
+          uploadPolling.value = true;
+          uploadForm.value = { bankName: '', text: '' };
+          pollUploadStatus(r.bankId);
+        } else {
+          uploadMsg.value = '✅ ' + r.message;
+          uploadMsgClass.value = 'ok';
+          uploadForm.value = { bankName: '', text: '' };
+          fetchBanks();
+        }
+      } else {
+        uploadMsg.value = '❌ ' + r.error;
+        uploadMsgClass.value = 'err';
+      }
     };
 
+    const pollUploadStatus = (bankId) => {
+      if (uploadPollTimer) clearInterval(uploadPollTimer);
+      uploadPollTimer = setInterval(async () => {
+        const r = await api('/bank-status/' + bankId);
+        if (r.success && r.parsed) {
+          clearInterval(uploadPollTimer);
+          uploadPollTimer = null;
+          uploadPolling.value = false;
+          uploadMsg.value = `✅ 解析完成！共识别 ${r.total} 道题目，${r.isPublic ? '已发布' : '等待管理员审核'}`;
+          uploadMsgClass.value = 'ok';
+          fetchBanks();
+        }
+      }, 3000);
+    };
+
+    // ===== 管理后台 =====
     const adminTab = ref('banks');
     const adminBanks = ref([]);
     const adminUsers = ref([]);
@@ -1048,22 +1221,30 @@ const doAuth = async () => {
       else alert('操作失败: ' + (r.error || '未获授权'));
     };
 
-    const deleteBank = async (id) => {
-      if (!confirm('确认删除该题库？')) return;
-      await api('/admin/banks/' + id, { method: 'DELETE' });
-      loadAdminBanks(); fetchBanks();
+    // ★★★ 修复：删除题库 — 使用 DELETE 方法 ★★★
+    const deleteBank = async (id, name) => {
+      if (!confirm('确认删除题库「' + name + '」？删除后不可恢复！')) return;
+      const r = await api('/admin/banks/' + id, { method: 'DELETE' });
+      if (r.success) {
+        alert('题库已删除');
+        loadAdminBanks(); fetchBanks();
+      } else {
+        alert('删除失败：' + (r.error || '未知错误'));
+      }
     };
 
     const deleteUser = async (id) => {
       if (!confirm('确认删除该用户？')) return;
-      await api('/admin/users/' + id, { method: 'DELETE' });
-      loadAdminUsers();
+      const r = await api('/admin/users/' + id, { method: 'DELETE' });
+      if (r.success) loadAdminUsers();
+      else alert('删除失败：' + (r.error || '未知错误'));
     };
 
     const toggleRole = async (user) => {
       const newRole = user.role === 'admin' ? 'user' : 'admin';
-      await api('/admin/users/' + user._id + '/role', { method: 'PUT', body: JSON.stringify({ role: newRole }) });
-      loadAdminUsers();
+      const r = await api('/admin/users/' + user._id + '/role', { method: 'PUT', body: JSON.stringify({ role: newRole }) });
+      if (r.success) loadAdminUsers();
+      else alert('操作失败：' + (r.error || '未知错误'));
     };
 
     return {
@@ -1072,12 +1253,17 @@ const doAuth = async () => {
       maskEmail, goTuteOfficial, shareApp,
       page, homeTab, banks, meData, wrongList, favoriteList, accuracy, loadMe, loadWrong, loadFavorites, goHome, fetchBanks,
       currentBank, currentBankQuestions, openBank,
-      practiceMode, practiceQuestions, practiceStep, practiceAnswered, practiceSelectedOption,
-      sessionCorrect, sessionWrong, examAnswers, examQuestions, currentPQ, isFavorited,
+      practiceMode, practiceQuestions, practiceStep, practiceAnswered, practiceSelectedOption, practiceIsCorrect,
+      sessionCorrect, sessionWrong, examAnswers, examQuestions, currentPQ, currentPQType, currentPQTypeName, isFavorited,
+      multipleSelected,
       startPractice, startWrongPractice, startFavPractice,
-      selectOption, examSelectOption, getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
+      selectOption, selectJudge, getJudgeClass, toggleMultipleOption, getMultipleOptionClass, confirmMultiple,
+      examSelectOption, examSelectJudge, examToggleMultiple, isExamMultipleSelected,
+      getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
+      isExamCorrect,
       examCorrectCount, examScore, examScoreEmoji, toggleFavorite,
-      uploadForm, uploading, uploadMsg, submitUpload,
+      formatAnswer, formatPracticeAnswer, formatExamAnswer, getTypeName, getTypeClass,
+      uploadForm, uploading, uploadMsg, uploadMsgClass, uploadPolling, submitUpload,
       adminTab, adminBanks, adminUsers, adminSelfId, loadAdminBanks, loadAdminUsers,
       toggleBankStatus, deleteBank, deleteUser, toggleRole, practiceLimit,
     };
