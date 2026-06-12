@@ -31,6 +31,23 @@
   --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
 }
 
+/* ===== 暗黑模式变量 ===== */
+[data-theme="dark"] {
+  --gray-50: #0F172A;
+  --gray-100: #1E293B;
+  --gray-200: #334155;
+  --gray-400: #94A3B8;
+  --gray-500: #CBD5E1;
+  --gray-700: #E2E8F0;
+  --gray-800: #E2E8F0;
+  --red-lt: #3B1528;
+  --gold-lt: #3B3510;
+  --blue-lt: #1E2A4A;
+  --green-lt: #1A2E1A;
+  --shadow: 0 1px 3px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.2);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.4);
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
   background: var(--gray-50);
@@ -63,6 +80,7 @@ body {
 
 /* ===== APP HEADER ===== */
 .app-header { background: white; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+[data-theme="dark"] .app-header { background: var(--gray-100); }
 .app-header-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
 .app-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
 .app-logo .icon { width: 38px; height: 38px; background: linear-gradient(135deg, #9C1250, #8E1045); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow: 0 2px 6px rgba(142,16,69,.2); }
@@ -75,6 +93,7 @@ body {
 
 /* ===== TABS ===== */
 .tab-bar { display: flex; border-top: 1px solid var(--gray-100); background: white; }
+[data-theme="dark"] .tab-bar { background: var(--gray-100); }
 .tab-btn { flex: 1; padding: 12px 4px; text-align: center; font-size: 13px; font-weight: 500; color: var(--gray-500); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
 .tab-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
 
@@ -82,9 +101,18 @@ body {
 .drawer-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
 .drawer-overlay.active { opacity: 1; pointer-events: auto; }
 .drawer-content { position: fixed; top: 0; right: -340px; width: 340px; height: 100vh; background: white; z-index: 1000; box-shadow: -4px 0 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; transition: right .3s cubic-bezier(0.16, 1, 0.3, 1); padding: 20px; overflow-y: auto; }
+[data-theme="dark"] .drawer-content { background: var(--gray-100); }
 .drawer-content.active { right: 0; }
 .drawer-close { background: none; border: none; font-size: 20px; color: var(--gray-400); cursor: pointer; align-self: flex-start; margin-bottom: 14px; }
 .drawer-close:hover { color: var(--red); }
+
+/* ===== 暗黑模式切换开关 ===== */
+.dark-mode-switch { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 10px; margin-bottom: 14px; }
+.dark-mode-switch .label { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.switch-track { width: 44px; height: 24px; border-radius: 12px; background: var(--gray-200); position: relative; cursor: pointer; transition: background .3s; }
+.switch-track.active { background: var(--red); }
+.switch-thumb { width: 20px; height: 20px; border-radius: 50%; background: white; position: absolute; top: 2px; left: 2px; transition: transform .3s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.switch-track.active .switch-thumb { transform: translateX(20px); }
 
 /* ===== 个人资料卡片 ===== */
 .stats-hero { background: linear-gradient(135deg, #9C1250 0%, #8E1045 100%); border-radius: var(--radius); padding: 18px; color: white; margin-bottom: 14px; box-shadow: 0 4px 16px rgba(142,16,69,.25); }
@@ -106,6 +134,7 @@ body {
 .btn-action-item { width: 100%; padding: 11px 14px; text-align: left; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--gray-700); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
 .btn-action-item:hover { background: var(--gray-100); color: var(--red); }
 .btn-action-item.danger:hover { color: #EF4444; background: #FEF2F2; border-color: #FEE2E2; }
+[data-theme="dark"] .btn-action-item.danger:hover { background: #3B1515; border-color: #5C2020; }
 .btn-action-item.disabled { opacity: 0.5; cursor: not-allowed; background: var(--gray-50); color: var(--gray-400); }
 .btn-action-item.disabled:hover { color: var(--gray-400); background: var(--gray-50); }
 .edit-profile-box { background: var(--gray-50); border: 1px dashed var(--gray-200); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; }
@@ -119,11 +148,13 @@ body {
 .login-hero h1 { color: white; font-size: 26px; font-weight: 800; position: relative; z-index: 1; letter-spacing: 1px; }
 .login-hero p  { color: rgba(255,255,255,.8); font-size: 14px; margin-top: 6px; position: relative; z-index: 1; }
 .login-card { background: white; margin: -20px 20px 0; border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 24px; position: relative; z-index: 2; }
+[data-theme="dark"] .login-card { background: var(--gray-100); }
 .auth-tab-bar { display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--gray-100); }
 .auth-tab { flex: 1; padding: 10px; text-align: center; font-size: 14px; font-weight: 500; color: var(--gray-400); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .auth-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
 .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-size: 14px; outline: none; transition: border-color .2s; font-family: inherit; background: white; }
 .form-input:focus { border-color: var(--red); }
+[data-theme="dark"] .form-input { background: var(--gray-100); color: var(--gray-800); }
 .form-group { margin-bottom: 12px; }
 .code-row { display: flex; gap: 8px; }
 .btn-code { padding: 12px 14px; background: var(--red); color: white; border: none; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
@@ -146,8 +177,26 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--gray-700); }
 .btn-upload { font-size: 12px; padding: 6px 14px; background: var(--red); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; }
 
+/* ===== 搜索框 ===== */
+.search-box { margin-bottom: 10px; }
+.search-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-size: 13px; outline: none; font-family: inherit; background: white; transition: border-color .2s; }
+.search-input:focus { border-color: var(--red); }
+[data-theme="dark"] .search-input { background: var(--gray-100); color: var(--gray-800); }
+
+/* ===== 标签筛选 ===== */
+.tag-filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tag-filter-btn { font-size: 11px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: white; color: var(--gray-500); cursor: pointer; font-weight: 500; transition: all .2s; }
+.tag-filter-btn:hover { border-color: var(--red); color: var(--red); }
+.tag-filter-btn.active { background: var(--red); color: white; border-color: var(--red); }
+[data-theme="dark"] .tag-filter-btn { background: var(--gray-100); color: var(--gray-500); }
+
+/* ===== 题库标签样式 ===== */
+.bank-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.bank-tag { font-size: 10px; padding: 2px 8px; border-radius: 12px; background: var(--blue-lt); color: var(--blue); font-weight: 500; }
+
 /* ===== CARD ===== */
 .card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow); cursor: pointer; transition: border-color .2s, transform .15s; }
+[data-theme="dark"] .card { background: var(--gray-100); }
 .card:hover { border-color: var(--red); transform: translateY(-1px); }
 .card-row { display: flex; justify-content: space-between; align-items: flex-start; }
 .card-name { font-size: 14px; font-weight: 600; color: var(--gray-800); }
@@ -160,6 +209,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 
 /* ===== WRONG / FAV LIST ===== */
 .q-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); }
+[data-theme="dark"] .q-card { background: var(--gray-100); }
 .q-card-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 .q-title { font-size: 13px; color: var(--gray-700); flex: 1; line-height: 1.5; }
 .q-wrong-badge { font-size: 11px; color: #EF4444; white-space: nowrap; font-weight: 600; }
@@ -172,6 +222,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 
 /* ===== SELECT MODE ===== */
 .bank-info-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-200); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+[data-theme="dark"] .bank-info-card { background: var(--gray-100); }
 .bank-info-card h2 { font-size: 16px; font-weight: 700; }
 .bank-info-card p  { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
 .limit-bar { background: var(--gray-100); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
@@ -179,7 +230,9 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .limit-btns { display: flex; gap: 6px; }
 .limit-btn { flex: 1; padding: 7px 4px; border-radius: 8px; font-size: 12px; border: 1.5px solid var(--gray-200); background: white; color: var(--gray-600); cursor: pointer; font-weight: 500; transition: all .15s; text-align: center; }
 .limit-btn.active { background: var(--red); color: white; border-color: var(--red); font-weight: 700; }
+[data-theme="dark"] .limit-btn { background: var(--gray-100); color: var(--gray-500); }
 .mode-card { background: white; border: 1.5px solid var(--gray-100); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px; cursor: pointer; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px; transition: border-color .2s, transform .15s; }
+[data-theme="dark"] .mode-card { background: var(--gray-100); }
 .mode-card:hover { border-color: var(--red); transform: translateY(-1px); }
 .mode-icon { font-size: 24px; flex-shrink: 0; }
 .mode-name { font-size: 14px; font-weight: 700; color: var(--gray-800); }
@@ -193,19 +246,25 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .score-chips { display: flex; gap: 8px; font-size: 12px; }
 .chip-ok  { background: var(--green-lt); color: var(--green); padding: 3px 8px; border-radius: 20px; font-weight: 600; }
 .chip-err { background: #FEF2F2; color: #EF4444; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+[data-theme="dark"] .chip-err { background: #3B1515; }
 .q-box { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow); }
+[data-theme="dark"] .q-box { background: var(--gray-100); }
 .q-box-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .q-type-badge { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
 .q-type-badge.single { background: var(--blue-lt); color: var(--blue); }
 .q-type-badge.multiple { background: #FEF3C7; color: #D97706; }
 .q-type-badge.judge { background: var(--green-lt); color: var(--green); }
 .btn-fav { font-size: 20px; background: none; border: none; cursor: pointer; line-height: 1; }
+.btn-report { font-size: 16px; background: none; border: none; cursor: pointer; line-height: 1; margin-left: 6px; opacity: 0.6; transition: opacity .2s; }
+.btn-report:hover { opacity: 1; }
 .q-text { font-size: 15px; color: var(--gray-800); line-height: 1.7; }
 .opt-btn { width: 100%; text-align: left; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--gray-200); background: white; font-size: 14px; cursor: pointer; margin-bottom: 8px; transition: all .15s; font-family: inherit; display: flex; align-items: flex-start; gap: 8px; }
+[data-theme="dark"] .opt-btn { background: var(--gray-100); color: var(--gray-800); }
 .opt-btn:hover:not(:disabled) { border-color: var(--red); background: var(--red-lt); }
 .opt-btn:disabled { cursor: not-allowed; }
 .opt-btn.correct  { border-color: var(--green); background: var(--green-lt); color: var(--green); font-weight: 600; }
 .opt-btn.wrong    { border-color: #EF4444; background: #FEF2F2; color: #EF4444; font-weight: 600; }
+[data-theme="dark"] .opt-btn.wrong { background: #3B1515; }
 .opt-btn.dim      { border-color: var(--gray-100); background: var(--gray-50); opacity: .5; }
 .opt-btn.selected-exam { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); font-weight: 600; }
 .opt-btn.selected-multiple { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); font-weight: 600; }
@@ -214,10 +273,12 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 /* 判断题专用按钮 */
 .judge-btns { display: flex; gap: 10px; margin-bottom: 8px; }
 .judge-btn { flex: 1; padding: 14px; border-radius: 10px; border: 1.5px solid var(--gray-200); background: white; font-size: 15px; cursor: pointer; text-align: center; font-weight: 600; transition: all .15s; font-family: inherit; }
+[data-theme="dark"] .judge-btn { background: var(--gray-100); color: var(--gray-800); }
 .judge-btn:hover:not(:disabled) { border-color: var(--red); background: var(--red-lt); }
 .judge-btn:disabled { cursor: not-allowed; }
 .judge-btn.correct  { border-color: var(--green); background: var(--green-lt); color: var(--green); }
 .judge-btn.wrong    { border-color: #EF4444; background: #FEF2F2; color: #EF4444; }
+[data-theme="dark"] .judge-btn.wrong { background: #3B1515; }
 .judge-btn.dim      { border-color: var(--gray-100); background: var(--gray-50); opacity: .5; }
 .judge-btn.selected-exam { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
 .judge-btn.selected-multiple { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
@@ -229,6 +290,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .feedback-ans b { color: var(--green); }
 
 .practice-footer { padding: 12px 16px; background: white; border-top: 1px solid var(--gray-100); display: flex; gap: 10px; }
+[data-theme="dark"] .practice-footer { background: var(--gray-100); }
 .btn-prev { flex: 1; padding: 12px; border-radius: 10px; background: var(--gray-100); color: var(--gray-700); border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
 .btn-prev:disabled { opacity: .4; cursor: not-allowed; }
 .btn-next { flex: 2; padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #9C1250, #8E1045); color: white; border: none; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(142,16,69,.25); }
@@ -239,6 +301,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .result-score { font-size: 48px; font-weight: 800; color: var(--gray-800); line-height: 1; margin: 8px 0 4px; }
 .result-sub   { font-size: 14px; color: var(--gray-400); }
 .result-item { background: white; border-radius: 10px; border-width: 1.5px; border-style: solid; padding: 14px; margin-bottom: 8px; font-size: 13px; }
+[data-theme="dark"] .result-item { background: var(--gray-100); }
 .result-item.ok  { border-color: #BBF7D0; }
 .result-item.bad { border-color: #FECACA; }
 .result-badge-ok  { color: var(--green); font-weight: 700; font-size: 11px; }
@@ -249,26 +312,33 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 
 /* ===== UPLOAD ===== */
 .upload-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 20px; box-shadow: var(--shadow); }
+[data-theme="dark"] .upload-card { background: var(--gray-100); }
 .upload-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--gray-800); }
 .form-textarea { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-size: 13px; outline: none; resize: vertical; font-family: inherit; transition: border-color .2s; }
 .form-textarea:focus { border-color: var(--red); }
+[data-theme="dark"] .form-textarea { background: var(--gray-100); color: var(--gray-800); }
 .upload-hint { font-size: 11px; color: var(--gray-400); margin: 6px 0 12px; }
 .upload-msg { font-size: 13px; text-align: center; padding: 8px; border-radius: 8px; }
 .upload-msg.ok  { color: var(--green); background: var(--green-lt); }
 .upload-msg.err { color: #EF4444; background: #FEF2F2; }
+[data-theme="dark"] .upload-msg.err { background: #3B1515; }
 .upload-msg.pending { color: var(--blue); background: var(--blue-lt); }
 
 /* ===== ADMIN ===== */
 .admin-bank-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); }
+[data-theme="dark"] .admin-bank-card { background: var(--gray-100); }
 .admin-bank-row  { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
 .btn-toggle-on  { padding: 4px 12px; border-radius: 20px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--green); color: white; }
 .btn-toggle-off { padding: 4px 12px; border-radius: 20px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--gray-200); color: var(--gray-500); }
 .btn-del { flex: 1; padding: 7px; font-size: 12px; background: #FEF2F2; color: #EF4444; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+[data-theme="dark"] .btn-del { background: #3B1515; }
 .admin-user-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
+[data-theme="dark"] .admin-user-card { background: var(--gray-100); }
 .user-name { font-size: 14px; font-weight: 600; }
 .user-date { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
 .btn-role { font-size: 11px; padding: 5px 10px; background: var(--blue-lt); color: var(--blue); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .btn-del-user { font-size: 11px; padding: 5px 10px; background: #FEF2F2; color: #EF4444; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+[data-theme="dark"] .btn-del-user { background: #3B1515; }
 .back-btn { color: var(--red); background: none; border: none; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 4px; }
 .btn-practice-wrong { width: 100%; padding: 13px; background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(239,68,68,.25); }
 .btn-practice-fav   { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--gold), #B7950B); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(212,172,13,.25); }
@@ -279,6 +349,15 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .upload-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), #3B82F6); border-radius: 3px; animation: pulse 1.5s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 .upload-progress-text { font-size: 12px; color: var(--blue); margin-top: 6px; text-align: center; }
+
+/* ===== 报错管理 ===== */
+.report-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); }
+[data-theme="dark"] .report-card { background: var(--gray-100); }
+.report-card .report-q { font-size: 13px; color: var(--gray-700); line-height: 1.5; margin-bottom: 6px; }
+.report-card .report-reason { font-size: 12px; color: var(--gray-500); background: var(--gray-50); padding: 8px; border-radius: 8px; margin-bottom: 8px; }
+.report-card .report-meta { font-size: 11px; color: var(--gray-400); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+.btn-resolved { padding: 4px 12px; border-radius: 20px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--green); color: white; }
+.btn-resolved:disabled { background: var(--gray-200); color: var(--gray-400); cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -366,6 +445,14 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <button @click="isDrawerOpen=false" class="drawer-close">✕</button>
       </div>
 
+      <!-- 暗黑模式切换 -->
+      <div class="dark-mode-switch">
+        <span class="label">🌙 暗黑模式</span>
+        <div :class="['switch-track', isDarkMode?'active':'']" @click="toggleDarkMode">
+          <div class="switch-thumb"></div>
+        </div>
+      </div>
+
       <div class="stats-hero">
         <div class="user-profile-box">
           <div class="user-avatar-circle">{{ currentUser.avatar || '⚡' }}</div>
@@ -433,16 +520,32 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           <span class="section-title">📦 云端题库（{{ banks.length }}）</span>
           <button @click="page='upload'" class="btn-upload">+ 上传题库</button>
         </div>
-        <div v-for="bank in banks" :key="bank._id" class="card" @click="openBank(bank)">
+
+        <!-- 搜索框 -->
+        <div class="search-box">
+          <input v-model="searchQuery" @input="onSearchInput" class="search-input" placeholder="🔍 搜索题库...">
+        </div>
+
+        <!-- 标签筛选 -->
+        <div v-if="allBankTags.length > 0" class="tag-filter-bar">
+          <button @click="activeTagFilter=''" :class="['tag-filter-btn', activeTagFilter===''?'active':'']">全部</button>
+          <button v-for="tag in allBankTags" :key="tag" @click="activeTagFilter=tag" :class="['tag-filter-btn', activeTagFilter===tag?'active':'']">{{ tag }}</button>
+        </div>
+
+        <div v-for="bank in filteredBanks" :key="bank._id" class="card" @click="openBank(bank)">
           <div class="card-row">
             <div>
               <div class="card-name">{{ bank.bankName }}</div>
               <div class="card-meta">{{ new Date(bank.uploadTime).toLocaleDateString() }} · 上传者：{{ bank.uploaderNickname || '神秘同学' }}</div>
+              <div v-if="bank.tags && bank.tags.length" class="bank-tags">
+                <span v-for="tag in bank.tags" :key="tag" class="bank-tag">{{ tag }}</span>
+              </div>
             </div>
             <span class="card-arrow">›</span>
           </div>
         </div>
-        <div v-if="banks.length===0" class="empty"><div class="emoji">📭</div><div>暂无题库，快去上传第一份吧！</div></div>
+        <div v-if="filteredBanks.length===0 && (searchQuery || activeTagFilter)" class="empty"><div class="emoji">🔍</div><div>没有找到匹配的题库</div></div>
+        <div v-if="filteredBanks.length===0 && !searchQuery && !activeTagFilter" class="empty"><div class="emoji">📭</div><div>暂无题库，快去上传第一份吧！</div></div>
 
         <div class="community-banner" style="margin-top: 24px;">
           <div class="icon-col">🌟</div>
@@ -548,7 +651,10 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           <div class="q-box">
             <div class="q-box-top">
               <span :class="['q-type-badge', currentPQType]">{{ currentPQTypeName }}</span>
-              <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
+              <div style="display:flex;align-items:center;">
+                <button @click="reportQuestion" class="btn-report" title="报错">📝</button>
+                <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
+              </div>
             </div>
             <p class="q-text">{{ currentPQ.title }}</p>
           </div>
@@ -658,6 +764,9 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           <input v-model="uploadForm.bankName" class="form-input" placeholder="题库名称（例：第三章综合题）">
         </div>
         <div class="form-group">
+          <input v-model="uploadTagsText" class="form-input" placeholder="标签（用逗号分隔，如：高数,期末,第三章）">
+        </div>
+        <div class="form-group">
           <textarea v-model="uploadForm.text" class="form-textarea" rows="12"
             placeholder="把题目和答案全选复制粘贴到这里...&#10;&#10;支持多种格式，AI 会自动识别提取单选题、多选题和判断题。"></textarea>
         </div>
@@ -681,6 +790,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       <div class="tab-bar" style="border-radius:10px;overflow:hidden;margin-bottom:14px;border:1px solid var(--gray-100);">
         <button @click="adminTab='banks'; loadAdminBanks()" :class="['tab-btn', adminTab==='banks'?'active':'']">题库管理</button>
         <button @click="adminTab='users'; loadAdminUsers()" :class="['tab-btn', adminTab==='users'?'active':'']">用户管理</button>
+        <button @click="adminTab='reports'; loadAdminReports()" :class="['tab-btn', adminTab==='reports'?'active':'']">报错管理</button>
       </div>
 
       <div v-if="adminTab==='banks'">
@@ -721,13 +831,27 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         </div>
         <div v-if="adminUsers.length===0" class="empty"><div class="emoji">👥</div><div>暂无用户</div></div>
       </div>
+
+      <div v-if="adminTab==='reports'">
+        <div v-for="report in adminReports" :key="report._id" class="report-card">
+          <div class="report-q">{{ report.questionTitle || '未知题目' }}</div>
+          <div class="report-reason">报错原因：{{ report.reason }}</div>
+          <div class="report-meta">
+            <span>报错人：{{ report.reporterNickname || '未知用户' }} · {{ new Date(report.createdAt).toLocaleString() }}</span>
+            <button @click="resolveReport(report)" :disabled="report.resolved" :class="'btn-resolved'">
+              {{ report.resolved ? '已处理' : '标记已处理' }}
+            </button>
+          </div>
+        </div>
+        <div v-if="adminReports.length===0" class="empty"><div class="emoji">✅</div><div>暂无报错记录</div></div>
+      </div>
     </main>
   </template>
 
 </div>
 
 <script>
-const { createApp, ref, computed, onMounted } = Vue;
+const { createApp, ref, computed, onMounted, watch } = Vue;
 const API = 'https://quiz-server-ulpb.onrender.com/api';
 
 createApp({
@@ -743,6 +867,26 @@ createApp({
     const isDrawerOpen = ref(false);
     const isEditingProfile = ref(false);
     const editForm = ref({ nickname: '', gender: '保密', avatar: '⚡' });
+
+    // ===== 暗黑模式 =====
+    const isDarkMode = ref(localStorage.getItem('quiz_dark_mode') === 'true');
+
+    const applyDarkMode = (dark) => {
+      if (dark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    };
+
+    const toggleDarkMode = () => {
+      isDarkMode.value = !isDarkMode.value;
+      localStorage.setItem('quiz_dark_mode', isDarkMode.value);
+      applyDarkMode(isDarkMode.value);
+    };
+
+    // 初始化暗黑模式
+    applyDarkMode(isDarkMode.value);
 
     // ★★★ 修复：清空答题统计 — 真正调用后端接口 ★★★
     const clearStats = async () => {
@@ -875,16 +1019,55 @@ createApp({
     const wrongList = ref([]);
     const favoriteList = ref([]);
 
+    // ===== 题库搜索 =====
+    const searchQuery = ref('');
+    let searchDebounceTimer = null;
+
+    const onSearchInput = () => {
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => {
+        fetchBanks(searchQuery.value);
+      }, 300);
+    };
+
+    // ===== 题库标签筛选 =====
+    const activeTagFilter = ref('');
+
+    const allBankTags = computed(() => {
+      const tagSet = new Set();
+      banks.value.forEach(bank => {
+        if (bank.tags && Array.isArray(bank.tags)) {
+          bank.tags.forEach(tag => tagSet.add(tag));
+        }
+      });
+      return Array.from(tagSet);
+    });
+
+    const filteredBanks = computed(() => {
+      let result = banks.value;
+      if (activeTagFilter.value) {
+        result = result.filter(bank => bank.tags && Array.isArray(bank.tags) && bank.tags.includes(activeTagFilter.value));
+      }
+      return result;
+    });
+
     const accuracy = computed(() => {
       if (!meData.value.stats || meData.value.stats.totalAnswered === 0) return '0%';
       return Math.round(meData.value.stats.totalCorrect / meData.value.stats.totalAnswered * 100) + '%';
     });
 
-    const fetchBanks = async () => { const r = await api('/get-banks-list'); if (r.success) banks.value = r.data; };
+    const fetchBanks = async (query) => {
+      let url = '/get-banks-list';
+      if (query && query.trim()) {
+        url += '?query=' + encodeURIComponent(query.trim());
+      }
+      const r = await api(url);
+      if (r.success) banks.value = r.data;
+    };
     const loadMe = async () => { const r = await api('/me'); if (r.success) meData.value = r.data; };
     const loadWrong = async () => { const r = await api('/wrong-questions'); if (r.success) wrongList.value = r.data; };
     const loadFavorites = async () => { const r = await api('/favorites'); if (r.success) favoriteList.value = r.data; };
-    const goHome = () => { page.value = 'home'; homeTab.value = 'banks'; fetchBanks(); };
+    const goHome = () => { page.value = 'home'; homeTab.value = 'banks'; searchQuery.value = ''; activeTagFilter.value = ''; fetchBanks(); };
 
     onMounted(() => { if (token.value) { fetchBanks(); loadMe(); } });
 
@@ -1153,8 +1336,31 @@ createApp({
       await loadMe();
     };
 
+    // ===== 题目报错 =====
+    const reportQuestion = async () => {
+      const q = practiceQuestions.value[practiceStep.value];
+      if (!q) return;
+      const reason = prompt('请输入报错原因（描述题目哪里有问题）：');
+      if (!reason || !reason.trim()) return;
+      const r = await api('/report-question', {
+        method: 'POST',
+        body: JSON.stringify({
+          bankId: currentBank.value._id,
+          questionIndex: q._origIndex,
+          questionTitle: q.title,
+          reason: reason.trim()
+        })
+      });
+      if (r.success) {
+        alert('报错提交成功，感谢反馈！');
+      } else {
+        alert('提交失败：' + (r.error || '未知错误'));
+      }
+    };
+
     // ===== 上传题库（异步模式） =====
     const uploadForm = ref({ bankName: '', text: '' });
+    const uploadTagsText = ref('');
     const uploading = ref(false);
     const uploadMsg = ref('');
     const uploadMsgClass = ref('');
@@ -1165,7 +1371,15 @@ createApp({
       if (!uploadForm.value.bankName || !uploadForm.value.text) { uploadMsg.value = '❌ 请填写题库名称和题目内容'; uploadMsgClass.value = 'err'; return; }
       uploading.value = true; uploadMsg.value = ''; uploadMsgClass.value = ''; uploadPolling.value = false;
 
-      const r = await api('/upload-bank', { method: 'POST', body: JSON.stringify(uploadForm.value) });
+      // 解析标签
+      const tags = uploadTagsText.value
+        ? uploadTagsText.value.split(/[,，]/).map(t => t.trim()).filter(t => t.length > 0)
+        : [];
+
+      const payload = { ...uploadForm.value };
+      if (tags.length > 0) payload.tags = tags;
+
+      const r = await api('/upload-bank', { method: 'POST', body: JSON.stringify(payload) });
       uploading.value = false;
 
       if (r.success) {
@@ -1175,11 +1389,13 @@ createApp({
           uploadMsgClass.value = 'pending';
           uploadPolling.value = true;
           uploadForm.value = { bankName: '', text: '' };
+          uploadTagsText.value = '';
           pollUploadStatus(r.bankId);
         } else {
           uploadMsg.value = '✅ ' + r.message;
           uploadMsgClass.value = 'ok';
           uploadForm.value = { bankName: '', text: '' };
+          uploadTagsText.value = '';
           fetchBanks();
         }
       } else {
@@ -1207,6 +1423,7 @@ createApp({
     const adminTab = ref('banks');
     const adminBanks = ref([]);
     const adminUsers = ref([]);
+    const adminReports = ref([]);
     const adminSelfId = computed(() => {
       if (!token.value) return '';
       try { return JSON.parse(atob(token.value.split('.')[1])).id; } catch { return ''; }
@@ -1214,6 +1431,20 @@ createApp({
 
     const loadAdminBanks = async () => { const r = await api('/admin/banks'); if (r.success) adminBanks.value = r.data; };
     const loadAdminUsers = async () => { const r = await api('/admin/users'); if (r.success) adminUsers.value = r.data; };
+    const loadAdminReports = async () => {
+      const r = await api('/admin/reports');
+      if (r.success) adminReports.value = r.data;
+      else adminReports.value = [];
+    };
+
+    const resolveReport = async (report) => {
+      const r = await api('/admin/reports/' + report._id + '/resolve', { method: 'PUT' });
+      if (r.success) {
+        report.resolved = true;
+      } else {
+        alert('操作失败：' + (r.error || '未知错误'));
+      }
+    };
 
     const toggleBankStatus = async (bank) => {
       const r = await api(`/admin/banks/${bank._id}/toggle`, { method: 'PUT' });
@@ -1251,7 +1482,10 @@ createApp({
       token, currentUser, authTab, authForm, authError, code, countdown, sendCode, doAuth, logout, showSuggest,
       isDrawerOpen, isEditingProfile, editForm, clearStats, clearWrongQuestions, clearFavoritesAction, upcomingFeature, startEditProfile, saveProfile,
       maskEmail, goTuteOfficial, shareApp,
+      isDarkMode, toggleDarkMode,
       page, homeTab, banks, meData, wrongList, favoriteList, accuracy, loadMe, loadWrong, loadFavorites, goHome, fetchBanks,
+      searchQuery, onSearchInput,
+      allBankTags, activeTagFilter, filteredBanks,
       currentBank, currentBankQuestions, openBank,
       practiceMode, practiceQuestions, practiceStep, practiceAnswered, practiceSelectedOption, practiceIsCorrect,
       sessionCorrect, sessionWrong, examAnswers, examQuestions, currentPQ, currentPQType, currentPQTypeName, isFavorited,
@@ -1262,10 +1496,11 @@ createApp({
       getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
       isExamCorrect,
       examCorrectCount, examScore, examScoreEmoji, toggleFavorite,
+      reportQuestion,
       formatAnswer, formatPracticeAnswer, formatExamAnswer, getTypeName, getTypeClass,
-      uploadForm, uploading, uploadMsg, uploadMsgClass, uploadPolling, submitUpload,
-      adminTab, adminBanks, adminUsers, adminSelfId, loadAdminBanks, loadAdminUsers,
-      toggleBankStatus, deleteBank, deleteUser, toggleRole, practiceLimit,
+      uploadForm, uploadTagsText, uploading, uploadMsg, uploadMsgClass, uploadPolling, submitUpload,
+      adminTab, adminBanks, adminUsers, adminReports, adminSelfId, loadAdminBanks, loadAdminUsers, loadAdminReports,
+      toggleBankStatus, deleteBank, deleteUser, toggleRole, resolveReport, practiceLimit,
     };
   }
 }).mount('#app');
