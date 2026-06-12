@@ -669,7 +669,10 @@ main { flex: 1; overflow-y: auto; padding: 12px 16px 80px; }
           <div class="admin-bank-row">
             <div>
               <div style="font-size:14px;font-weight:600;">{{ bank.bankName }}</div>
-              <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">上传者：{{ bank.uploadedBy }}</div>
+              <!-- 配合隐私脱敏：优先展示昵称，无昵称则将邮箱脱敏 -->
+              <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">
+                上传者：{{ bank.uploaderNickname || maskEmail(bank.uploadedBy) || '神秘同学' }}
+              </div>
             </div>
             <button @click="toggleBankStatus(bank)" :class="bank.isPublic?'btn-toggle-on':'btn-toggle-off'">
               {{ bank.isPublic ? '公开中' : '已隐藏' }}
@@ -685,7 +688,10 @@ main { flex: 1; overflow-y: auto; padding: 12px 16px 80px; }
       <div v-if="adminTab==='users'">
         <div v-for="user in adminUsers" :key="user._id" class="admin-user-card">
           <div>
-            <div class="user-name">{{ user.email }} <span v-if="user.role==='admin'" style="color:var(--gold);font-size:12px;">👑 管理员</span></div>
+            <div class="user-name">
+              {{ user.nickname || maskEmail(user.email) }} 
+              <span v-if="user.role==='admin'" style="color:var(--gold);font-size:12px;">👑 管理员</span>
+            </div>
             <div class="user-date">注册：{{ new Date(user.createdAt).toLocaleDateString() }}</div>
           </div>
           <div v-if="user._id !== adminSelfId" style="display:flex;gap:6px;">
@@ -706,6 +712,7 @@ const API = 'https://quiz-server-ulpb.onrender.com/api';
 
 createApp({
   setup() {
+    // --- 基础权限与用户信息状态 ---
     const token = ref(localStorage.getItem('quiz_token') || '');
     const practiceLimit = ref(20);
     const currentUser = ref(JSON.parse(localStorage.getItem('quiz_user') || '{}'));
@@ -715,6 +722,24 @@ createApp({
     const code = ref('');
     const countdown = ref(0);
 
+    // --- 新增：个人资料编辑与高级管理状态 ---
+    const isEditingProfile = ref(false);
+    const editForm = ref({ nickname: '', gender: '保密', avatar: '⚡' });
+
+    // --- 核心网络工具 ---
+    const api = async (path, options = {}) => {
+      const res = await fetch(API + path, {
+        ...options,
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token.value, 
+          ...(options.headers || {}) 
+        }
+      });
+      return res.json();
+    };
+
+    // --- 认证鉴权交互逻辑 ---
     const sendCode = async () => {
       if (!authForm.value.email) { alert('请先填写邮箱'); return; }
       countdown.value = 60;
@@ -723,14 +748,6 @@ createApp({
       const data = await r.json();
       if (data.success) alert('验证码已发送！');
       else { alert(data.error); countdown.value = 0; }
-    };
-
-    const api = async (path, options = {}) => {
-      const res = await fetch(API + path, {
-        ...options,
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token.value, ...(options.headers || {}) }
-      });
-      return res.json();
     };
 
     const doAuth = async () => {
@@ -748,9 +765,37 @@ createApp({
       } else { authError.value = result.error; }
     };
 
+    // 完美注销：彻底清除所有会话状态、页面记忆和弹窗阴影残留
     const logout = () => {
-      token.value = ''; currentUser.value = {};
-      localStorage.removeItem('quiz_token'); localStorage.removeItem('quiz_user');
+      token.value = ''; 
+      currentUser.value = {};
+      meData.value = {};
+      wrongList.value = [];
+      favoriteList.value = [];
+      page.value = 'home';
+      homeTab.value = 'banks';
+      isEditingProfile.value = false;
+      
+      // 显式确保全局样式和遮罩层残留被彻底抹除
+      document.body.style.overflow = ''; 
+      localStorage.removeItem('quiz_token'); 
+      localStorage.removeItem('quiz_user');
+    };
+
+    // --- 新增：专属特性的交互能力 ---
+    const goTuteOfficial = () => {
+      window.open('https://www.tute.edu.cn', '_blank');
+    };
+
+    const shareApp = () => {
+      const shareUrl = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl)
+          .then(() => alert('🚀 链接已复制到剪贴板，快分享给天职师大的同学们吧！'))
+          .catch(() => alert('分享链接为：' + shareUrl));
+      } else {
+        alert('分享链接为：' + shareUrl);
+      }
     };
 
     const showSuggest = () => {
@@ -758,6 +803,7 @@ createApp({
       if (s && s.trim()) alert('感谢你的建议！我们会认真考虑 🙏');
     };
 
+    // --- 页面与核心题库数据流状态 ---
     const page = ref('home');
     const homeTab = ref('banks');
     const banks = ref([]);
@@ -778,6 +824,66 @@ createApp({
 
     onMounted(() => { if (token.value) { fetchBanks(); loadMe(); } });
 
+    // --- 新增：个人资料业务处理逻辑 ---
+    const startEditProfile = () => {
+      editForm.value.nickname = currentUser.value.nickname || '';
+      editForm.value.gender = currentUser.value.gender || '保密';
+      editForm.value.avatar = currentUser.value.avatar || '⚡';
+      isEditingProfile.value = true;
+    };
+
+    const saveProfile = async () => {
+      if (!editForm.value.nickname.trim()) { alert('昵称不能为空'); return; }
+      const r = await api('/update-profile', { method: 'POST', body: JSON.stringify(editForm.value) });
+      if (r.success) {
+        currentUser.value = { ...currentUser.value, ...editForm.value };
+        localStorage.setItem('quiz_user', JSON.stringify(currentUser.value));
+        isEditingProfile.value = false;
+        alert('✨ 资料更新成功！');
+        loadMe();
+      } else {
+        alert(r.error || '资料保存失败');
+      }
+    };
+
+    // --- 新增：数据清空交互管理（防误触安全机制） ---
+    const clearStats = async () => {
+      if (!confirm('⚠️ 警告：确定要清除您所有的历史答题统计数据吗？此操作不可逆！')) return;
+      const r = await api('/clear-stats', { method: 'POST' });
+      if (r.success) { alert('统计数据已成功清零 🧹'); loadMe(); }
+      else { alert(r.error || '清空失败'); }
+    };
+
+    const clearWrongQuestions = async () => {
+      if (!confirm('确定要清空错题本中的所有题目吗？')) return;
+      const r = await api('/clear-wrong', { method: 'POST' });
+      if (r.success) { alert('错题本已全部清空 ✨'); loadWrong(); loadMe(); }
+      else { alert(r.error || '清空失败'); }
+    };
+
+    const clearFavoritesAction = async () => {
+      if (!confirm('确定要清空您的所有收藏夹吗？')) return;
+      const r = await api('/clear-favorites', { method: 'POST' });
+      if (r.success) { alert('收藏夹已清空 🗂️'); loadFavorites(); loadMe(); }
+      else { alert(r.error || '清空失败'); }
+    };
+
+    const upcomingFeature = () => {
+      alert('🚀 该功能正在加紧研发中，将在后续版本对天职师大同学开放！');
+    };
+
+    // --- 隐私机制：安全脱敏邮箱处理工具 ---
+    const maskEmail = (email) => {
+      if (!email || typeof email !== 'string') return '';
+      const parts = email.split('@');
+      if (parts.length < 2) return email;
+      const name = parts[0];
+      const domain = parts[1];
+      if (name.length <= 3) return name + '***@' + domain;
+      return name.substring(0, 3) + '***@' + domain;
+    };
+
+    // --- 刷题及考试核心状态控制 ---
     const currentBank = ref({});
     const currentBankQuestions = ref([]);
     const openBank = async (bank) => {
@@ -909,6 +1015,7 @@ createApp({
       await loadMe();
     };
 
+    // --- 题库上传智能提取业务 ---
     const uploadForm = ref({ bankName: '', text: '' });
     const uploading = ref(false);
     const uploadMsg = ref('');
@@ -922,6 +1029,7 @@ createApp({
       else uploadMsg.value = '❌ ' + r.error;
     };
 
+    // --- 权限管理后台面板业务 ---
     const adminTab = ref('banks');
     const adminBanks = ref([]);
     const adminUsers = ref([]);
@@ -958,7 +1066,14 @@ createApp({
     };
 
     return {
+      // 基础权限与资料修改组件导出
       token, currentUser, authTab, authForm, authError, code, countdown, sendCode, doAuth, logout, showSuggest,
+      isEditingProfile, editForm, startEditProfile, saveProfile,
+      
+      // 数据重置、学校特有功能与隐私脱敏工具
+      clearStats, clearWrongQuestions, clearFavoritesAction, upcomingFeature, goTuteOfficial, shareApp, maskEmail,
+      
+      // 核心题库与统计控制导出
       page, homeTab, banks, meData, wrongList, favoriteList, accuracy, loadMe, loadWrong, loadFavorites, goHome, fetchBanks,
       currentBank, currentBankQuestions, openBank,
       practiceMode, practiceQuestions, practiceStep, practiceAnswered, practiceSelectedOption,
@@ -966,6 +1081,8 @@ createApp({
       startPractice, startWrongPractice, startFavPractice,
       selectOption, examSelectOption, getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
       examCorrectCount, examScore, examScoreEmoji, toggleFavorite,
+      
+      // 智能解析上传及后台系统组件导出
       uploadForm, uploading, uploadMsg, submitUpload,
       adminTab, adminBanks, adminUsers, adminSelfId, loadAdminBanks, loadAdminUsers,
       toggleBankStatus, deleteBank, deleteUser, toggleRole, practiceLimit,
