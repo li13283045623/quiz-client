@@ -20,46 +20,38 @@
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
 <div id="app" class="max-w-lg mx-auto min-h-screen flex flex-col">
-
 <div v-if="!token" class="flex-1 flex flex-col justify-center p-6">
   <div class="text-center mb-8">
     <div class="text-5xl mb-3">📚</div>
     <h1 class="text-2xl font-bold text-gray-800">刷题宝 Pro</h1>
     <p class="text-gray-400 text-sm mt-1">一人上传，全班共享</p>
   </div>
-
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
     <div class="flex border-b border-gray-100 mb-4">
       <button @click="authTab='login'" :class="authTab==='login'?'tab-active':'text-gray-400'" class="flex-1 pb-3 text-sm font-medium">登录</button>
       <button @click="authTab='register'" :class="authTab==='register'?'tab-active':'text-gray-400'" class="flex-1 pb-3 text-sm font-medium">注册</button>
     </div>
 
-    <input 
-      v-model="authForm.email" 
-      type="email" 
-      :placeholder="authTab === 'login' ? '请输入注册邮箱' : '请设置您的注册邮箱'" 
-      class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400"
-    >
-    
-    <input 
-      v-model="authForm.password" 
-      type="password" 
-      placeholder="密码（至少6位）" 
-      class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400" 
-      @keyup.enter="doAuth"
-    >
-    
-    <p v-if="authError" class="text-red-500 text-xs text-center">{{ authError }}</p>
-    
-    <button @click="doAuth" :disabled="authLoading" class="w-full py-3 bg-blue-500 text-white rounded-xl font-bold text-sm disabled:bg-gray-300">
-      {{ authLoading ? '请稍候...' : (authTab==='login' ? '登录' : '注册') }}
-    </button>
-  </div>
+    <div class="space-y-4">
+      <input v-model="authForm.email" placeholder="请输入邮箱" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
+      
+      <div v-if="authTab === 'register'" class="flex gap-2">
+        <input v-model="code" placeholder="输入验证码" class="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
+        <button @click="sendCode" :disabled="countdown > 0" class="px-4 bg-blue-500 text-white rounded-xl text-xs font-bold disabled:bg-gray-300">
+          {{ countdown > 0 ? countdown + 's' : '获取验证码' }}
+        </button>
+      </div>
+      
+      <input v-model="authForm.password" type="password" placeholder="请输入密码（至少6位）" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
+      
+      <button @click="doAuth" class="w-full py-3 bg-green-500 text-white rounded-xl font-bold text-sm">
+        {{ authTab === 'login' ? '登录' : '注册' }}
+      </button>
+    </div>
 </div>
-
+</div>
 <div v-else class="flex-1 flex flex-col">
-
-  <header class="bg-white border-b border-gray-100 sticky top-0 z-10">
+<header class="bg-white border-b border-gray-100 sticky top-0 z-10">
     <div class="flex justify-between items-center px-4 py-3">
       <h1 @click="goHome" class="text-base font-bold text-blue-600 cursor-pointer">📚 刷题宝 Pro</h1>
       <div class="flex items-center space-x-3">
@@ -75,9 +67,7 @@
       <button @click="homeTab='stats'; loadMe()" :class="homeTab==='stats'?'tab-active':'text-gray-400'" class="flex-1 py-2 text-xs font-medium">我的</button>
     </div>
   </header>
-
-  <main v-if="page==='home'" class="flex-1 overflow-y-auto p-4 space-y-4 pb-6">
-
+<main v-if="page==='home'" class="flex-1 overflow-y-auto p-4 space-y-4 pb-6">
     <div v-if="homeTab==='banks'">
       <div class="flex justify-between items-center mb-3">
         <h2 class="font-bold text-gray-700 text-sm">📦 云端题库（{{ banks.length }}）</h2>
@@ -154,15 +144,13 @@
         </div>
       </div>
     </div>
-  </main>
-
-  <main v-if="page==='selectMode'" class="flex-1 p-4">
+</main>
+<main v-if="page==='selectMode'" class="flex-1 p-4">
     <button @click="page='home'" class="text-blue-500 text-sm mb-4">‹ 返回</button>
     <div class="bg-white rounded-2xl border border-gray-100 p-5 mb-4">
       <h2 class="font-bold text-gray-800">{{ currentBank.bankName }}</h2>
       <p class="text-xs text-gray-400 mt-1">共 {{ currentBankQuestions.length }} 题</p>
     </div>
-    
     <div class="bg-gray-100 p-3 rounded-xl mb-4">
         <p class="text-xs text-gray-500 mb-2 font-medium">练习题量限制</p>
         <div class="flex gap-2">
@@ -189,13 +177,11 @@
         <p class="text-xs text-gray-400 mt-0.5">只练还没答对过的题目</p>
       </button>
     </div>
-  </main>
-
-  <main v-if="page==='practice'" class="flex-1 flex flex-col">
+</main>
+<main v-if="page==='practice'" class="flex-1 flex flex-col">
     <div class="bg-gray-100 h-1">
       <div class="bg-blue-500 h-1 progress-bar" :style="{width: (practiceQuestions.length ? ((practiceStep+1)/practiceQuestions.length*100) : 0)+'%'}"></div>
     </div>
-
     <div class="flex justify-between items-center px-4 py-3 text-sm text-gray-500">
       <button @click="exitPractice" class="text-blue-500">‹ 退出</button>
       <span><b>{{ practiceQuestions.length ? practiceStep+1 : 0 }}</b>/{{ practiceQuestions.length }}</span>
@@ -251,9 +237,8 @@
         {{ practiceStep===practiceQuestions.length-1 ? '交卷' : '下一题' }}
       </button>
     </div>
-  </main>
-
-  <main v-if="page==='examResult'" class="flex-1 overflow-y-auto p-4 pb-8">
+</main>
+<main v-if="page==='examResult'" class="flex-1 overflow-y-auto p-4 pb-8">
     <div class="text-center py-6">
       <div class="text-5xl mb-2">{{ examScoreEmoji }}</div>
       <p class="text-3xl font-bold text-gray-800">{{ examScore }}分</p>
@@ -272,8 +257,7 @@
     </div>
     <button @click="goHome" class="w-full py-3 bg-blue-500 text-white rounded-xl font-bold">返回首页</button>
   </main>
-
-  <main v-if="page==='upload'" class="flex-1 overflow-y-auto p-4 space-y-4 pb-8">
+<main v-if="page==='upload'" class="flex-1 overflow-y-auto p-4 space-y-4 pb-8">
     <button @click="page='home'" class="text-blue-500 text-sm">‹ 返回</button>
     <h2 class="font-bold text-gray-700">📤 上传新题库</h2>
     <input v-model="uploadForm.bankName" type="text" placeholder="题库名称（例：第三章单选题）" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
@@ -284,13 +268,11 @@
     </button>
     <p v-if="uploadMsg" :class="uploadMsg.startsWith('✅')?'text-green-600':'text-red-500'" class="text-sm text-center">{{ uploadMsg }}</p>
   </main>
-
-  <main v-if="page==='admin'" class="flex-1 overflow-y-auto p-4 pb-8">
+<main v-if="page==='admin'" class="flex-1 overflow-y-auto p-4 pb-8">
     <div class="flex items-center space-x-3 mb-4">
       <button @click="page='home'" class="text-blue-500 text-sm">‹ 返回</button>
       <h2 class="font-bold text-gray-700">👑 管理后台</h2>
     </div>
-
     <div class="flex border-b border-gray-100 mb-4">
       <button @click="adminTab='banks'; loadAdminBanks()" :class="adminTab==='banks'?'tab-active':'text-gray-400'" class="flex-1 pb-2 text-sm font-medium">题库管理</button>
       <button @click="adminTab='users'; loadAdminUsers()" :class="adminTab==='users'?'tab-active':'text-gray-400'" class="flex-1 pb-2 text-sm font-medium">用户管理</button>
@@ -333,17 +315,18 @@
       </div>
       <p v-if="adminUsers.length===0" class="text-center text-gray-400 text-sm py-10">暂无用户列表数据</p>
     </div>
-  </main>
-
+</main>
 </div>
 </div>
-
 <script>
+// 1. 先引入 Vue 的核心功能
 const { createApp, ref, computed, onMounted } = Vue;
-// 💡 部署到云端时，记得把 localhost 改为你的云服务器公网 IP 或域名
+
+// 2. 定义后端 API 地址（确保这是你 Render 后端的正确地址）
 const API = 'https://quiz-server-ulpb.onrender.com/api';
 
-createApp({
+// 3. 开始创建 Vue 应用
+const app = createApp({
   setup() {
     // ===== 认证 =====
     const token = ref(localStorage.getItem('quiz_token') || '');
@@ -355,6 +338,31 @@ createApp({
     const authForm = ref({ email: '', password: '' });
     const authError = ref('');
     const authLoading = ref(false);
+    const code = ref(''); // 💡 新增：用于接收验证码
+    const countdown = ref(0); // 💡 新增：用于倒计时
+// 粘贴在这里：
+const sendCode = async () => {
+  if (!authForm.value.email) { alert('请先填写邮箱'); return; }
+  
+  // 开始倒计时
+  countdown.value = 60;
+  const timer = setInterval(() => {
+    countdown.value--;
+    if (countdown.value <= 0) clearInterval(timer);
+  }, 1000);
+
+  const r = await fetch(API + '/send-code', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: authForm.value.email })
+  });
+  const data = await r.json();
+  if (data.success) alert('验证码已发送！');
+  else {
+    alert(data.error);
+    countdown.value = 0; // 发送失败重置
+  }
+};
 
     const api = async (path, options = {}) => {
       const res = await fetch(API + path, {
@@ -382,7 +390,7 @@ createApp({
       }
 
       authLoading.value = true;
-      const result = await api(`/${authTab.value}`, { method: 'POST', body: JSON.stringify(authForm.value) });
+      const result = await api(`/${authTab.value}`, { method: 'POST', body: JSON.stringify({authForm.value,code: code.value // 💡 把这个传给后端) });
       authLoading.value = false;
       if (result.success) {
         token.value = result.token;
@@ -688,7 +696,7 @@ createApp({
     };
 
     return {
-      token, currentUser, authTab, authForm, authError, authLoading, doAuth, logout,
+      sendCode, code, countdown,token, currentUser, authTab, authForm, authError, authLoading, doAuth, logout,
       page, homeTab, banks, meData, wrongList, favoriteList, accuracy,
       loadMe, loadWrong, loadFavorites, goHome,
       currentBank, currentBankQuestions, openBank,
@@ -705,6 +713,5 @@ createApp({
     };
   }
 }).mount('#app');
-</script>
 </body>
 </html>
