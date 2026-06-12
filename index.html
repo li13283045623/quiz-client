@@ -1,3 +1,14 @@
+收到！看来在之前的代码迭代中，顶部的视觉分量被削弱了，原本标志性的 **App Logo** 和底部的 **快捷功能导向区** 也丢失了，导致整体页面显得局促且缺少应用的主题感。
+
+我已经为你把这些精髓复原并进行了视觉升级。主要做了以下调整：
+
+1. **加宽大气的头部 Banner**：恢复并调大了顶部天津职业技术师范大学 Banner 的高度与内边距，让整体视觉更具包围感和名校气派。
+2. **找回 App Logo 区域**：在学校 Banner 下方完整恢复了带有 `📚` 图标、主标题“刷题宝 Pro”及副标题“智能题库平台”的经典大方 Logo 区域。
+3. **复原底部社区引导四功能区**：在已登录的主页下方，完整找回了 **“📤 我要上传”**、**“💡 提建议”**、**“📢 分享应用”**、**“🎓 TUTE专属”** 这四个标志性的互动标签。
+
+以下是修复并精细化调整后的完整代码：
+
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -24,400 +35,497 @@
   --gray-500:#64748B;
   --gray-700:#334155;
   --gray-800:#1E293B;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-  --shadow-md: 0 8px 16px rgba(142,16,69,0.06);
+  --green:  #16A34A;
+  --green-lt:#F0FDF4;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: #F4F6F8;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  background: var(--gray-50);
   color: var(--gray-800);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   min-height: 100vh;
 }
 
-#app {
-  width: 100%;
-  max-width: 480px;
-  min-height: 100vh;
-  background: #FFF;
-  box-shadow: 0 0 30px rgba(0,0,0,0.05);
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+
+/* ===== LAYOUT ===== */
+#app { max-width: 680px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ===== SCHOOL HEADER BANNER (大气加宽版) ===== */
+.school-banner {
+  background: linear-gradient(120deg, #6A0F35 0%, #8E1045 40%, #A01250 70%, #8E1045 100%);
+  padding: 24px 24px; /* 增加上下内边距，使其更显宽大 */
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 4px 18px rgba(142,16,69,.45);
+  position: relative;
+  overflow: hidden;
+}
+.school-banner::before {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 140px; height: 140px;
+  background: rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+.school-banner img {
+  width: 64px; height: 64px; /* 放大校徽尺寸 */
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+}
+.school-banner-text { color: white; }
+.school-banner-text .cn {
+  font-size: 22px; font-weight: 800; letter-spacing: 1.8px;
+  text-shadow: 0 2px 4px rgba(0,0,0,.25);
+}
+.school-banner-text .en {
+  font-size: 11px; opacity: .85; letter-spacing: .6px; margin-top: 5px; font-weight: 500;
+}
+
+/* ===== APP HEADER ===== */
+.app-header {
+  background: white;
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.app-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px; /* 适度拉宽 */
+}
+.app-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
+.app-logo .icon { width: 38px; height: 38px; background: linear-gradient(135deg, #9C1250, #8E1045); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow: 0 2px 6px rgba(142,16,69,.2); }
+.app-logo .name { font-size: 17px; font-weight: 800; color: var(--red); letter-spacing: 0.5px; }
+.app-logo .sub  { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.header-email { font-size: 12px; color: var(--gray-500); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-admin { font-size: 11px; padding: 5px 12px; background: var(--gold-lt); color: #92630A; border-radius: 20px; border: 1px solid #F0D060; font-weight: 600; cursor: pointer; }
+.btn-logout { font-size: 12px; color: var(--gray-400); background: none; border: none; cursor: pointer; padding: 4px 8px; font-weight: 500; }
+.btn-logout:hover { color: var(--red); }
+
+/* ===== TABS ===== */
+.tab-bar {
+  display: flex;
+  border-top: 1px solid var(--gray-100);
+  background: white;
+}
+.tab-btn {
+  flex: 1; padding: 12px 4px; text-align: center; font-size: 13px; font-weight: 500;
+  color: var(--gray-500); background: none; border: none; cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all .2s;
+}
+.tab-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+
+/* ===== LOGIN PAGE ===== */
+.login-page {
+  flex: 1;
   display: flex;
   flex-direction: column;
+}
+.login-hero {
+  background: linear-gradient(160deg, #5C0B2E 0%, #8E1045 55%, #9C1250 100%);
+  padding: 50px 24px 40px;
+  text-align: center;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
+}
+.login-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,.05);
+  border-radius: 50%;
+}
+.login-hero img { width: 72px; height: 72px; margin-bottom: 16px; filter: brightness(0) invert(1); position: relative; z-index: 1; }
+.login-hero h1 { color: white; font-size: 26px; font-weight: 800; position: relative; z-index: 1; letter-spacing: 1px; }
+.login-hero p  { color: rgba(255,255,255,.8); font-size: 14px; margin-top: 6px; position: relative; z-index: 1; }
+
+.login-card {
+  background: white;
+  margin: -20px 20px 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+  position: relative;
+  z-index: 2;
+}
+.auth-tab-bar { display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--gray-100); }
+.auth-tab { flex: 1; padding: 10px; text-align: center; font-size: 14px; font-weight: 500; color: var(--gray-400); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.auth-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+
+.form-input {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200);
+  border-radius: 10px; font-size: 14px; outline: none;
+  transition: border-color .2s; font-family: inherit;
+}
+.form-input:focus { border-color: var(--red); }
+.form-group { margin-bottom: 12px; }
+.code-row { display: flex; gap: 8px; }
+.btn-code {
+  padding: 12px 14px; background: var(--red); color: white; border: none;
+  border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+.btn-code:disabled { background: var(--gray-200); color: var(--gray-400); cursor: not-allowed; }
+
+.btn-primary {
+  width: 100%; padding: 13px; background: linear-gradient(135deg, #9C1250, #8E1045);
+  color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
+  cursor: pointer; margin-top: 4px; transition: opacity .2s; box-shadow: 0 3px 12px rgba(142,16,69,.3);
+}
+.btn-primary:hover { opacity: .9; }
+
+/* ===== COMMUNITY BANNER ===== */
+.community-banner {
+  margin: 16px 0;
+  background: linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  color: white;
+  box-shadow: 0 4px 14px rgba(37,99,235,.25);
+}
+.community-banner .icon-col { font-size: 32px; flex-shrink: 0; line-height: 1; }
+.community-banner h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
+.community-banner p  { font-size: 12px; opacity: .88; line-height: 1.6; }
+.community-banner .tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.community-banner .tag {
+  font-size: 12px; padding: 4px 10px; border-radius: 20px;
+  background: rgba(255,255,255,.18); cursor: pointer; font-weight: 500;
+  transition: background .2s;
+}
+.community-banner .tag:hover { background: rgba(255,255,255,.28); }
+
+/* ===== MAIN ===== */
+main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
+
+/* ===== SECTION HEADER ===== */
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; margin-top: 4px; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--gray-700); }
+.btn-upload {
+  font-size: 12px; padding: 6px 14px; background: var(--red);
+  color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: 600;
 }
 
-/* Auth Page */
-.auth-container { padding: 40px 24px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-.auth-logo { text-align: center; margin-bottom: 30px; }
-.auth-logo .logo-icon { font-size: 56px; margin-bottom: 8px; display: inline-block; }
-.auth-logo h1 { font-size: 24px; color: var(--red); font-weight: 800; }
-.auth-logo p { font-size: 13px; color: var(--gray-400); margin-top: 4px; }
-.tab-bar { display: flex; background: var(--gray-100); padding: 4px; border-radius: var(--radius-sm); margin-bottom: 24px; }
-.tab-btn { flex: 1; border: none; background: transparent; padding: 10px; font-size: 14px; font-weight: 600; color: var(--gray-500); cursor: pointer; border-radius: 6px; transition: all 0.2s; }
-.tab-btn.active { background: #FFF; color: var(--red); box-shadow: var(--shadow-sm); }
-.form-group { margin-bottom: 16px; position: relative; }
-.form-input, .form-textarea { width: 100%; padding: 13px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; outline: none; transition: border 0.2s; background: var(--gray-50); }
-.form-input:focus, .form-textarea:focus { border-color: var(--red); background: #FFF; }
-.btn-primary { width: 100%; padding: 14px; background: var(--red); color: #FFF; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(142,16,69,0.2); }
-.btn-primary:active { background: var(--red-dk); }
-.btn-primary:disabled { background: var(--gray-400); box-shadow: none; cursor: not-allowed; }
-.auth-error { color: #DC2626; font-size: 13px; margin-bottom: 12px; text-align: center; font-weight: 500; }
-.v-code-row { display: flex; gap: 10px; }
-.btn-code { padding: 0 16px; border: 1px solid var(--gray-200); background: #FFF; border-radius: var(--radius-sm); font-size: 13px; color: var(--gray-700); cursor: pointer; white-space: nowrap; font-weight: 500; }
-.btn-code:disabled { color: var(--gray-400); background: var(--gray-50); cursor: not-allowed; }
+/* ===== CARD ===== */
+.card {
+  background: white; border-radius: var(--radius);
+  border: 1.5px solid var(--gray-100); padding: 16px;
+  margin-bottom: 10px; box-shadow: var(--shadow);
+  cursor: pointer; transition: border-color .2s, transform .15s;
+}
+.card:hover { border-color: var(--red); transform: translateY(-1px); }
+.card-row { display: flex; justify-content: space-between; align-items: flex-start; }
+.card-name { font-size: 14px; font-weight: 600; color: var(--gray-800); }
+.card-meta { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+.card-arrow { color: var(--gray-200); font-size: 20px; line-height: 1; }
 
-/* Global Header */
-.app-header { background: var(--red); color: #FFF; padding: 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.header-left { display: flex; align-items: center; gap: 10px; }
-.school-badge { background: rgba(255,255,255,0.15); font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: 500; border: 0.5px solid rgba(255,255,255,0.2); cursor: pointer; }
-.header-title { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; }
-.btn-menu { background: transparent; border: none; color: #FFF; font-size: 22px; cursor: pointer; padding: 4px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; }
-.btn-menu:active { background: rgba(255,255,255,0.1); }
+/* ===== EMPTY STATE ===== */
+.empty { text-align: center; padding: 48px 0; color: var(--gray-400); font-size: 14px; }
+.empty .emoji { font-size: 40px; margin-bottom: 12px; }
 
-/* Sidebar Drawer */
-.sidebar-overlay { position: fixed; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.4); z-index: 999; display: flex; justify-content: flex-end; }
-.sidebar-content { width: 280px; height: 100%; background: #FFF; box-shadow: -4px 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; padding: 24px 16px; }
-.sidebar-user { display: flex; align-items: center; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-100); margin-bottom: 20px; position: relative; }
-.sidebar-avatar { width: 48px; height: 48px; background: var(--red-lt); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 2px solid var(--red); cursor: pointer; }
-.sidebar-uinfo { flex: 1; overflow: hidden; }
-.sidebar-uname { font-size: 15px; font-weight: 700; color: var(--gray-800); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-.sidebar-urole { font-size: 11px; color: var(--gold); font-weight: 600; margin-top: 2px; display: inline-block; background: var(--gold-lt); padding: 1px 5px; border-radius: 3px; }
-.sidebar-menu-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; color: var(--gray-700); cursor: pointer; transition: all 0.2s; margin-bottom: 6px; text-decoration: none; }
-.sidebar-menu-item:active, .sidebar-menu-item.active { background: var(--red-lt); color: var(--red); }
-.sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--gray-100); }
-.btn-logout { width: 100%; padding: 10px; background: var(--gray-100); color: #DC2626; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; cursor: pointer; }
+/* ===== STATS ===== */
+.stats-hero {
+  background: linear-gradient(135deg, #9C1250 0%, #8E1045 100%);
+  border-radius: var(--radius); padding: 20px; color: white; margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(142,16,69,.25);
+}
+.stats-hero .greeting { font-size: 13px; opacity: .8; }
+.stats-hero .big-num  { font-size: 40px; font-weight: 800; line-height: 1.1; margin: 4px 0; }
+.stats-hero .label    { font-size: 12px; opacity: .8; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 16px; text-align: center; box-shadow: var(--shadow); }
+.stat-card .num { font-size: 26px; font-weight: 800; }
+.stat-card .lbl { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+.num-green  { color: var(--green); }
+.num-blue   { color: var(--blue); }
+.num-red    { color: #EF4444; }
+.num-gold   { color: var(--gold); }
 
-/* Sub-page Profile View Components */
-.profile-card { background: linear-gradient(135deg, var(--red), var(--red-dk)); color: #FFF; padding: 24px 20px; border-radius: var(--radius-md); margin-bottom: 20px; box-shadow: var(--shadow-md); position: relative; }
-.profile-row { display: flex; align-items: center; gap: 16px; }
-.profile-avatar-big { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; border: 2px solid #FFF; }
-.profile-meta h3 { font-size: 18px; font-weight: 800; }
-.profile-meta p { font-size: 12px; opacity: 0.8; margin-top: 4px; }
-.profile-gender-tag { font-size: 10px; background: rgba(255,255,255,0.2); padding: 1px 6px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
-.btn-edit-profile { position: absolute; right: 16px; top: 16px; background: rgba(255,255,255,0.2); border: none; color: #FFF; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; }
-.profile-grid { display: grid; grid-template-columns: repeat(3, 100px); justify-content: space-between; margin-top: 20px; background: rgba(0,0,0,0.12); padding: 12px; border-radius: var(--radius-sm); }
-.profile-gitem { text-align: center; }
-.profile-gnum { font-size: 18px; font-weight: 800; color: var(--gold); }
-.profile-glabel { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+/* ===== WRONG / FAV LIST ===== */
+.q-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); }
+.q-card-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.q-title { font-size: 13px; color: var(--gray-700); flex: 1; line-height: 1.5; }
+.q-wrong-badge { font-size: 11px; color: #EF4444; white-space: nowrap; font-weight: 600; }
+.q-bank { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+.q-answer { font-size: 11px; color: var(--green); margin-top: 4px; font-weight: 600; }
 
-/* Advanced Maintenance Section */
-.maintenance-card { background: #FFF; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
-.maintenance-title { font-size: 14px; font-weight: 800; color: var(--gray-700); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-.maintenance-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 0.5px solid var(--gray-100); }
-.maintenance-row:last-child { border-bottom: none; }
-.maintenance-info .m-name { font-size: 13px; font-weight: 700; color: var(--gray-800); }
-.maintenance-info .m-desc { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-.btn-m-action { background: var(--gray-100); border: none; padding: 6px 12px; font-size: 12px; font-weight: 700; color: #DC2626; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
-.btn-m-action:active { background: #FEE2E2; }
+/* ===== SELECT MODE ===== */
+.bank-info-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-200); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.bank-info-card h2 { font-size: 16px; font-weight: 700; }
+.bank-info-card p  { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
 
-/* Sub-page General Home Content layout */
-.home-banner { background: var(--gold-lt); border: 1px solid rgba(212,172,13,0.2); border-radius: var(--radius-sm); padding: 12px 14px; margin: 16px 16px 0; display: flex; align-items: center; gap: 10px; font-size: 12px; color: #B7950B; font-weight: 600; line-height: 1.4; }
-.nav-tabs { display: flex; margin: 16px 16px 12px; border-bottom: 2px solid var(--gray-100); }
-.nav-tab { flex: 1; text-align: center; padding: 10px 0; font-size: 14px; font-weight: 700; color: var(--gray-400); cursor: pointer; position: relative; border: none; background: transparent; }
-.nav-tab.active { color: var(--red); }
-.nav-tab.active::after { content: ''; position: absolute; bottom: -2px; left: 30%; right: 30%; height: 2px; background: var(--red); border-radius: 2px; }
-.list-container { padding: 0 16px 30px; flex: 1; }
-
-/* Bank Item Style */
-.bank-card { background: #FFF; border: 1px solid var(--gray-100); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; }
-.bank-card:active { transform: scale(0.98); box-shadow: none; }
-.bank-icon { width: 44px; height: 44px; background: var(--blue-lt); color: var(--blue); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.bank-card:nth-child(even) .bank-icon { background: var(--red-lt); color: var(--red); }
-.bank-info { flex: 1; margin-left: 14px; overflow: hidden; }
-.bank-title { font-size: 14px; font-weight: 700; color: var(--gray-800); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-.bank-meta { font-size: 11px; color: var(--gray-400); margin-top: 4px; display: flex; gap: 12px; }
-.bank-arrow { color: var(--gray-400); font-size: 16px; font-weight: bold; }
-
-/* Empty Placeholder view state */
-.empty { text-align: center; padding: 60px 20px; color: var(--gray-400); }
-.empty .emoji { font-size: 48px; margin-bottom: 12px; }
-.empty div { font-size: 13px; font-weight: 500; }
-
-/* Question View Box Components */
-.back-btn { background: transparent; border: none; color: var(--gray-500); font-size: 14px; font-weight: 700; padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-.bank-info-card { background: var(--gray-50); border: 1px solid var(--gray-100); margin: 0 16px 16px; padding: 16px; border-radius: var(--radius-md); }
-.bank-info-card h2 { font-size: 16px; font-weight: 800; color: var(--gray-800); }
-.bank-info-card p { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
-.limit-bar { display: flex; justify-content: space-between; align-items: center; margin: 0 16px 16px; padding: 0 4px; }
-.limit-label { font-size: 13px; font-weight: 700; color: var(--gray-500); }
+.limit-bar { background: var(--gray-100); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+.limit-label { font-size: 11px; color: var(--gray-500); font-weight: 600; margin-bottom: 8px; }
 .limit-btns { display: flex; gap: 6px; }
-.limit-btn { border: 1px solid var(--gray-200); background: #FFF; padding: 4px 10px; font-size: 12px; font-weight: 700; border-radius: 6px; cursor: pointer; color: var(--gray-700); }
-.limit-btn.active { background: var(--red); color: #FFF; border-color: var(--red); }
-.mode-card { background: #FFF; border: 1px solid var(--gray-100); padding: 16px; margin: 0 16px 12px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 14px; cursor: pointer; box-shadow: var(--shadow-sm); }
-.mode-card:active { background: var(--gray-50); }
-.mode-icon { font-size: 24px; }
+.limit-btn { flex: 1; padding: 7px 4px; border-radius: 8px; font-size: 12px; border: 1.5px solid var(--gray-200); background: white; color: var(--gray-600); cursor: pointer; font-weight: 500; transition: all .15s; text-align: center; }
+.limit-btn.active { background: var(--red); color: white; border-color: var(--red); font-weight: 700; }
+
+.mode-card {
+  background: white; border: 1.5px solid var(--gray-100); border-radius: var(--radius);
+  padding: 16px 18px; margin-bottom: 10px; cursor: pointer; box-shadow: var(--shadow);
+  display: flex; align-items: center; gap: 14px; transition: border-color .2s, transform .15s;
+}
+.mode-card:hover { border-color: var(--red); transform: translateY(-1px); }
+.mode-icon { font-size: 24px; flex-shrink: 0; }
 .mode-name { font-size: 14px; font-weight: 700; color: var(--gray-800); }
-.mode-desc { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.mode-desc { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
 
-/* Practice layout components */
-.progress-track { height: 3px; background: var(--gray-100); width: 100%; position: relative; }
-.progress-fill { height: 100%; background: var(--red); width: 0; transition: width 0.2s ease; }
-.practice-topbar { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #FFF; border-bottom: 0.5px solid var(--gray-100); }
-.btn-exit { background: transparent; border: none; color: var(--gray-500); font-size: 13px; font-weight: 700; cursor: pointer; }
-.score-chips { display: flex; gap: 8px; font-size: 12px; font-weight: 700; }
-.chip-ok { background: #DCFCE7; color: #15803D; padding: 2px 8px; border-radius: 20px; }
-.chip-err { background: #FEE2E2; color: #B91C1C; padding: 2px 8px; border-radius: 20px; }
-.q-box { background: var(--gray-50); border: 1px solid var(--gray-100); padding: 16px; border-radius: var(--radius-md); margin-bottom: 16px; }
-.q-box-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.q-type-badge { background: var(--blue-lt); color: var(--blue); font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
-.btn-fav { background: transparent; border: none; font-size: 18px; cursor: pointer; color: var(--gold); }
-.q-text { font-size: 15px; font-weight: 700; color: var(--gray-800); line-height: 1.5; }
-.opt-btn { width: 100%; text-align: left; padding: 14px 16px; border: 1px solid var(--gray-200); background: #FFF; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; color: var(--gray-700); cursor: pointer; margin-bottom: 10px; display: flex; align-items: flex-start; line-height: 1.4; transition: all 0.2s; }
-.opt-key { margin-right: 8px; color: var(--gray-400); font-weight: 700; }
-.opt-btn.selected-exam { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
-.opt-btn.correct { border-color: #22C55E; background: #DCFCE7; color: #15803D; }
-.opt-btn.wrong { border-color: #EF4444; background: #FEE2E2; color: #B91C1C; }
-.opt-btn.dim { opacity: 0.5; }
-.feedback-box { background: var(--gray-50); padding: 14px; border-radius: var(--radius-sm); margin-top: 16px; border-left: 4px solid var(--red); }
-.feedback-correct { color: #15803D; font-weight: 700; font-size: 14px; }
-.feedback-wrong { color: #B91C1C; font-weight: 700; font-size: 14px; }
-.feedback-ans { font-size: 13px; color: var(--gray-700); margin-top: 6px; }
-.practice-footer { display: flex; gap: 12px; padding: 12px 16px 24px; background: #FFF; border-top: 0.5px solid var(--gray-100); margin-top: auto; }
-.btn-prev { flex: 1; padding: 12px; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; }
-.btn-prev:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-next { flex: 2; padding: 12px; background: var(--red); color: #FFF; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; }
+/* ===== PRACTICE ===== */
+.progress-track { height: 3px; background: var(--gray-100); }
+.progress-fill { height: 3px; background: linear-gradient(90deg, var(--red), #9C1250); transition: width .3s ease; }
+.practice-topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; font-size: 13px; color: var(--gray-500); }
+.btn-exit { color: var(--red); background: none; border: none; cursor: pointer; font-size: 13px; font-weight: 600; }
+.score-chips { display: flex; gap: 8px; font-size: 12px; }
+.chip-ok  { background: var(--green-lt); color: var(--green); padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+.chip-err { background: #FEF2F2; color: #EF4444; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
 
-/* Exam result board layout */
-.result-hero { background: linear-gradient(to bottom, var(--gray-50), #FFF); text-align: center; padding: 32px 16px; border-bottom: 1px dashed var(--gray-200); }
-.result-emoji { font-size: 54px; margin-bottom: 8px; }
-.result-score { font-size: 48px; font-weight: 900; color: var(--red); line-height: 1; }
-.result-sub { font-size: 13px; color: var(--gray-500); font-weight: 600; margin-top: 6px; }
-.result-item { background: #FFF; border: 1px solid var(--gray-100); border-radius: var(--radius-md); padding: 14px; margin-bottom: 12px; position: relative; }
-.result-item.ok { border-left: 4px solid #22C55E; }
-.result-item.bad { border-left: 4px solid #EF4444; }
-.result-badge-ok { font-size: 10px; color: #15803D; background: #DCFCE7; padding: 2px 6px; border-radius: 4px; display: inline-block; font-weight: 700; margin-bottom: 8px; }
-.result-badge-bad { font-size: 10px; color: #B91C1C; background: #FEE2E2; padding: 2px 6px; border-radius: 4px; display: inline-block; font-weight: 700; margin-bottom: 8px; }
-.result-q { font-size: 14px; font-weight: 700; color: var(--gray-800); line-height: 1.4; }
-.result-your { font-size: 12px; color: #EF4444; font-weight: 600; margin-top: 6px; }
-.result-right { font-size: 12px; color: #15803D; font-weight: 600; margin-top: 4px; }
+.q-box { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.q-box-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.q-type-badge { font-size: 11px; padding: 3px 8px; background: var(--blue-lt); color: var(--blue); border-radius: 6px; font-weight: 600; }
+.btn-fav { font-size: 20px; background: none; border: none; cursor: pointer; line-height: 1; }
+.q-text { font-size: 15px; color: var(--gray-800); line-height: 1.7; }
 
-/* Upload Dashboard */
-.upload-card { padding: 0 16px 30px; }
-.upload-title { font-size: 16px; font-weight: 800; color: var(--gray-800); margin: 16px 0 12px; }
-.upload-hint { font-size: 11px; color: var(--gray-400); margin: -6px 0 16px 2px; font-weight: 500; }
-.upload-msg { font-size: 13px; font-weight: 600; padding: 10px; border-radius: var(--radius-sm); text-align: center; }
-.upload-msg.ok { background: #DCFCE7; color: #15803D; }
-.upload-msg.err { background: #FEE2E2; color: #B91C1C; }
+.opt-btn {
+  width: 100%; text-align: left; padding: 12px 16px; border-radius: 10px;
+  border: 1.5px solid var(--gray-200); background: white; font-size: 14px;
+  cursor: pointer; margin-bottom: 8px; transition: all .15s; font-family: inherit;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.opt-btn:hover:not(:disabled) { border-color: var(--red); background: var(--red-lt); }
+.opt-btn:disabled { cursor: not-allowed; }
+.opt-btn.correct  { border-color: var(--green); background: var(--green-lt); color: var(--green); font-weight: 600; }
+.opt-btn.wrong    { border-color: #EF4444; background: #FEF2F2; color: #EF4444; font-weight: 600; }
+.opt-btn.dim      { border-color: var(--gray-100); background: var(--gray-50); opacity: .5; }
+.opt-btn.selected-exam { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); font-weight: 600; }
+.opt-key { font-weight: 700; flex-shrink: 0; }
 
-/* Admin Panel view component */
-.admin-bank-card, .admin-user-card { background: #FFF; border: 1px solid var(--gray-100); padding: 14px; border-radius: var(--radius-md); margin-bottom: 12px; box-shadow: var(--shadow-sm); }
-.admin-bank-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.btn-toggle-on { background: #DCFCE7; color: #15803D; border: none; padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 4px; cursor: pointer; }
-.btn-toggle-off { background: var(--gray-100); color: var(--gray-500); border: none; padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 4px; cursor: pointer; }
-.btn-del { background: transparent; border: none; color: #DC2626; font-size: 12px; font-weight: 700; cursor: pointer; }
-.user-name { font-size: 14px; font-weight: 700; color: var(--gray-800); }
+.feedback-box { border-radius: 10px; border: 1.5px dashed var(--gray-200); padding: 14px; background: var(--gray-50); font-size: 13px; margin-top: 4px; }
+.feedback-correct { color: var(--green); font-weight: 700; font-size: 14px; }
+.feedback-wrong   { color: #EF4444; font-weight: 700; font-size: 14px; }
+.feedback-ans { color: var(--gray-600); margin-top: 6px; }
+.feedback-ans b { color: var(--green); }
+
+.practice-footer { padding: 12px 16px; background: white; border-top: 1px solid var(--gray-100); display: flex; gap: 10px; }
+.btn-prev { flex: 1; padding: 12px; border-radius: 10px; background: var(--gray-100); color: var(--gray-700); border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn-prev:disabled { opacity: .4; cursor: not-allowed; }
+.btn-next { flex: 2; padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #9C1250, #8E1045); color: white; border: none; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(142,16,69,.25); }
+
+/* ===== EXAM RESULT ===== */
+.result-hero { text-align: center; padding: 32px 16px 20px; }
+.result-emoji { font-size: 56px; }
+.result-score { font-size: 48px; font-weight: 800; color: var(--gray-800); line-height: 1; margin: 8px 0 4px; }
+.result-sub   { font-size: 14px; color: var(--gray-400); }
+
+.result-item { background: white; border-radius: 10px; border-width: 1.5px; border-style: solid; padding: 14px; margin-bottom: 8px; font-size: 13px; }
+.result-item.ok  { border-color: #BBF7D0; }
+.result-item.bad { border-color: #FECACA; }
+.result-badge-ok  { color: var(--green); font-weight: 700; font-size: 11px; }
+.result-badge-bad { color: #EF4444; font-weight: 700; font-size: 11px; }
+.result-q { color: var(--gray-700); margin: 6px 0; line-height: 1.5; }
+.result-your  { color: #EF4444; font-size: 11px; }
+.result-right { color: var(--green); font-size: 11px; }
+
+/* ===== UPLOAD ===== */
+.upload-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 20px; box-shadow: var(--shadow); }
+.upload-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--gray-800); }
+.form-textarea { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-size: 13px; outline: none; resize: vertical; font-family: inherit; transition: border-color .2s; }
+.form-textarea:focus { border-color: var(--red); }
+.upload-hint { font-size: 11px; color: var(--gray-400); margin: 6px 0 12px; }
+.upload-msg { font-size: 13px; text-align: center; padding: 8px; border-radius: 8px; }
+.upload-msg.ok  { color: var(--green); background: var(--green-lt); }
+.upload-msg.err { color: #EF4444; background: #FEF2F2; }
+
+/* ===== ADMIN ===== */
+.admin-bank-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); }
+.admin-bank-row  { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.btn-toggle-on  { padding: 4px 12px; border-radius: 20px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--green); color: white; }
+.btn-toggle-off { padding: 4px 12px; border-radius: 20px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--gray-200); color: var(--gray-500); }
+.btn-del { flex: 1; padding: 7px; font-size: 12px; background: #FEF2F2; color: #EF4444; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+
+.admin-user-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 14px; margin-bottom: 8px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
+.user-name { font-size: 14px; font-weight: 600; }
 .user-date { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-.admin-user-card { display: flex; justify-content: space-between; align-items: center; }
-.btn-role { background: var(--blue-lt); color: var(--blue); border: none; padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 4px; cursor: pointer; }
-.btn-del-user { background: #FEE2E2; color: #B91C1C; border: none; padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 4px; cursor: pointer; }
+.btn-role { font-size: 11px; padding: 5px 10px; background: var(--blue-lt); color: var(--blue); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.btn-del-user { font-size: 11px; padding: 5px 10px; background: #FEF2F2; color: #EF4444; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
 
-/* Modal Styles */
-.modal-overlay { position: fixed; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 20px; }
-.modal-body { background: #FFF; border-radius: var(--radius-md); width: 100%; max-width: 400px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); animation: modalFadeUp 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
-@keyframes modalFadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-.modal-title { font-size: 16px; font-weight: 800; color: var(--gray-800); margin-bottom: 16px; text-align: center; }
-.avatar-selector { display: flex; justify-content: center; gap: 14px; margin-bottom: 20px; padding: 10px 0; }
-.avatar-opt { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: all 0.2s; }
-.avatar-opt.active { border-color: var(--red); background: var(--red-lt); transform: scale(1.1); }
-.modal-footer-btns { display: flex; gap: 10px; margin-top: 10px; }
-.btn-cancel { flex: 1; padding: 12px; background: var(--gray-100); color: var(--gray-700); border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; }
+/* ===== PAGE BACK BTN ===== */
+.back-btn { color: var(--red); background: none; border: none; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 4px; }
+
+/* ===== PRACTICE START BTN ===== */
+.btn-practice-wrong { width: 100%; padding: 13px; background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(239,68,68,.25); }
+.btn-practice-fav   { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--gold), #B7950B); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(212,172,13,.25); }
 </style>
 </head>
 <body>
-
 <div id="app">
 
-  <template v-if="!token">
-    <div class="auth-container">
-      <div class="auth-logo">
-        <span class="logo-icon">🎓</span>
-        <h1>刷题宝 Pro</h1>
-        <p>天津职业技术师范大学 · 专属云端刷题底座</p>
-      </div>
-      <div class="tab-bar">
-        <button @click="authTab='login'" :class="['tab-btn', authTab==='login'?'active':'']">账号登录</button>
-        <button @click="authTab='register'" :class="['tab-btn', authTab==='register'?'active':'']">新同学注册</button>
-      </div>
-      <div class="form-group">
-        <input v-model="authForm.email" class="form-input" placeholder="天职师大邮箱/公共邮箱">
+  <div v-if="!token" class="login-page">
+    <div class="login-hero">
+      <img src="https://cdn.urongda.com//images/normal/medium/tianjin-university-of-technology-and-education-logo-1024px.png" alt="TUTE">
+      <h1>刷题宝 Pro</h1>
+      <p>天津职业技术师范大学 · 一人上传，全班共享</p>
+    </div>
+
+    <div class="login-card">
+      <div class="auth-tab-bar">
+        <button @click="authTab='login'" :class="['auth-tab', authTab==='login'?'active':'']">登录</button>
+        <button @click="authTab='register'" :class="['auth-tab', authTab==='register'?'active':'']">注册</button>
       </div>
       <div class="form-group">
-        <input v-model="authForm.password" type="password" class="form-input" placeholder="设置登录密码">
+        <input v-model="authForm.email" class="form-input" placeholder="请输入邮箱">
       </div>
-      <div v-if="authTab==='register'" class="form-group v-code-row">
-        <input v-model="code" class="form-input" placeholder="输入邮箱验证码" style="flex:1;">
+      <div v-if="authTab==='register'" class="form-group code-row">
+        <input v-model="code" class="form-input" placeholder="输入验证码" style="flex:1">
         <button @click="sendCode" :disabled="countdown>0" class="btn-code">
-          {{ countdown > 0 ? countdown + 's 后重发' : '获取验证码' }}
+          {{ countdown>0 ? countdown+'s' : '获取验证码' }}
         </button>
       </div>
-      <div v-if="authError" class="auth-error">⚠️ {{ authError }}</div>
-      <button @click="doAuth" class="btn-primary">
-        {{ authTab==='login' ? '立即安全登录 ⚡' : '验证并加入刷题宝' }}
-      </button>
+      <div class="form-group">
+        <input v-model="authForm.password" type="password" class="form-input" placeholder="请输入密码（至少6位）">
+      </div>
+      <p v-if="authError" style="color:#EF4444;font-size:12px;margin-bottom:10px;">{{ authError }}</p>
+      <button @click="doAuth" class="btn-primary">{{ authTab==='login'?'登录':'注册' }}</button>
     </div>
-  </template>
+
+    <div style="padding:16px 20px 32px;">
+      <div class="community-banner">
+        <div class="icon-col">🚀</div>
+        <div>
+          <h3>共建共享题库，一起搞定考试！</h3>
+          <p>有好的题目资源？欢迎上传到题库，让同学们一起受益。有使用建议？我们随时倾听。</p>
+          <div class="tags">
+            <span class="tag">📤 上传题库</span>
+            <span class="tag">💡 提交建议</span>
+            <span class="tag">🎓 TUTE专属</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <template v-else>
-    <header class="app-header">
-      <div class="header-left">
-        <span class="school-badge" @click="goTuteOfficial">TUTE 天职师大</span>
-        <span class="header-title" @click="goHome" style="cursor:pointer;">刷题宝 Pro</span>
-      </div>
-      <button @click="isSidebarOpen=true" class="btn-menu">☰</button>
-    </header>
-
-    <div v-if="isSidebarOpen" class="sidebar-overlay" @click.self="isSidebarOpen=false">
-      <div class="sidebar-content">
-        <div class="sidebar-user">
-          <div class="sidebar-avatar" @click="page='profile'; isSidebarOpen=false">{{ currentUser.avatar || '⚡' }}</div>
-          <div class="sidebar-uinfo">
-            <div class="sidebar-uname">{{ currentUser.nickname || maskEmail(currentUser.email) }}</div>
-            <div class="sidebar-urole">{{ currentUser.role === 'admin' ? '👑 平台管理员' : '👨‍🎓 认证学子' }}</div>
-          </div>
-        </div>
-        <nav style="display:flex;flex-direction:column;gap:4px;">
-          <a @click.prevent="page='home'; homeTab='banks'; isSidebarOpen=false" :class="['sidebar-menu-item', page==='home'&&homeTab==='banks'?'active':'']">📖 公开公共题库</a>
-          <a @click.prevent="page='home'; homeTab='wrong'; loadWrong(); isSidebarOpen=false" :class="['sidebar-menu-item', page==='home'&&homeTab==='wrong'?'active':'']">❌ 个人错题本</a>
-          <a @click.prevent="page='home'; homeTab='fav'; loadFavorites(); isSidebarOpen=false" :class="['sidebar-menu-item', page==='home'&&homeTab==='fav'?'active':'']">⭐ 我的收藏夹</a>
-          <a @click.prevent="page='upload'; isSidebarOpen=false" :class="['sidebar-menu-item', page==='upload'?'active':'']">📤 智能上传题库</a>
-          <a @click.prevent="page='profile'; isSidebarOpen=false" :class="['sidebar-menu-item', page==='profile'?'active':'']">👤 个人数据看板</a>
-          <a v-if="currentUser.role==='admin'" @click.prevent="page='admin'; adminTab='banks'; loadAdminBanks(); isSidebarOpen=false" :class="['sidebar-menu-item', page==='admin'?'active':'']">👑 平台管理后台</a>
-        </nav>
-        <div class="sidebar-footer">
-          <button @click="shareApp" class="sidebar-menu-item" style="border:none;background:transparent;width:100%;text-align:left;margin-bottom:10px;">🚀 分享刷题宝</button>
-          <button @click="showSuggest" class="sidebar-menu-item" style="border:none;background:transparent;width:100%;text-align:left;margin-bottom:15px;">💡 反馈与建议</button>
-          <button @click="logout" class="btn-logout">退出登录</button>
-        </div>
+    <div class="school-banner" @click="goTuteOfficial" style="cursor: pointer;">
+      <img src="https://cdn.urongda.com//images/normal/medium/tianjin-university-of-technology-and-education-logo-1024px.png" alt="TUTE">
+      <div class="school-banner-text">
+        <div class="cn">天津职业技术师范大学</div>
+        <div class="en">Tianjin University of Technology and Education</div>
       </div>
     </div>
 
-    <main v-if="page==='home'" style="display:flex;flex-direction:column;flex:1;">
-      <div class="home-banner">
-        <span>📢</span>
-        <div>欢迎使用刷题宝 Pro！数据全端同步。管理员上传即公开，普通用户上传需经后台审核。</div>
-      </div>
-      <div class="nav-tabs">
-        <button @click="homeTab='banks'; fetchBanks()" :class="['nav-tab', homeTab==='banks'?'active':'']">全部题库</button>
-        <button @click="homeTab='wrong'; loadWrong()" :class="['nav-tab', homeTab==='wrong'?'active':'']">我的错题</button>
-        <button @click="homeTab='fav'; loadFavorites()" :class="['nav-tab', homeTab==='fav'?'active':'']">我的收藏</button>
-      </div>
-
-      <div class="list-container">
-        <div v-if="homeTab==='banks'">
-          <div v-for="bank in banks" :key="bank._id" @click="openBank(bank)" class="bank-card">
-            <div style="display:flex;align-items:center;flex:1;overflow:hidden;">
-              <div class="bank-icon">📚</div>
-              <div class="bank-info">
-                <div class="bank-title">{{ bank.bankName }}</div>
-                <div class="bank-meta">
-                  <span>⏰ {{ new Date(bank.uploadTime).toLocaleDateString() }}</span>
-                  <span>👤 {{ bank.uploaderNickname || maskEmail(bank.uploadedBy) || '神秘同学' }}</span>
-                </div>
-              </div>
-            </div>
-            <span class="bank-arrow">›</span>
+    <div class="app-header">
+      <div class="app-header-inner">
+        <div class="app-logo" @click="goHome">
+          <div class="icon">📚</div>
+          <div>
+            <div class="name">刷题宝 Pro</div>
+            <div class="sub">智能题库平台</div>
           </div>
-          <div v-if="banks.length===0" class="empty"><div class="emoji">📭</div><div>暂无公开题库数据，快去上传吧！</div></div>
         </div>
-
-        <div v-if="homeTab==='wrong'">
-          <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:12px;color:var(--gray-500);font-weight:600;">共汇总记录了 {{ wrongList.length }} 道错题</span>
-            <button v-if="wrongList.length>0" @click="startWrongPractice" class="btn-primary" style="width:auto;padding:6px 14px;font-size:12px;box-shadow:none;">⚡ 立即开练</button>
-          </div>
-          <div v-for="w in wrongList" :key="w._id" class="bank-card" style="cursor:default;">
-            <div style="flex:1;">
-              <div style="font-size:13px;font-weight:700;color:var(--gray-700);line-height:1.4;">{{ w.questionTitle }}</div>
-              <div style="font-size:11px;color:#DC2626;font-weight:600;margin-top:6px;">错误频次：{{ w.count }} 次</div>
-            </div>
-          </div>
-          <div v-if="wrongList.length===0" class="empty"><div class="emoji">🎉</div><div>暂无错题记录，保持住！</div></div>
-        </div>
-
-        <div v-if="homeTab==='fav'">
-          <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:12px;color:var(--gray-500);font-weight:600;">共珍藏了 {{ favoriteList.length }} 道高频题</span>
-            <button v-if="favoriteList.length>0" @click="startFavPractice" class="btn-primary" style="width:auto;padding:6px 14px;font-size:12px;box-shadow:none;background:var(--gold);">🔀 随机速练</button>
-          </div>
-          <div v-for="f in favoriteList" :key="f._id" class="bank-card" style="cursor:default;">
-            <div style="flex:1;">
-              <div style="font-size:13px;font-weight:700;color:var(--gray-700);line-height:1.4;">{{ f.questionTitle }}</div>
-            </div>
-          </div>
-          <div v-if="favoriteList.length===0" class="empty"><div class="emoji">⭐</div><div>收藏夹空空如也</div></div>
+        <div class="header-right">
+          <span class="header-email">{{ currentUser.email }}</span>
+          <button v-if="currentUser.role==='admin'" @click="page='admin'; loadAdminBanks()" class="btn-admin">👑 后台</button>
+          <button @click="logout" class="btn-logout">退出</button>
         </div>
       </div>
-    </main>
-
-    <main v-if="page==='profile'" style="padding:16px;overflow-y:auto;flex:1;">
-      <button @click="goHome" class="back-btn" style="padding-left:0;">‹ 返回首页</button>
-      <div class="profile-card">
-        <button @click="startEditProfile" class="btn-edit-profile">修改资料</button>
-        <div class="profile-row">
-          <div class="profile-avatar-big">{{ currentUser.avatar || '⚡' }}</div>
-          <div class="profile-meta">
-            <h3>{{ currentUser.nickname || '未设置昵称' }}<span class="profile-gender-tag">{{ currentUser.gender || '保密' }}</span></h3>
-            <p>{{ currentUser.email }}</p>
-          </div>
-        </div>
-        <div class="profile-grid">
-          <div class="profile-gitem"><div class="profile-gnum">{{ meData.stats?.totalAnswered || 0 }}</div><div class="profile-glabel">累计答题</div></div>
-          <div class="profile-gitem"><div class="profile-gnum" style="color:#22C55E;">{{ meData.stats?.totalCorrect || 0 }}</div><div class="profile-glabel">答对题量</div></div>
-          <div class="profile-gitem"><div class="profile-gnum" style="color:var(--gold);">{{ accuracy }}</div><div class="profile-glabel">做题正确率</div></div>
-        </div>
-      </div>
-
-      <div class="maintenance-card">
-        <div class="maintenance-title">⚙️ 高级个人账户维护</div>
-        <div class="maintenance-row">
-          <div class="maintenance-info"><div class="m-name">重置刷题统计</div><div class="m-desc">清空累计答题量、答对题量以及正确率计算</div></div>
-          <button @click="clearStats" class="btn-m-action">擦除数据</button>
-        </div>
-        <div class="maintenance-row">
-          <div class="maintenance-info"><div class="m-name">清空错题账本</div><div class="m-desc">彻底移除并销毁名下记录的所有错题数据</div></div>
-          <button @click="clearWrongQuestions" class="btn-m-action">一键清空</button>
-        </div>
-        <div class="maintenance-row">
-          <div class="maintenance-info"><div class="m-name">重置全局收藏夹</div><div class="m-desc">清空所有题库中已标记星标收藏的题目</div></div>
-          <button @click="clearFavoritesAction" class="btn-m-action">销毁收藏</button>
-        </div>
-      </div>
-    </main>
-
-    <div v-if="isEditingProfile" class="modal-overlay" @click.self="isEditingProfile=false">
-      <div class="modal-body">
-        <div class="modal-title">✏️ 编辑个人资料</div>
-        <div class="form-group">
-          <label style="font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:6px;display:block;">同学昵称</label>
-          <input v-model="editForm.nickname" class="form-input" placeholder="输入您的个性昵称">
-        </div>
-        <div class="form-group">
-          <label style="font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:6px;display:block;">性别标识</label>
-          <select v-model="editForm.gender" class="form-input" style="appearance:none;background:#FFF;">
-            <option value="男生">👨‍🎓 男生</option>
-            <option value="女生">👩‍🎓 女生</option>
-            <option value="保密">⚡ 保密</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label style="font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:6px;display:block;">选择头像图章</label>
-          <div class="avatar-selector">
-            <div v-for="av in ['⚡','🔥','🦖','🦊','🐼','🚀']" :key="av" @click="editForm.avatar=av" :class="['avatar-opt', editForm.avatar===av?'active':'']">{{ av }}</div>
-          </div>
-        </div>
-        <div class="modal-footer-btns">
-          <button @click="isEditingProfile=false" class="btn-cancel">取消</button>
-          <button @click="saveProfile" class="btn-primary" style="flex:2;margin-top:0;">同步更新</button>
-        </div>
+      <div v-if="page==='home'" class="tab-bar">
+        <button @click="homeTab='banks'" :class="['tab-btn', homeTab==='banks'?'active':'']">📦 题库</button>
+        <button @click="homeTab='wrong'; loadWrong()" :class="['tab-btn', homeTab==='wrong'?'active':'']">❌ 错题</button>
+        <button @click="homeTab='favorites'; loadFavorites()" :class="['tab-btn', homeTab==='favorites'?'active':'']">⭐ 收藏</button>
+        <button @click="homeTab='stats'; loadMe()" :class="['tab-btn', homeTab==='stats'?'active':'']">👤 我的</button>
       </div>
     </div>
+
+    <main v-if="page==='home'">
+
+      <div v-if="homeTab==='banks'">
+        
+        <div class="section-header">
+          <span class="section-title">📦 云端题库（{{ banks.length }}）</span>
+          <button @click="page='upload'" class="btn-upload">+ 上传题库</button>
+        </div>
+        
+        <div v-for="bank in banks" :key="bank._id" class="card" @click="openBank(bank)">
+          <div class="card-row">
+            <div>
+              <div class="card-name">{{ bank.bankName }}</div>
+              <div class="card-meta">{{ new Date(bank.uploadTime).toLocaleDateString() }} · 上传者：{{ bank.uploadedBy }}</div>
+            </div>
+            <span class="card-arrow">›</span>
+          </div>
+        </div>
+        
+        <div v-if="banks.length===0" class="empty">
+          <div class="emoji">📭</div>
+          <div>暂无题库，快去上传第一份吧！</div>
+        </div>
+
+        <div class="community-banner" style="margin-top: 24px;">
+          <div class="icon-col">🌟</div>
+          <div>
+            <h3>建设共享题库，携手备考！</h3>
+            <p>有题目资源欢迎上传共享；有好建议或遇到Bug，欢迎反馈给我们，共同打造更棒的期末冲刺神器。</p>
+            <div class="tags">
+              <span class="tag" @click="page='upload'">📤 我要上传</span>
+              <span class="tag" @click="showSuggest">💡 提建议</span>
+              <span class="tag" @click="shareApp">📢 分享应用</span>
+              <span class="tag" @click="goTuteOfficial">🎓 TUTE专属</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="homeTab==='wrong'">
+        <div class="section-header"><span class="section-title">❌ 错题本（{{ wrongList.length }}题）</span></div>
+        <button v-if="wrongList.length>0" @click="startWrongPractice" class="btn-practice-wrong">🔥 开始专项练习错题</button>
+        <div v-for="(q,i) in wrongList" :key="i" class="q-card">
+          <div class="q-card-row">
+            <span class="q-title">{{ q.title }}</span>
+            <span class="q-wrong-badge">错{{ q.wrongCount }}次</span>
+          </div>
+          <div class="q-bank">来自：{{ q.bankName }}</div>
+          <div class="q-answer">✓ {{ q.answer }}. {{ q.options[q.answer] }}</div>
+        </div>
+        <div v-if="wrongList.length===0" class="empty"><div class="emoji">🎉</div><div>太棒了，没有错题！</div></div>
+      </div>
+
+      <div v-if="homeTab==='favorites'">
+        <div class="section-header"><span class="section-title">⭐ 收藏夹（{{ favoriteList.length }}题）</span></div>
+        <button v-if="favoriteList.length>0" @click="startFavPractice" class="btn-practice-fav">⭐ 练习收藏题目</button>
+        <div v-for="(q,i) in favoriteList" :key="i" class="q-card">
+          <div class="q-title">{{ q.title }}</div>
+          <div class="q-bank">来自：{{ q.bankName }}</div>
+        </div>
+        <div v-if="favoriteList.length===0" class="empty"><div class="emoji">📌</div><div>还没有收藏任何题目</div></div>
+      </div>
+
+      <div v-if="homeTab==='stats'">
+        <div class="stats-hero">
+          <div class="greeting">你好，{{ currentUser.email }} 👋</div>
+          <div class="big-num">{{ meData.stats ? meData.stats.totalAnswered : 0 }}</div>
+          <div class="label">累计答题数</div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="num num-green">{{ meData.stats ? meData.stats.totalCorrect : 0 }}</div><div class="lbl">答对题数</div></div>
+          <div class="stat-card"><div class="num num-blue">{{ accuracy }}</div><div class="lbl">正确率</div></div>
+          <div class="stat-card"><div class="num num-red">{{ meData.wrongQuestions ? meData.wrongQuestions.length : 0 }}</div><div class="lbl">错题数</div></div>
+          <div class="stat-card"><div class="num num-gold">{{ meData.favorites ? meData.favorites.length : 0 }}</div><div class="lbl">收藏数</div></div>
+        </div>
+      </div>
+    </main>
 
     <main v-if="page==='selectMode'">
       <button @click="page='home'" class="back-btn">‹ 返回</button>
@@ -593,7 +701,6 @@ const API = 'https://quiz-server-ulpb.onrender.com/api';
 
 createApp({
   setup() {
-    // --- 基础权限与用户信息状态 ---
     const token = ref(localStorage.getItem('quiz_token') || '');
     const practiceLimit = ref(20);
     const currentUser = ref(JSON.parse(localStorage.getItem('quiz_user') || '{}'));
@@ -602,13 +709,10 @@ createApp({
     const authError = ref('');
     const code = ref('');
     const countdown = ref(0);
-    const isSidebarOpen = ref(false);
 
-    // --- 个人资料编辑与高级管理状态 ---
     const isEditingProfile = ref(false);
     const editForm = ref({ nickname: '', gender: '保密', avatar: '⚡' });
 
-    // --- 核心网络工具 ---
     const api = async (path, options = {}) => {
       const res = await fetch(API + path, {
         ...options,
@@ -621,7 +725,6 @@ createApp({
       return res.json();
     };
 
-    // --- 认证鉴权交互逻辑 ---
     const sendCode = async () => {
       if (!authForm.value.email) { alert('请先填写邮箱'); return; }
       countdown.value = 60;
@@ -656,14 +759,11 @@ createApp({
       page.value = 'home';
       homeTab.value = 'banks';
       isEditingProfile.value = false;
-      isSidebarOpen.value = false;
-      
       document.body.style.overflow = ''; 
       localStorage.removeItem('quiz_token'); 
       localStorage.removeItem('quiz_user');
     };
 
-    // --- 学校专属接口交互功能 ---
     const goTuteOfficial = () => {
       window.open('https://www.tute.edu.cn', '_blank');
     };
@@ -684,7 +784,6 @@ createApp({
       if (s && s.trim()) alert('感谢你的建议！我们会认真考虑 🙏');
     };
 
-    // --- 页面与核心题库数据流状态 ---
     const page = ref('home');
     const homeTab = ref('banks');
     const banks = ref([]);
@@ -705,51 +804,6 @@ createApp({
 
     onMounted(() => { if (token.value) { fetchBanks(); loadMe(); } });
 
-    // --- 个人资料业务处理逻辑 ---
-    const startEditProfile = () => {
-      editForm.value.nickname = currentUser.value.nickname || '';
-      editForm.value.gender = currentUser.value.gender || '保密';
-      editForm.value.avatar = currentUser.value.avatar || '⚡';
-      isEditingProfile.value = true;
-    };
-
-    const saveProfile = async () => {
-      if (!editForm.value.nickname.trim()) { alert('昵称不能为空'); return; }
-      const r = await api('/update-profile', { method: 'POST', body: JSON.stringify(editForm.value) });
-      if (r.success) {
-        currentUser.value = { ...currentUser.value, ...editForm.value };
-        localStorage.setItem('quiz_user', JSON.stringify(currentUser.value));
-        isEditingProfile.value = false;
-        alert('✨ 资料更新成功！');
-        loadMe();
-      } else {
-        alert(r.error || '资料保存失败');
-      }
-    };
-
-    // --- 数据清空交互管理 ---
-    const clearStats = async () => {
-      if (!confirm('⚠️ 警告：确定要清除您所有的历史答题统计数据吗？此操作不可逆！')) return;
-      const r = await api('/clear-stats', { method: 'POST' });
-      if (r.success) { alert('统计数据已成功清零 🧹'); loadMe(); }
-      else { alert(r.error || '清空失败'); }
-    };
-
-    const clearWrongQuestions = async () => {
-      if (!confirm('确定要清空错题本中的所有题目吗？')) return;
-      const r = await api('/clear-wrong', { method: 'POST' });
-      if (r.success) { alert('错题本已全部清空 ✨'); loadWrong(); loadMe(); }
-      else { alert(r.error || '清空失败'); }
-    };
-
-    const clearFavoritesAction = async () => {
-      if (!confirm('确定要清空您的所有收藏夹吗？')) return;
-      const r = await api('/clear-favorites', { method: 'POST' });
-      if (r.success) { alert('收藏夹已清空 🗂️'); loadFavorites(); loadMe(); }
-      else { alert(r.error || '清空失败'); }
-    };
-
-    // --- 隐私机制：安全脱敏邮箱处理工具 ---
     const maskEmail = (email) => {
       if (!email || typeof email !== 'string') return '';
       const parts = email.split('@');
@@ -760,7 +814,6 @@ createApp({
       return name.substring(0, 3) + '***@' + domain;
     };
 
-    // --- 刷题及考试核心状态控制 ---
     const currentBank = ref({});
     const currentBankQuestions = ref([]);
     const openBank = async (bank) => {
@@ -892,7 +945,6 @@ createApp({
       await loadMe();
     };
 
-    // --- 题库上传智能提取业务 ---
     const uploadForm = ref({ bankName: '', text: '' });
     const uploading = ref(false);
     const uploadMsg = ref('');
@@ -906,7 +958,6 @@ createApp({
       else uploadMsg.value = '❌ ' + r.error;
     };
 
-    // --- 权限管理后台面板业务 ---
     const adminTab = ref('banks');
     const adminBanks = ref([]);
     const adminUsers = ref([]);
@@ -944,8 +995,8 @@ createApp({
 
     return {
       token, currentUser, authTab, authForm, authError, code, countdown, sendCode, doAuth, logout, showSuggest,
-      isEditingProfile, editForm, startEditProfile, saveProfile, isSidebarOpen,
-      clearStats, clearWrongQuestions, clearFavoritesAction, goTuteOfficial, shareApp, maskEmail,
+      isEditingProfile, editForm,
+      clearStats, maskEmail, goTuteOfficial, shareApp,
       page, homeTab, banks, meData, wrongList, favoriteList, accuracy, loadMe, loadWrong, loadFavorites, goHome, fetchBanks,
       currentBank, currentBankQuestions, openBank,
       practiceMode, practiceQuestions, practiceStep, practiceAnswered, practiceSelectedOption,
