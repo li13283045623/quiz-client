@@ -220,9 +220,6 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .q-type-single { background: var(--blue-lt); color: var(--blue); }
 .q-type-multiple { background: #FEF3C7; color: #D97706; }
 .q-type-judge { background: var(--green-lt); color: var(--green); }
-.q-type-cloze { background: #F3E8FF; color: #7C3AED; }
-.q-type-recite { background: #F0FDF4; color: #16A34A; }
-
 /* ===== SELECT MODE ===== */
 .bank-info-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-200); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
 [data-theme="dark"] .bank-info-card { background: var(--gray-100); }
@@ -454,26 +451,39 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .exam-duration-bar { background: var(--gray-100); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
 .exam-duration-label { font-size: 11px; color: var(--gray-500); font-weight: 600; margin-bottom: 8px; }
 
-/* 完形填空样式 */
-.cloze-passage { font-size: 15px; line-height: 2; color: var(--gray-800); margin-bottom: 16px; }
-.cloze-passage .blank-num { display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; background: var(--red); color: white; border-radius: 50%; font-size: 12px; font-weight: 700; margin: 0 2px; vertical-align: middle; }
-.cloze-passage .blank-num.current { background: var(--blue); animation: pulse 1s ease-in-out infinite; }
-.cloze-passage .blank-num.answered { background: var(--green); }
-.cloze-blank-options { margin-bottom: 12px; }
-.cloze-blank-label { font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; }
+/* 阅读理解样式 */
+.reading-passage { font-size: 15px; line-height: 1.9; color: var(--gray-800); margin-bottom: 20px; padding: 16px; background: var(--gray-50); border-radius: var(--radius); border: 1.5px solid var(--gray-100); }
+.reading-question-divider { height: 1px; background: var(--gray-100); margin: 16px 0; }
 
-/* 背诵题样式 */
-.recite-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 24px; margin-bottom: 12px; box-shadow: var(--shadow); text-align: center; }
-.recite-question { font-size: 18px; font-weight: 700; color: var(--gray-800); line-height: 1.8; margin-bottom: 20px; }
-.recite-answer { font-size: 16px; color: var(--green); font-weight: 600; line-height: 1.7; padding: 16px; background: var(--green-lt); border-radius: 10px; margin-bottom: 16px; }
-.recite-answer.flash { animation: flashAnswer 1s ease-in-out; }
-@keyframes flashAnswer { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
-.recite-actions { display: flex; gap: 10px; justify-content: center; }
-.recite-btn { padding: 12px 24px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; }
-.recite-btn-show { background: linear-gradient(135deg, #9C1250, #8E1045); color: white; box-shadow: 0 3px 12px rgba(142,16,69,.3); }
-.recite-btn-peek { background: var(--blue-lt); color: var(--blue); border: 1.5px solid var(--blue); }
-.recite-btn-known { background: var(--green); color: white; }
-.recite-btn-unknown { background: #EF4444; color: white; }
+/* 选词填空样式 */
+.wordbank-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; padding: 12px; background: #F0FDF4; border-radius: 10px; border: 1.5px solid #BBF7D0; }
+.wordbank-word { padding: 6px 14px; background: white; border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--gray-700); border: 1.5px solid var(--gray-200); }
+.wordbank-word.used { background: var(--gray-100); color: var(--gray-400); text-decoration: line-through; }
+.wordbank-sentence { font-size: 15px; line-height: 2; color: var(--gray-800); margin-bottom: 12px; padding: 12px 16px; background: white; border-radius: 10px; border: 1.5px solid var(--gray-100); }
+.wordbank-input { display: inline-block; width: 100px; padding: 4px 8px; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 14px; text-align: center; margin: 0 4px; vertical-align: middle; }
+.wordbank-input:focus { border-color: var(--blue); outline: none; }
+.wordbank-input.correct { border-color: var(--green); background: var(--green-lt); }
+.wordbank-input.wrong { border-color: var(--red); background: var(--red-lt); }
+.wordbank-passage { font-size: 15px; line-height: 2; color: var(--gray-800); margin-bottom: 16px; }
+.wordbank-passage .blank-input { display: inline-block; width: 80px; padding: 2px 6px; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 14px; text-align: center; margin: 0 2px; vertical-align: middle; }
+.wordbank-passage .blank-input:focus { border-color: var(--blue); outline: none; }
+.wordbank-passage .blank-input.correct { border-color: var(--green); background: var(--green-lt); }
+.wordbank-passage .blank-input.wrong { border-color: var(--red); background: var(--red-lt); }
+.wordbank-passage .blank-num { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; background: var(--blue); color: white; border-radius: 50%; font-size: 10px; font-weight: 700; margin-right: 2px; vertical-align: middle; }
+
+/* 单词默写样式 */
+.vocab-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 24px; margin-bottom: 12px; box-shadow: var(--shadow); text-align: center; }
+.vocab-question { font-size: 20px; font-weight: 700; color: var(--gray-800); line-height: 1.8; margin-bottom: 20px; }
+.vocab-input { width: 200px; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: 10px; font-size: 16px; text-align: center; margin-bottom: 16px; }
+.vocab-input:focus { border-color: var(--blue); outline: none; }
+.vocab-input.correct { border-color: var(--green); background: var(--green-lt); }
+.vocab-input.wrong { border-color: var(--red); background: var(--red-lt); }
+.vocab-answer { font-size: 16px; color: var(--green); font-weight: 600; line-height: 1.7; padding: 12px; background: var(--green-lt); border-radius: 10px; margin-bottom: 12px; }
+
+/* 新增题型标签颜色 */
+.q-type-reading { background: #FEF3C7; color: #D97706; }
+.q-type-wordbank { background: #E0E7FF; color: #4338CA; }
+.q-type-vocab { background: #F0FDF4; color: #16A34A; }
 </style>
 </head>
 <body>
@@ -682,7 +692,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <div v-for="bank in filteredBanks" :key="bank._id" class="card" @click="openBank(bank)">
           <div class="card-row">
             <div>
-              <div class="card-name">{{ bank.bankName }} <span style="font-size:11px;padding:1px 6px;border-radius:4px;margin-left:4px;" :style="bank.bankType==='cloze'?'background:#F3E8FF;color:#7C3AED;':bank.bankType==='recite'?'background:#F0FDF4;color:#16A34A;':'background:var(--blue-lt);color:var(--blue);'">{{ bank.bankType==='cloze'?'完形':bank.bankType==='recite'?'背诵':'选择' }}</span></div>
+              <div class="card-name">{{ bank.bankName }} <span style="font-size:11px;padding:1px 6px;border-radius:4px;margin-left:4px;" :style="bank.bankType==='reading'?'background:#FEF3C7;color:#D97706;':bank.bankType==='wordbank_sentences'||bank.bankType==='wordbank_passage'?'background:#E0E7FF;color:#4338CA;':bank.bankType==='vocab'?'background:#F0FDF4;color:#16A34A;':'background:var(--blue-lt);color:var(--blue);'">{{ bank.bankType==='reading'?'阅读':bank.bankType==='wordbank_sentences'||bank.bankType==='wordbank_passage'?'选词':bank.bankType==='vocab'?'默写':'选择' }}</span></div>
               <div class="card-meta">{{ new Date(bank.uploadTime).toLocaleDateString() }} · 上传者：{{ bank.uploaderNickname || '神秘同学' }}</div>
               <div v-if="bank.tags && bank.tags.length" class="bank-tags">
                 <span v-for="tag in bank.tags" :key="tag" class="bank-tag">{{ tag }}</span>
@@ -901,7 +911,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       <div style="flex:1;overflow-y:auto;padding:12px 16px 20px;">
         <div v-if="practiceQuestions.length>0">
           <!-- 默认题目卡片（选择题/判断题/多选题显示） -->
-          <div v-if="currentPQType !== 'cloze' && currentPQType !== 'recite'" class="q-box">
+          <div v-if="currentPQType !== 'reading' && currentPQType !== 'wordbank_sentences' && currentPQType !== 'wordbank_passage' && currentPQType !== 'vocab'" class="q-box">
             <div class="q-box-top">
               <span :class="['q-type-badge', currentPQType]">{{ currentPQTypeName }}</span>
               <div style="display:flex;align-items:center;">
@@ -954,46 +964,86 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
             </div>
           </template>
 
-          <!-- ★ 完形填空 -->
-          <template v-else-if="currentPQType === 'cloze'">
+          <!-- ★ 阅读理解 -->
+          <template v-else-if="currentPQType === 'reading'">
             <div class="q-box">
               <div class="q-box-top">
-                <span class="q-type-badge" style="background: #F3E8FF; color: #7C3AED;">完形填空</span>
+                <span class="q-type-badge" style="background: #FEF3C7; color: #D97706;">阅读理解</span>
                 <div style="display:flex;align-items:center;">
                   <button @click="reportQuestion" class="btn-report" title="报错">📝</button>
                   <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
                 </div>
               </div>
-              <div class="cloze-passage" v-html="renderClozePassage(currentPQ)"></div>
-            </div>
-            <div v-if="currentPQ.blanks && currentPQ.blanks[clozeBlankIndex]" class="cloze-blank-options">
-              <div class="cloze-blank-label">第 {{ clozeBlankIndex + 1 }} 空</div>
-              <button v-for="(opt, key) in currentPQ.blanks[clozeBlankIndex].options" :key="key"
-                @click="selectClozeOption(key)"
-                :disabled="practiceAnswered"
-                :class="['opt-btn', getClozeOptionClass(key)]">
-                <span class="opt-key">{{ key }}.</span>{{ opt }}
-              </button>
+              <div class="reading-passage">{{ currentPQ.passage }}</div>
+    <div class="reading-question-divider"></div>
+    <p class="q-text" style="margin-top:12px;">{{ currentSubQuestion.title }} <span v-if="currentPQ._subCount > 1" style="font-size:12px;color:var(--gray-400);">（第{{ (currentPQ._subIndex||0)+1 }}题 / 共{{ currentPQ._subCount }}题）</span></p>
+              <div v-if="practiceMode!=='exam'">
+                <button v-for="(opt,key) in currentSubQuestion.options" :key="key"
+                  @click="selectOption(key)"
+                  :disabled="practiceAnswered"
+                  :class="['opt-btn', getPracticeOptionClass(key)]">
+                  <span class="opt-key">{{ key }}.</span>{{ opt }}
+                </button>
+              </div>
+              <div v-else>
+                <button v-for="(opt,key) in currentSubQuestion.options" :key="'e'+key"
+                  @click="examSelectOption(key)"
+                  :class="['opt-btn', examAnswers[practiceStep]===key?'selected-exam':'']">
+                  <span class="opt-key">{{ key }}.</span>{{ opt }}
+                </button>
+              </div>
             </div>
           </template>
 
-          <!-- ★ 背诵题 -->
-          <template v-else-if="currentPQType === 'recite'">
-            <div class="recite-card">
+          <!-- ★ 选词填空-句子版 -->
+          <template v-else-if="currentPQType === 'wordbank_sentences'">
+            <div class="q-box">
+              <div class="q-box-top">
+                <span class="q-type-badge" style="background: #E0E7FF; color: #4338CA;">选词填空</span>
+                <div style="display:flex;align-items:center;">
+                  <button @click="reportQuestion" class="btn-report" title="报错">📝</button>
+                  <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
+                </div>
+              </div>
+              <div class="wordbank-pool">
+                <span v-for="(word, idx) in currentPQ.wordList" :key="idx" :class="['wordbank-word', isWordUsed(word) ? 'used' : '']">{{ word }}</span>
+              </div>
+              <div v-for="(sent, idx) in currentPQ.sentences" :key="idx" class="wordbank-sentence">
+                <span v-html="renderWordbankSentence(sent, idx)"></span>
+              </div>
+              <button v-if="!practiceAnswered && practiceMode!=='exam'" @click="submitWordbank" class="btn-next" style="margin-top:12px;">提交答案</button>
+            </div>
+          </template>
+
+          <!-- ★ 选词填空-短文版 -->
+          <template v-else-if="currentPQType === 'wordbank_passage'">
+            <div class="q-box">
+              <div class="q-box-top">
+                <span class="q-type-badge" style="background: #E0E7FF; color: #4338CA;">选词填空</span>
+                <div style="display:flex;align-items:center;">
+                  <button @click="reportQuestion" class="btn-report" title="报错">📝</button>
+                  <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
+                </div>
+              </div>
+              <div class="wordbank-pool">
+                <span v-for="(word, idx) in currentPQ.wordList" :key="idx" :class="['wordbank-word', isWordUsed(word) ? 'used' : '']">{{ word }}</span>
+              </div>
+              <div class="wordbank-passage" v-html="renderWordbankPassage(currentPQ)"></div>
+              <button v-if="!practiceAnswered && practiceMode!=='exam'" @click="submitWordbank" class="btn-next" style="margin-top:12px;">提交答案</button>
+            </div>
+          </template>
+
+          <!-- ★ 单词默写 -->
+          <template v-else-if="currentPQType === 'vocab'">
+            <div class="vocab-card">
               <div class="q-box-top" style="justify-content: flex-end; margin-bottom: 12px;">
                 <button @click="reportQuestion" class="btn-report" title="报错">📝</button>
                 <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
               </div>
-              <div class="recite-question">{{ currentPQ.title }}</div>
-              <div v-if="reciteShowAnswer" class="recite-answer" :class="{flash: reciteFlash}">{{ currentPQ.answer }}</div>
-              <div v-if="!reciteShowAnswer && !reciteFlash" class="recite-actions">
-                <button @click="showReciteAnswer" class="recite-btn recite-btn-show">👁 查看答案</button>
-                <button @click="peekReciteAnswer" class="recite-btn recite-btn-peek">⚡ 瞄一眼 (1秒)</button>
-              </div>
-              <div v-if="reciteShowAnswer || reciteFlash" class="recite-actions">
-                <button @click="markReciteKnown" class="recite-btn recite-btn-known">✅ 记住了</button>
-                <button @click="markReciteUnknown" class="recite-btn recite-btn-unknown">❌ 没记住</button>
-              </div>
+              <div class="vocab-question">{{ currentPQ.title }}</div>
+              <input v-if="!practiceAnswered" v-model="vocabInput" type="text" class="vocab-input" placeholder="请输入答案" @keyup.enter="submitVocab">
+              <div v-if="practiceAnswered" class="vocab-answer">{{ currentPQ.answer }}</div>
+              <button v-if="!practiceAnswered && practiceMode!=='exam'" @click="submitVocab" class="btn-next">提交答案</button>
             </div>
           </template>
 
@@ -1017,7 +1067,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           </template>
 
           <!-- 反馈区域（非考试模式，选择题/判断题/完形填空） -->
-          <div v-if="practiceAnswered && practiceMode!=='exam' && currentPQType !== 'recite'" class="feedback-box">
+          <div v-if="practiceAnswered && practiceMode!=='exam' && currentPQType !== 'vocab'" class="feedback-box">
             <div :class="practiceIsCorrect ? 'feedback-correct' : 'feedback-wrong'">
               {{ practiceIsCorrect ? '🎉 回答正确！' : '❌ 回答错误' }}
             </div>
@@ -1025,7 +1075,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           </div>
 
           <!-- 问AI解析按钮（非考试模式，已答题时显示，背诵题不显示） -->
-          <button v-if="practiceAnswered && practiceMode!=='exam' && !aiExplanation && currentPQType !== 'recite'" @click="askAI" :disabled="aiLoading" class="ai-explain-btn">
+          <button v-if="practiceAnswered && practiceMode!=='exam' && !aiExplanation && currentPQType !== 'vocab'" @click="askAI" :disabled="aiLoading" class="ai-explain-btn">
             {{ aiLoading ? '⏳ AI 正在解析...' : '💡 问AI解析' }}
           </button>
 
@@ -1079,16 +1129,22 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <!-- 题型选择 tab -->
         <div class="tab-bar" style="border-radius:10px;overflow:hidden;margin-bottom:14px;border:1px solid var(--gray-100);">
           <button @click="uploadTab='choice'; uploadBankType='choice'" :class="['tab-btn', uploadTab==='choice'?'active':'']">选择题库</button>
-          <button @click="uploadTab='cloze'; uploadBankType='cloze'" :class="['tab-btn', uploadTab==='cloze'?'active':'']">完形填空</button>
-          <button @click="uploadTab='recite'; uploadBankType='recite'" :class="['tab-btn', uploadTab==='recite'?'active':'']">背诵题库</button>
+          <button @click="uploadTab='reading'; uploadBankType='reading'" :class="['tab-btn', uploadTab==='reading'?'active':'']">阅读理解</button>
+          <button @click="uploadTab='wordbank_sentences'; uploadBankType='wordbank_sentences'" :class="['tab-btn', uploadTab==='wordbank_sentences'?'active':'']">选词填空-句子</button>
+          <button @click="uploadTab='wordbank_passage'; uploadBankType='wordbank_passage'" :class="['tab-btn', uploadTab==='wordbank_passage'?'active':'']">选词填空-短文</button>
+          <button @click="uploadTab='vocab'; uploadBankType='vocab'" :class="['tab-btn', uploadTab==='vocab'?'active':'']">单词默写</button>
         </div>
         <div class="form-group">
           <textarea v-if="uploadTab==='choice'" v-model="uploadForm.text" class="form-textarea" rows="12"
-            placeholder="把题目和答案全选复制粘贴到这里...&#10;&#10;支持多种格式，AI 会自动识别提取单选题、多选题和判断题。"></textarea>
-          <textarea v-if="uploadTab==='cloze'" v-model="uploadForm.text" class="form-textarea" rows="12"
-            placeholder="请粘贴完形填空短文..."></textarea>
-          <textarea v-if="uploadTab==='recite'" v-model="uploadForm.text" class="form-textarea" rows="12"
-            placeholder="格式：题目===答案&#10;多题用---分隔"></textarea>
+            placeholder="请粘贴题目文本，AI 会自动识别单选/多选/判断..."></textarea>
+          <textarea v-if="uploadTab==='reading'" v-model="uploadForm.text" class="form-textarea" rows="12"
+            placeholder="请粘贴阅读理解文本（文章+选择题）..."></textarea>
+          <textarea v-if="uploadTab==='wordbank_sentences'" v-model="uploadForm.text" class="form-textarea" rows="12"
+            placeholder="请粘贴选词填空文本（单词列表+句子）..."></textarea>
+          <textarea v-if="uploadTab==='wordbank_passage'" v-model="uploadForm.text" class="form-textarea" rows="12"
+            placeholder="请粘贴选词填空文本（单词列表+短文）..."></textarea>
+          <textarea v-if="uploadTab==='vocab'" v-model="uploadForm.text" class="form-textarea" rows="12"
+            placeholder="请粘贴单词默写文本（英文 中文，或中文 英文）..."></textarea>
         </div>
         <p class="upload-hint">💡 管理员上传直接公开，普通用户上传需审核后发布</p>
         <button @click="submitUpload" :disabled="uploading" class="btn-primary">
@@ -1444,15 +1500,17 @@ createApp({
     const getTypeName = (type) => {
       if (type === 'multiple') return '多选';
       if (type === 'judge') return '判断';
-      if (type === 'cloze') return '完形';
-      if (type === 'recite') return '背诵';
+      if (type === 'reading') return '阅读';
+      if (type === 'wordbank_sentences' || type === 'wordbank_passage') return '选词';
+      if (type === 'vocab') return '默写';
       return '单选';
     };
     const getTypeClass = (type) => {
       if (type === 'multiple') return 'q-type-multiple';
       if (type === 'judge') return 'q-type-judge';
-      if (type === 'cloze') return 'q-type-cloze';
-      if (type === 'recite') return 'q-type-recite';
+      if (type === 'reading') return 'q-type-reading';
+      if (type === 'wordbank_sentences' || type === 'wordbank_passage') return 'q-type-wordbank';
+      if (type === 'vocab') return 'q-type-vocab';
       return 'q-type-single';
     };
     const formatAnswer = (q) => {
@@ -1462,11 +1520,19 @@ createApp({
         const ans = String(q.answer || '');
         return ans.split('').map(a => a + '. ' + (q.options ? q.options[a] || '' : '')).join('、');
       }
-      if (q.type === 'cloze') {
-        const blanks = q.blanks || [];
-        return blanks.map((b, i) => `第${i+1}空: ${b.answer}`).join('、');
+      if (q.type === 'reading') {
+        const questions = q.questions || [];
+        return questions.map((sq, i) => `题${i+1}: ${sq.answer}`).join('、');
       }
-      if (q.type === 'recite') return q.answer || '-';
+      if (q.type === 'wordbank_sentences') {
+        const sentences = q.sentences || [];
+        return sentences.map((s, i) => `句${i+1}: ${s.answer}`).join('、');
+      }
+      if (q.type === 'wordbank_passage') {
+        const blanks = q.blanks || [];
+        return blanks.map((b, i) => `空${i+1}: ${b.answer}`).join('、');
+      }
+      if (q.type === 'vocab') return q.answer || '-';
       return (q.answer || '-') + '. ' + (q.options ? (q.options[q.answer] || '') : '');
     };
     const formatPracticeAnswer = (q) => {
@@ -1475,20 +1541,31 @@ createApp({
       if (q.type === 'multiple') {
         return String(q.answer).split('').map(a => a + '. ' + (q.options[a] || '')).join('、');
       }
-      if (q.type === 'cloze') {
-        const blank = q.blanks ? q.blanks[clozeBlankIndex.value] : null;
-        return blank ? blank.answer : '-';
+      if (q.type === 'reading') {
+        const sq = currentSubQuestion.value;
+        return sq ? sq.answer + '. ' + (sq.options ? sq.options[sq.answer] : '') : '-';
       }
-      if (q.type === 'recite') return q.answer;
+      if (q.type === 'wordbank_sentences' || q.type === 'wordbank_passage') {
+        return q.answer || '-';
+      }
+      if (q.type === 'vocab') return q.answer;
       return q.answer + '. ' + (q.options ? q.options[q.answer] : '');
     };
     const formatExamAnswer = (q) => {
       if (!q) return '-';
-      if (q.type === 'cloze') {
-        const blank = q.blanks && q.blanks[0] ? q.blanks[0] : null;
-        return blank ? blank.answer : '-';
+      if (q.type === 'reading') {
+        const sq = q.questions && q.questions[0] ? q.questions[0] : null;
+        return sq ? sq.answer : '-';
       }
-      if (q.type === 'recite') return q.answer;
+      if (q.type === 'wordbank_sentences') {
+        const s = q.sentences && q.sentences[0] ? q.sentences[0] : null;
+        return s ? s.answer : '-';
+      }
+      if (q.type === 'wordbank_passage') {
+        const b = q.blanks && q.blanks[0] ? q.blanks[0] : null;
+        return b ? b.answer : '-';
+      }
+      if (q.type === 'vocab') return q.answer;
       return formatPracticeAnswer(q);
     };
 
@@ -1514,13 +1591,14 @@ createApp({
     const multipleSelected = ref([]); // 多选题已选选项
     const examMultipleSelected = ref({}); // 考试模式多选题已选
 
-    // 完形填空
-    const clozeBlankIndex = ref(0);
+    // 阅读理解子题索引
+    const readingSubIndex = ref(0);
 
-    // 背诵题
-    const reciteShowAnswer = ref(false);
-    const reciteFlash = ref(false);
-    let reciteFlashTimer = null;
+    // 选词填空用户答案
+    const wordbankAnswers = ref({});
+
+    // 单词默写
+    const vocabInput = ref('');
 
     // ===== 考试倒计时 =====
     const examDuration = ref(30); // 分钟
@@ -1562,13 +1640,21 @@ createApp({
         const q = currentPQ.value;
         const payload = { questionType: q.type };
 
-        if (q.type === 'cloze') {
-          const blank = q.blanks ? q.blanks[clozeBlankIndex.value] : null;
+        if (q.type === 'reading') {
           payload.passage = q.passage;
-          payload.blankIndex = clozeBlankIndex.value;
-          payload.blankOptions = blank ? blank.options : {};
+          payload.question = currentSubQuestion.value ? currentSubQuestion.value.title : '';
           payload.userAnswer = practiceSelectedOption.value;
-          payload.correctAnswer = blank ? blank.answer : '';
+          payload.correctAnswer = currentSubQuestion.value ? currentSubQuestion.value.answer : '';
+        } else if (q.type === 'wordbank_sentences' || q.type === 'wordbank_passage') {
+          payload.wordList = q.wordList;
+          payload.userAnswer = JSON.stringify(wordbankAnswers.value);
+          payload.correctAnswer = q.type === 'wordbank_sentences'
+            ? JSON.stringify(q.sentences.map(s => s.answer))
+            : JSON.stringify(q.blanks.map(b => b.answer));
+        } else if (q.type === 'vocab') {
+          payload.question = q.title;
+          payload.userAnswer = vocabInput.value;
+          payload.correctAnswer = q.answer;
         } else {
           payload.question = q.title;
           payload.userAnswer = practiceSelectedOption.value;
@@ -1590,20 +1676,34 @@ createApp({
     const currentPQ = computed(() => practiceQuestions.value[practiceStep.value] || {});
     const currentPQType = computed(() => {
       const q = currentPQ.value;
+      if (!q) return 'single';
       if (q.type === 'multiple') return 'multiple';
       if (q.type === 'judge') return 'judge';
-      if (q.type === 'cloze') return 'cloze';
-      if (q.type === 'recite') return 'recite';
+      if (q.type === 'reading') return 'reading';
+      if (q.type === 'wordbank_sentences') return 'wordbank_sentences';
+      if (q.type === 'wordbank_passage') return 'wordbank_passage';
+      if (q.type === 'vocab') return 'vocab';
       return 'single';
     });
     const currentPQTypeName = computed(() => {
       const t = currentPQType.value;
       if (t === 'multiple') return '多选题';
       if (t === 'judge') return '判断题';
-      if (t === 'cloze') return '完形填空';
-      if (t === 'recite') return '背诵题';
+      if (t === 'reading') return '阅读理解';
+      if (t === 'wordbank_sentences') return '选词填空';
+      if (t === 'wordbank_passage') return '选词填空';
+      if (t === 'vocab') return '单词默写';
       return '单选题';
     });
+
+    const currentSubQuestion = computed(() => {
+  const q = currentPQ.value;
+  if (q.type === 'reading' && q.questions && q.questions.length > 0) {
+    const idx = q._subIndex !== undefined ? q._subIndex : readingSubIndex.value;
+    return q.questions[idx] || null;
+  }
+  return null;
+});
 
     const isFavorited = computed(() => {
       if (!meData.value.favorites) return false;
@@ -1620,11 +1720,22 @@ createApp({
       sessionCorrect.value = 0; sessionWrong.value = 0;
       sessionResults.value = []; examAnswers.value = []; multipleSelected.value = []; examMultipleSelected.value = {};
       aiExplanation.value = ''; aiLoading.value = false;
-      clozeBlankIndex.value = 0;
-      clozeBlankAnswers.value = {};
-      reciteShowAnswer.value = false;
-      reciteFlash.value = false;
+      readingSubIndex.value = 0;
+      wordbankAnswers.value = {};
+      vocabInput.value = '';
       let qs = currentBankQuestions.value.map((q,i) => ({...q, _origIndex: i}));
+      // 展开阅读理解：一篇阅读理解有多道小题，展开为独立的练习单元
+      const expandedQs = [];
+      for (const q of qs) {
+        if (q.type === 'reading' && Array.isArray(q.questions) && q.questions.length > 0) {
+          q.questions.forEach((sq, subIdx) => {
+            expandedQs.push({...q, _origIndex: q._origIndex, _subIndex: subIdx, _subCount: q.questions.length});
+          });
+        } else {
+          expandedQs.push(q);
+        }
+      }
+      qs = expandedQs;
       if (mode === 'random') qs = shuffle(qs);
       else if (mode === 'exam') { qs = shuffle(qs).slice(0, Math.min(examLimit.value === '全部' ? qs.length : Number(examLimit.value), qs.length)); examAnswers.value = new Array(qs.length).fill(null); }
       else if (mode === 'slim') {
@@ -1659,6 +1770,9 @@ createApp({
         practiceSelectedOption.value = null; practiceIsCorrect.value = false;
         sessionCorrect.value = 0; sessionWrong.value = 0; sessionResults.value = [];
         multipleSelected.value = []; aiExplanation.value = ''; aiLoading.value = false;
+        readingSubIndex.value = 0;
+        wordbankAnswers.value = {};
+        vocabInput.value = '';
         const favIdxSet = new Set(favoriteList.value.filter(f => f.bankId===firstBankId).map(f => f.questionIndex));
         let qs = r.data.map((q,i) => ({...q, _origIndex: i})).filter(q => favIdxSet.has(q._origIndex));
         if (practiceLimit.value !== '全部') qs = qs.slice(0, Number(practiceLimit.value));
@@ -1720,59 +1834,79 @@ createApp({
       sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: practiceIsCorrect.value });
     };
 
-    // 渲染完形填空短文（将 ____ 替换为带序号的span）
-    const renderClozePassage = (q) => {
+    // 选词填空：渲染句子（将 ____ 替换为输入框）
+    const renderWordbankSentence = (sent, idx) => {
+      if (!sent || !sent.text) return '';
+      const val = wordbankAnswers.value[idx] || '';
+      const cls = practiceAnswered.value
+        ? (val.trim().toLowerCase() === sent.answer.trim().toLowerCase() ? 'correct' : 'wrong')
+        : '';
+      return sent.text.replace('____', `<input type="text" class="wordbank-input ${cls}" value="${val}" oninput="window.wordbankInputHandler && window.wordbankInputHandler(${idx}, this.value)" ${practiceAnswered.value ? 'disabled' : ''}>`);
+    };
+
+    // 选词填空：渲染短文（将 ____ 替换为带序号的输入框）
+    const renderWordbankPassage = (q) => {
       if (!q || !q.passage) return '';
       let html = q.passage;
       const blanks = q.blanks || [];
       blanks.forEach((blank, idx) => {
-        const cls = idx === clozeBlankIndex.value ? 'blank-num current' : (clozeBlankAnswers.value[idx] ? 'blank-num answered' : 'blank-num');
-        html = html.replace('____', `<span class="${cls}">${idx + 1}</span>`);
+        const val = wordbankAnswers.value[idx] || '';
+        const cls = practiceAnswered.value
+          ? (val.trim().toLowerCase() === blank.answer.trim().toLowerCase() ? 'correct' : 'wrong')
+          : '';
+        html = html.replace('____', `<span class="blank-num">${idx + 1}</span><input type="text" class="blank-input ${cls}" value="${val}" oninput="window.wordbankInputHandler && window.wordbankInputHandler(${idx}, this.value)" ${practiceAnswered.value ? 'disabled' : ''}>`);
       });
       return html;
     };
 
-    // 完形填空选择
-    const clozeBlankAnswers = ref({});
-    const selectClozeOption = (key) => {
-      if (practiceAnswered.value || practiceMode.value === 'exam') return;
-      const blank = currentPQ.value.blanks[clozeBlankIndex.value];
-      if (!blank) return;
-      clozeBlankAnswers.value[clozeBlankIndex.value] = key;
-      const isCorrect = key === blank.answer;
-      practiceSelectedOption.value = key;
-      practiceAnswered.value = true;
-      practiceIsCorrect.value = isCorrect;
-      if (isCorrect) sessionCorrect.value++; else sessionWrong.value++;
-      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect });
-    };
-    const getClozeOptionClass = (key) => {
-      if (!practiceAnswered.value) return '';
-      const blank = currentPQ.value.blanks[clozeBlankIndex.value];
-      if (!blank) return '';
-      if (key === blank.answer) return 'correct';
-      if (clozeBlankAnswers.value[clozeBlankIndex.value] === key) return 'wrong';
-      return 'dim';
+    // 选词填空：全局输入处理（因为 v-html 中的 input 不能直接绑定 v-model）
+    window.wordbankInputHandler = (idx, val) => {
+      wordbankAnswers.value[idx] = val;
     };
 
-    // 背诵题交互
-    const showReciteAnswer = () => { reciteShowAnswer.value = true; };
-    const peekReciteAnswer = () => {
-      reciteFlash.value = true;
-      if (reciteFlashTimer) clearTimeout(reciteFlashTimer);
-      reciteFlashTimer = setTimeout(() => { reciteFlash.value = false; }, 1000);
+    // 选词填空：检查单词是否已用
+    const isWordUsed = (word) => {
+      const answers = Object.values(wordbankAnswers.value);
+      return answers.some(a => a.trim().toLowerCase() === word.trim().toLowerCase());
     };
-    const markReciteKnown = () => {
+
+    // 选词填空：提交答案
+    const submitWordbank = () => {
+      if (practiceAnswered.value || practiceMode.value === 'exam') return;
+      const q = currentPQ.value;
+      let correct = 0;
+      let total = 0;
+      if (q.type === 'wordbank_sentences' && q.sentences) {
+        total = q.sentences.length;
+        q.sentences.forEach((s, idx) => {
+          const userAns = (wordbankAnswers.value[idx] || '').trim().toLowerCase();
+          const correctAns = (s.answer || '').trim().toLowerCase();
+          if (userAns === correctAns) correct++;
+        });
+      } else if (q.type === 'wordbank_passage' && q.blanks) {
+        total = q.blanks.length;
+        q.blanks.forEach((b, idx) => {
+          const userAns = (wordbankAnswers.value[idx] || '').trim().toLowerCase();
+          const correctAns = (b.answer || '').trim().toLowerCase();
+          if (userAns === correctAns) correct++;
+        });
+      }
       practiceAnswered.value = true;
-      practiceIsCorrect.value = true;
-      sessionCorrect.value++;
-      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: true });
+      practiceIsCorrect.value = correct === total && total > 0;
+      if (practiceIsCorrect.value) sessionCorrect.value++; else sessionWrong.value++;
+      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: practiceIsCorrect.value, score: `${correct}/${total}` });
     };
-    const markReciteUnknown = () => {
+
+    // 单词默写：提交答案
+    const submitVocab = () => {
+      if (practiceAnswered.value || practiceMode.value === 'exam') return;
+      const q = currentPQ.value;
+      const userAns = vocabInput.value.trim().toLowerCase();
+      const correctAns = (q.answer || '').trim().toLowerCase();
       practiceAnswered.value = true;
-      practiceIsCorrect.value = false;
-      sessionWrong.value++;
-      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: false });
+      practiceIsCorrect.value = userAns === correctAns;
+      if (practiceIsCorrect.value) sessionCorrect.value++; else sessionWrong.value++;
+      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: practiceIsCorrect.value });
     };
 
     // ★ 考试模式选择
@@ -1806,12 +1940,15 @@ createApp({
       if (q.type === 'multiple') {
         return [...String(userAns)].sort().join('') === [...String(q.answer)].sort().join('');
       }
-      if (q.type === 'cloze') {
-        // 完形填空考试模式简化处理：只考第一个空
-        const blank = q.blanks && q.blanks[0] ? q.blanks[0] : null;
-        return blank ? userAns === blank.answer : false;
+      if (q.type === 'reading') {
+        // 阅读理解考试简化：只考第一小题
+        const sq = q.questions && q.questions[0] ? q.questions[0] : null;
+        return sq ? userAns === sq.answer : false;
       }
-      if (q.type === 'recite') return userAns === 'known';
+      if (q.type === 'wordbank_sentences' || q.type === 'wordbank_passage') {
+        return userAns === 'correct'; // 考试时简化处理
+      }
+      if (q.type === 'vocab') return userAns === q.answer;
       return userAns === q.answer;
     };
 
@@ -1820,10 +1957,9 @@ createApp({
         practiceStep.value++; practiceAnswered.value = false; practiceSelectedOption.value = null;
         practiceIsCorrect.value = false; multipleSelected.value = [];
         aiExplanation.value = ''; aiLoading.value = false;
-        clozeBlankIndex.value = 0;
-        reciteShowAnswer.value = false;
-        reciteFlash.value = false;
-        if (reciteFlashTimer) { clearTimeout(reciteFlashTimer); reciteFlashTimer = null; }
+        readingSubIndex.value = 0;
+        wordbankAnswers.value = {};
+        vocabInput.value = '';
       } else {
         if (sessionResults.value.length > 0) await api('/submit-results', { method: 'POST', body: JSON.stringify({ bankId: currentBank.value._id, results: sessionResults.value }) });
         await loadMe();
@@ -1847,10 +1983,9 @@ createApp({
         practiceStep.value--; practiceAnswered.value = false; practiceSelectedOption.value = null;
         practiceIsCorrect.value = false; multipleSelected.value = [];
         aiExplanation.value = ''; aiLoading.value = false;
-        clozeBlankIndex.value = 0;
-        reciteShowAnswer.value = false;
-        reciteFlash.value = false;
-        if (reciteFlashTimer) { clearTimeout(reciteFlashTimer); reciteFlashTimer = null; }
+        readingSubIndex.value = 0;
+        wordbankAnswers.value = {};
+        vocabInput.value = '';
       }
     };
 
@@ -2141,8 +2276,7 @@ createApp({
       multipleSelected,
       startPractice, startWrongPractice, startFavPractice,
       selectOption, selectJudge, getJudgeClass, toggleMultipleOption, getMultipleOptionClass, confirmMultiple,
-      clozeBlankIndex, clozeBlankAnswers, renderClozePassage, selectClozeOption, getClozeOptionClass,
-      reciteShowAnswer, reciteFlash, showReciteAnswer, peekReciteAnswer, markReciteKnown, markReciteUnknown,
+      readingSubIndex, currentSubQuestion, wordbankAnswers, renderWordbankSentence, renderWordbankPassage, isWordUsed, submitWordbank, vocabInput, submitVocab,
       examSelectOption, examSelectJudge, examToggleMultiple, isExamMultipleSelected,
       getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
       isExamCorrect,
