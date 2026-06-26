@@ -484,6 +484,33 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .q-type-reading { background: #FEF3C7; color: #D97706; }
 .q-type-wordbank { background: #E0E7FF; color: #4338CA; }
 .q-type-vocab { background: #F0FDF4; color: #16A34A; }
+.q-type-memo { background: #FEF3C7; color: #D97706; }
+
+/* 大类选择按钮 */
+.category-btn { flex:1; padding:14px; border-radius:12px; border:2px solid var(--gray-200); background:white; font-size:15px; font-weight:700; cursor:pointer; transition:all .2s; }
+.category-btn.active { border-color:var(--blue); background:var(--blue-lt); color:var(--blue); }
+
+/* 背题样式 */
+.memo-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--gray-100); padding: 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.memo-question { font-size: 17px; font-weight: 700; color: var(--gray-800); line-height: 1.8; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1.5px solid var(--gray-100); }
+.memo-input { width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: 10px; font-size: 15px; line-height: 1.7; resize: vertical; margin-bottom: 16px; }
+.memo-input:focus { border-color: var(--blue); outline: none; }
+.memo-compare { margin-bottom: 16px; }
+.memo-your-answer { background: #FEF3C7; border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; font-size: 14px; line-height: 1.7; color: var(--gray-800); }
+.memo-correct-answer { background: var(--green-lt); border-radius: 10px; padding: 12px 16px; font-size: 14px; line-height: 1.7; color: var(--gray-800); }
+.memo-actions { display: flex; gap: 10px; justify-content: center; }
+.memo-btn { padding: 12px 24px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; }
+.memo-btn-peek { background: #FEF3C7; color: #D97706; border: 1.5px solid #FDE68A; }
+.memo-btn-submit { background: linear-gradient(135deg, #9C1250, #8E1045); color: white; box-shadow: 0 3px 12px rgba(142,16,69,.3); }
+.memo-btn-known { background: var(--green); color: white; }
+.memo-btn-unknown { background: #EF4444; color: white; }
+
+/* 瞄一眼弹窗 */
+.memo-peek-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+.memo-peek-box { background: white; border-radius: 16px; padding: 24px; max-width: 90%; max-height: 60%; overflow: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); animation: peekIn 0.2s ease; }
+.memo-peek-title { font-size: 16px; font-weight: 700; color: #D97706; margin-bottom: 12px; text-align: center; }
+.memo-peek-answer { font-size: 15px; line-height: 1.8; color: var(--gray-800); }
+@keyframes peekIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 </style>
 </head>
 <body>
@@ -692,7 +719,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <div v-for="bank in filteredBanks" :key="bank._id" class="card" @click="openBank(bank)">
           <div class="card-row">
             <div>
-              <div class="card-name">{{ bank.bankName }} <span style="font-size:11px;padding:1px 6px;border-radius:4px;margin-left:4px;" :style="bank.bankType==='reading'?'background:#FEF3C7;color:#D97706;':bank.bankType==='wordbank_sentences'||bank.bankType==='wordbank_passage'?'background:#E0E7FF;color:#4338CA;':bank.bankType==='vocab'?'background:#F0FDF4;color:#16A34A;':'background:var(--blue-lt);color:var(--blue);'">{{ bank.bankType==='reading'?'阅读':bank.bankType==='wordbank_sentences'||bank.bankType==='wordbank_passage'?'选词':bank.bankType==='vocab'?'默写':'选择' }}</span></div>
+              <div class="card-name">{{ bank.bankName }} <span style="font-size:11px;padding:1px 6px;border-radius:4px;margin-left:4px;" :style="bank.bankType==='reading'?'background:#FEF3C7;color:#D97706;':bank.bankType==='wordbank_sentences'||bank.bankType==='wordbank_passage'?'background:#E0E7FF;color:#4338CA;':bank.bankType==='vocab'?'background:#F0FDF4;color:#16A34A;':bank.bankType==='memo'?'background:#FEF3C7;color:#D97706;':'background:var(--blue-lt);color:var(--blue);'">{{ bank.bankType==='reading'?'阅读':bank.bankType==='wordbank_sentences'||bank.bankType==='wordbank_passage'?'选词':bank.bankType==='vocab'?'默写':bank.bankType==='memo'?'背题':'选择' }}</span></div>
               <div class="card-meta">{{ new Date(bank.uploadTime).toLocaleDateString() }} · 上传者：{{ bank.uploaderNickname || '神秘同学' }}</div>
               <div v-if="bank.tags && bank.tags.length" class="bank-tags">
                 <span v-for="tag in bank.tags" :key="tag" class="bank-tag">{{ tag }}</span>
@@ -911,7 +938,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       <div style="flex:1;overflow-y:auto;padding:12px 16px 20px;">
         <div v-if="practiceQuestions.length>0">
           <!-- 默认题目卡片（选择题/判断题/多选题显示） -->
-          <div v-if="currentPQType !== 'reading' && currentPQType !== 'wordbank_sentences' && currentPQType !== 'wordbank_passage' && currentPQType !== 'vocab'" class="q-box">
+          <div v-if="currentPQType !== 'reading' && currentPQType !== 'wordbank_sentences' && currentPQType !== 'wordbank_passage' && currentPQType !== 'vocab' && currentPQType !== 'memo'" class="q-box">
             <div class="q-box-top">
               <span :class="['q-type-badge', currentPQType]">{{ currentPQTypeName }}</span>
               <div style="display:flex;align-items:center;">
@@ -1047,6 +1074,36 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
             </div>
           </template>
 
+          <!-- ★ 背题（论述/分析） -->
+          <template v-else-if="currentPQType === 'memo'">
+            <div class="memo-card">
+              <div class="q-box-top" style="justify-content: flex-end; margin-bottom: 12px;">
+                <button @click="reportQuestion" class="btn-report" title="报错">📝</button>
+                <button @click="toggleFavorite" class="btn-fav">{{ isFavorited ? '⭐' : '☆' }}</button>
+              </div>
+              <div class="memo-question">{{ currentPQ.title }}</div>
+              <textarea v-if="!practiceAnswered" v-model="memoInput" class="memo-input" rows="4" placeholder="请在这里输入你的答案..."></textarea>
+              <div v-if="practiceAnswered" class="memo-compare">
+                <div class="memo-your-answer">
+                  <div style="font-weight:700;color:var(--gray-700);margin-bottom:4px;">你的答案：</div>
+                  {{ memoInput || '（未输入）' }}
+                </div>
+                <div class="memo-correct-answer">
+                  <div style="font-weight:700;color:var(--green);margin-bottom:4px;">标准答案：</div>
+                  {{ currentPQ.answer }}
+                </div>
+              </div>
+              <div v-if="!practiceAnswered && practiceMode!=='exam'" class="memo-actions">
+                <button @click="peekMemoAnswer" class="memo-btn memo-btn-peek">⚡ 瞄一眼 (1秒)</button>
+                <button @click="submitMemo" class="memo-btn memo-btn-submit">✅ 提交答案</button>
+              </div>
+              <div v-if="practiceAnswered && practiceMode!=='exam'" class="memo-actions">
+                <button @click="markMemoKnown" class="memo-btn memo-btn-known">👍 记住了</button>
+                <button @click="markMemoUnknown" class="memo-btn memo-btn-unknown">👎 没记住</button>
+              </div>
+            </div>
+          </template>
+
           <!-- ★ 单选题 -->
           <template v-else>
             <div v-if="practiceMode!=='exam'">
@@ -1067,7 +1124,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           </template>
 
           <!-- 反馈区域（非考试模式，选择题/判断题/完形填空） -->
-          <div v-if="practiceAnswered && practiceMode!=='exam' && currentPQType !== 'vocab'" class="feedback-box">
+          <div v-if="practiceAnswered && practiceMode!=='exam' && currentPQType !== 'vocab' && currentPQType !== 'memo'" class="feedback-box">
             <div :class="practiceIsCorrect ? 'feedback-correct' : 'feedback-wrong'">
               {{ practiceIsCorrect ? '🎉 回答正确！' : '❌ 回答错误' }}
             </div>
@@ -1075,7 +1132,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           </div>
 
           <!-- 问AI解析按钮（非考试模式，已答题时显示，背诵题不显示） -->
-          <button v-if="practiceAnswered && practiceMode!=='exam' && !aiExplanation && currentPQType !== 'vocab'" @click="askAI" :disabled="aiLoading" class="ai-explain-btn">
+          <button v-if="practiceAnswered && practiceMode!=='exam' && !aiExplanation && currentPQType !== 'vocab' && currentPQType !== 'memo'" @click="askAI" :disabled="aiLoading" class="ai-explain-btn">
             {{ aiLoading ? '⏳ AI 正在解析...' : '💡 问AI解析' }}
           </button>
 
@@ -1091,6 +1148,14 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <button v-if="practiceMode!=='exam'" @click="nextQuestion" class="btn-next">{{ practiceStep===practiceQuestions.length-1 ? '完成 ✓' : '下一题 →' }}</button>
         <button v-if="practiceMode==='exam'" @click="prevQuestion" :disabled="practiceStep===0" class="btn-prev">上一题</button>
         <button v-if="practiceMode==='exam'" @click="nextExamQuestion" class="btn-next">{{ practiceStep===practiceQuestions.length-1 ? '交卷 ✓' : '下一题 →' }}</button>
+      </div>
+
+      <!-- 瞄一眼答案弹窗 -->
+      <div v-if="memoPeekShow" class="memo-peek-overlay">
+        <div class="memo-peek-box">
+          <div class="memo-peek-title">⚡ 瞄一眼</div>
+          <div class="memo-peek-answer">{{ currentPQ.answer }}</div>
+        </div>
       </div>
     </div>
 
@@ -1126,25 +1191,44 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <div class="form-group">
           <input v-model="uploadTagsText" class="form-input" placeholder="标签（用逗号分隔，如：高数,期末,第三章）">
         </div>
-        <!-- 题型选择 tab -->
-        <div class="tab-bar" style="border-radius:10px;overflow:hidden;margin-bottom:14px;border:1px solid var(--gray-100);">
+        <!-- 大类选择 -->
+        <div style="display:flex;gap:12px;margin-bottom:20px;">
+          <button @click="uploadCategory='choice'" :class="['category-btn', uploadCategory==='choice'?'active':'']">📝 选择题</button>
+          <button @click="uploadCategory='english'" :class="['category-btn', uploadCategory==='english'?'active':'']">📚 英语练习</button>
+          <button @click="uploadCategory='memo'" :class="['category-btn', uploadCategory==='memo'?'active':'']">📖 背题</button>
+        </div>
+
+        <!-- 选择题子tab -->
+        <div v-if="uploadCategory==='choice'" class="tab-bar" style="border-radius:10px;overflow:hidden;margin-bottom:14px;border:1px solid var(--gray-100);">
           <button @click="uploadTab='choice'; uploadBankType='choice'" :class="['tab-btn', uploadTab==='choice'?'active':'']">选择题库</button>
+        </div>
+
+        <!-- 英语练习子tab -->
+        <div v-if="uploadCategory==='english'" class="tab-bar" style="border-radius:10px;overflow:hidden;margin-bottom:14px;border:1px solid var(--gray-100);">
           <button @click="uploadTab='reading'; uploadBankType='reading'" :class="['tab-btn', uploadTab==='reading'?'active':'']">阅读理解</button>
           <button @click="uploadTab='wordbank_sentences'; uploadBankType='wordbank_sentences'" :class="['tab-btn', uploadTab==='wordbank_sentences'?'active':'']">选词填空-句子</button>
           <button @click="uploadTab='wordbank_passage'; uploadBankType='wordbank_passage'" :class="['tab-btn', uploadTab==='wordbank_passage'?'active':'']">选词填空-短文</button>
           <button @click="uploadTab='vocab'; uploadBankType='vocab'" :class="['tab-btn', uploadTab==='vocab'?'active':'']">单词默写</button>
         </div>
+
+        <!-- 背题子tab -->
+        <div v-if="uploadCategory==='memo'" class="tab-bar" style="border-radius:10px;overflow:hidden;margin-bottom:14px;border:1px solid var(--gray-100);">
+          <button @click="uploadTab='memo'; uploadBankType='memo'" :class="['tab-btn', uploadTab==='memo'?'active':'']">论述/分析题</button>
+        </div>
+
         <div class="form-group">
           <textarea v-if="uploadTab==='choice'" v-model="uploadForm.text" class="form-textarea" rows="12"
             placeholder="请粘贴题目文本，AI 会自动识别单选/多选/判断..."></textarea>
           <textarea v-if="uploadTab==='reading'" v-model="uploadForm.text" class="form-textarea" rows="12"
-            placeholder="请粘贴阅读理解文本（文章+选择题）..."></textarea>
+            placeholder="请粘贴阅读理解文本（多篇也可，每篇文章+选择题）..."></textarea>
           <textarea v-if="uploadTab==='wordbank_sentences'" v-model="uploadForm.text" class="form-textarea" rows="12"
-            placeholder="请粘贴选词填空文本（单词列表+句子）..."></textarea>
+            placeholder="请粘贴选词填空文本（多组也可，每组：单词列表+句子）..."></textarea>
           <textarea v-if="uploadTab==='wordbank_passage'" v-model="uploadForm.text" class="form-textarea" rows="12"
-            placeholder="请粘贴选词填空文本（单词列表+短文）..."></textarea>
+            placeholder="请粘贴选词填空文本（多组也可，每组：单词列表+短文）..."></textarea>
           <textarea v-if="uploadTab==='vocab'" v-model="uploadForm.text" class="form-textarea" rows="12"
             placeholder="请粘贴单词默写文本（英文 中文，或中文 英文）..."></textarea>
+          <textarea v-if="uploadTab==='memo'" v-model="uploadForm.text" class="form-textarea" rows="12"
+            placeholder="请粘贴背题文本（论述题/分析题，每道题包含题目和答案要点）..."></textarea>
         </div>
         <p class="upload-hint">💡 管理员上传直接公开，普通用户上传需审核后发布</p>
         <button @click="submitUpload" :disabled="uploading" class="btn-primary">
@@ -1503,6 +1587,7 @@ createApp({
       if (type === 'reading') return '阅读';
       if (type === 'wordbank_sentences' || type === 'wordbank_passage') return '选词';
       if (type === 'vocab') return '默写';
+      if (type === 'memo') return '背题';
       return '单选';
     };
     const getTypeClass = (type) => {
@@ -1511,6 +1596,7 @@ createApp({
       if (type === 'reading') return 'q-type-reading';
       if (type === 'wordbank_sentences' || type === 'wordbank_passage') return 'q-type-wordbank';
       if (type === 'vocab') return 'q-type-vocab';
+      if (type === 'memo') return 'q-type-memo';
       return 'q-type-single';
     };
     const formatAnswer = (q) => {
@@ -1533,6 +1619,7 @@ createApp({
         return blanks.map((b, i) => `空${i+1}: ${b.answer}`).join('、');
       }
       if (q.type === 'vocab') return q.answer || '-';
+      if (q.type === 'memo') return q.answer || '-';
       return (q.answer || '-') + '. ' + (q.options ? (q.options[q.answer] || '') : '');
     };
     const formatPracticeAnswer = (q) => {
@@ -1549,6 +1636,7 @@ createApp({
         return q.answer || '-';
       }
       if (q.type === 'vocab') return q.answer;
+      if (q.type === 'memo') return q.answer;
       return q.answer + '. ' + (q.options ? q.options[q.answer] : '');
     };
     const formatExamAnswer = (q) => {
@@ -1566,6 +1654,7 @@ createApp({
         return b ? b.answer : '-';
       }
       if (q.type === 'vocab') return q.answer;
+      if (q.type === 'memo') return q.answer;
       return formatPracticeAnswer(q);
     };
 
@@ -1599,6 +1688,11 @@ createApp({
 
     // 单词默写
     const vocabInput = ref('');
+
+    // 背题
+    const memoInput = ref('');
+    const memoPeekShow = ref(false);
+    let memoPeekTimer = null;
 
     // ===== 考试倒计时 =====
     const examDuration = ref(30); // 分钟
@@ -1655,6 +1749,10 @@ createApp({
           payload.question = q.title;
           payload.userAnswer = vocabInput.value;
           payload.correctAnswer = q.answer;
+        } else if (q.type === 'memo') {
+          payload.question = q.title;
+          payload.userAnswer = memoInput.value;
+          payload.correctAnswer = q.answer;
         } else {
           payload.question = q.title;
           payload.userAnswer = practiceSelectedOption.value;
@@ -1683,6 +1781,7 @@ createApp({
       if (q.type === 'wordbank_sentences') return 'wordbank_sentences';
       if (q.type === 'wordbank_passage') return 'wordbank_passage';
       if (q.type === 'vocab') return 'vocab';
+      if (q.type === 'memo') return 'memo';
       return 'single';
     });
     const currentPQTypeName = computed(() => {
@@ -1693,6 +1792,7 @@ createApp({
       if (t === 'wordbank_sentences') return '选词填空';
       if (t === 'wordbank_passage') return '选词填空';
       if (t === 'vocab') return '单词默写';
+      if (t === 'memo') return '背题';
       return '单选题';
     });
 
@@ -1723,6 +1823,9 @@ createApp({
       readingSubIndex.value = 0;
       wordbankAnswers.value = {};
       vocabInput.value = '';
+      memoInput.value = '';
+      memoPeekShow.value = false;
+      if (memoPeekTimer) { clearTimeout(memoPeekTimer); memoPeekTimer = null; }
       let qs = currentBankQuestions.value.map((q,i) => ({...q, _origIndex: i}));
       // 展开阅读理解：一篇阅读理解有多道小题，展开为独立的练习单元
       const expandedQs = [];
@@ -1773,6 +1876,9 @@ createApp({
         readingSubIndex.value = 0;
         wordbankAnswers.value = {};
         vocabInput.value = '';
+        memoInput.value = '';
+        memoPeekShow.value = false;
+        if (memoPeekTimer) { clearTimeout(memoPeekTimer); memoPeekTimer = null; }
         const favIdxSet = new Set(favoriteList.value.filter(f => f.bankId===firstBankId).map(f => f.questionIndex));
         let qs = r.data.map((q,i) => ({...q, _origIndex: i})).filter(q => favIdxSet.has(q._origIndex));
         if (practiceLimit.value !== '全部') qs = qs.slice(0, Number(practiceLimit.value));
@@ -1909,6 +2015,34 @@ createApp({
       sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: practiceIsCorrect.value });
     };
 
+    // 背题交互
+    const peekMemoAnswer = () => {
+      memoPeekShow.value = true;
+      if (memoPeekTimer) clearTimeout(memoPeekTimer);
+      memoPeekTimer = setTimeout(() => { memoPeekShow.value = false; }, 1000);
+    };
+    const submitMemo = () => {
+      if (practiceAnswered.value || practiceMode.value === 'exam') return;
+      practiceAnswered.value = true;
+      // 简单文本比对（去除空白后）
+      const userAns = memoInput.value.trim();
+      const correctAns = (currentPQ.value.answer || '').trim();
+      // 背题不严格判对错，让用户自己判断
+      practiceIsCorrect.value = true; // 默认算对，用户自己点记住/没记住
+      sessionCorrect.value++;
+      sessionResults.value.push({ questionIndex: currentPQ.value._origIndex, isCorrect: true });
+    };
+    const markMemoKnown = () => {
+      practiceAnswered.value = true;
+      practiceIsCorrect.value = true;
+    };
+    const markMemoUnknown = () => {
+      practiceAnswered.value = true;
+      practiceIsCorrect.value = false;
+      sessionWrong.value++;
+      sessionCorrect.value = Math.max(0, sessionCorrect.value - 1);
+    };
+
     // ★ 考试模式选择
     const examSelectOption = (key) => { examAnswers.value[practiceStep.value] = key; };
     const examSelectJudge = (val) => { examAnswers.value[practiceStep.value] = val; };
@@ -1949,6 +2083,7 @@ createApp({
         return userAns === 'correct'; // 考试时简化处理
       }
       if (q.type === 'vocab') return userAns === q.answer;
+      if (q.type === 'memo') return true; // 背题考试模式默认通过
       return userAns === q.answer;
     };
 
@@ -1960,6 +2095,9 @@ createApp({
         readingSubIndex.value = 0;
         wordbankAnswers.value = {};
         vocabInput.value = '';
+        memoInput.value = '';
+        memoPeekShow.value = false;
+        if (memoPeekTimer) { clearTimeout(memoPeekTimer); memoPeekTimer = null; }
       } else {
         if (sessionResults.value.length > 0) await api('/submit-results', { method: 'POST', body: JSON.stringify({ bankId: currentBank.value._id, results: sessionResults.value }) });
         await loadMe();
@@ -1986,6 +2124,9 @@ createApp({
         readingSubIndex.value = 0;
         wordbankAnswers.value = {};
         vocabInput.value = '';
+        memoInput.value = '';
+        memoPeekShow.value = false;
+        if (memoPeekTimer) { clearTimeout(memoPeekTimer); memoPeekTimer = null; }
       }
     };
 
@@ -2054,6 +2195,7 @@ createApp({
     let uploadPollTimer = null;
     const uploadBankType = ref('choice');
     const uploadTab = ref('choice');
+    const uploadCategory = ref('choice');
 
     const submitUpload = async () => {
       if (!uploadForm.value.bankName || !uploadForm.value.text) { uploadMsg.value = '❌ 请填写题库名称和题目内容'; uploadMsgClass.value = 'err'; return; }
@@ -2277,6 +2419,7 @@ createApp({
       startPractice, startWrongPractice, startFavPractice,
       selectOption, selectJudge, getJudgeClass, toggleMultipleOption, getMultipleOptionClass, confirmMultiple,
       readingSubIndex, currentSubQuestion, wordbankAnswers, renderWordbankSentence, renderWordbankPassage, isWordUsed, submitWordbank, vocabInput, submitVocab,
+      memoInput, memoPeekShow, peekMemoAnswer, submitMemo, markMemoKnown, markMemoUnknown,
       examSelectOption, examSelectJudge, examToggleMultiple, isExamMultipleSelected,
       getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
       isExamCorrect,
@@ -2284,7 +2427,7 @@ createApp({
       reportQuestion,
       rateBank,
       formatAnswer, formatPracticeAnswer, formatExamAnswer, getTypeName, getTypeClass,
-      uploadForm, uploadTagsText, uploading, uploadMsg, uploadMsgClass, uploadPolling, submitUpload, uploadBankType, uploadTab,
+      uploadForm, uploadTagsText, uploading, uploadMsg, uploadMsgClass, uploadPolling, submitUpload, uploadBankType, uploadTab, uploadCategory,
       adminTab, adminBanks, adminUsers, adminReports, adminSelfId, loadAdminBanks, loadAdminUsers, loadAdminReports,
       toggleBankStatus, deleteBank, deleteUser, toggleRole, resolveReport, practiceLimit,
       // 新增功能
