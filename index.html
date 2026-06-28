@@ -177,6 +177,7 @@ body {
 main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; margin-top: 4px; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--gray-700); }
+.section-actions { display: flex; gap: 8px; align-items: center; }
 .btn-upload { font-size: 12px; padding: 6px 14px; background: var(--red); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; }
 
 /* ===== 搜索框 ===== */
@@ -644,9 +645,12 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
             <div style="color:var(--gray-500);font-size:14px;">点击选择文件（支持 Word/PDF/PPT/Excel）</div>
           </div>
           <div v-else>
-            <div v-for="(f, i) in resourceFiles" :key="i" style="padding:8px 12px;background:var(--gray-50);border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:14px;color:var(--gray-700);">{{ f.name }}</span>
-              <button @click="resourceFiles.splice(i,1)" style="color:var(--red);border:none;background:none;cursor:pointer;">✕</button>
+            <div v-for="(f, i) in resourceFiles" :key="i" style="padding:8px 12px;background:var(--gray-50);border-radius:8px;margin-bottom:6px;">
+              <input v-model="resourceFiles[i].customName" :placeholder="f.name" style="width:100%;padding:6px 10px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:14px;margin-bottom:4px;" :title="'留空则使用原文件名：'+f.name">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:12px;color:var(--gray-400);">原文件名：{{ f.name }}</span>
+                <button @click="resourceFiles.splice(i,1)" style="color:var(--red);border:none;background:none;cursor:pointer;font-size:16px;">✕</button>
+              </div>
             </div>
             <button @click="$refs.resourceFileInput.click()" style="margin-top:8px;padding:8px 16px;border:1.5px dashed var(--gray-300);border-radius:8px;background:none;cursor:pointer;color:var(--gray-500);font-size:13px;width:100%;">+ 继续添加</button>
           </div>
@@ -758,8 +762,10 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       <div v-if="homeTab==='banks'">
         <div class="section-header">
           <span class="section-title">📦 云端题库（{{ banks.length }}）</span>
-          <button class="btn-upload" @click="showUploadResource=true">📤 上传资源</button>
-          <button @click="page='upload'" class="btn-upload">+ 上传题库</button>
+          <div class="section-actions">
+            <button class="btn-upload" @click="showUploadResource=true">📤 上传资源</button>
+            <button @click="page='upload'" class="btn-upload">+ 上传题库</button>
+          </div>
         </div>
 
         <!-- 搜索框 -->
@@ -798,8 +804,12 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
             <div>
               <div class="card-name">📚 资源包</div>
               <div class="card-meta">共享学习资料，点击查看</div>
+              <div class="rating-stars">
+                <span v-for="s in 5" :key="s" class="rating-star" :class="{filled: s <= Math.round(resourcePackRating || 0)}">★</span>
+              </div>
+              <div v-if="resourcePackRatingCount > 0" class="rating-info">{{ resourcePackRating }} 分 ({{ resourcePackRatingCount }}人评)</div>
             </div>
-            <div style="font-size:28px;">📁</div>
+            <span class="card-arrow">›</span>
           </div>
         </div>
 
@@ -886,10 +896,10 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           <div class="post-content">{{ post.content }}</div>
           <div class="post-actions">
             <button :class="{ liked: post.isLiked }" @click="toggleLike(post)">
-              {{ post.isLiked ? '❤️' : '🤍' }} {{ Array.isArray(post.likes) ? post.likes.length : (post.likes || 0) }}
+              {{ post.isLiked ? '❤️' : '🤍' }} {{ post.likesCount || 0 }}
             </button>
             <button @click="toggleComments(post._id)">
-              💬 {{ (postComments[post._id] || []).length || (Array.isArray(post.comments) ? post.comments.length : 0) }}
+              💬 {{ post.commentsCount || 0 }}
             </button>
             <button v-if="post.authorId === adminSelfId" class="delete-btn" @click="deletePost(post._id)">🗑 删除</button>
           </div>
@@ -1345,6 +1355,7 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         <button @click="adminTab='banks'; loadAdminBanks()" :class="['tab-btn', adminTab==='banks'?'active':'']">题库管理</button>
         <button @click="adminTab='users'; loadAdminUsers()" :class="['tab-btn', adminTab==='users'?'active':'']">用户管理</button>
         <button @click="adminTab='reports'; loadAdminReports()" :class="['tab-btn', adminTab==='reports'?'active':'']">报错管理</button>
+        <button @click="adminTab='resources'; loadAdminResources()" :class="['tab-btn', adminTab==='resources'?'active':'']">资源管理</button>
       </div>
 
       <div v-if="adminTab==='banks'">
@@ -1405,6 +1416,18 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
         </div>
         <div v-if="adminReports.length===0" class="empty"><div class="emoji">✅</div><div>暂无报错记录</div></div>
       </div>
+
+      <!-- 资源管理 -->
+      <div v-if="adminTab==='resources'">
+        <div v-for="doc in adminResources" :key="doc._id" class="report-card">
+          <div class="report-q">{{ doc.fileName }}</div>
+          <div class="report-meta">
+            <span>{{ doc.uploaderNickname || '未知用户' }} · {{ new Date(doc.uploadTime).toLocaleString() }}</span>
+            <button @click="deleteResource(doc)" style="padding:6px 14px;background:var(--red);color:white;border:none;border-radius:6px;font-size:13px;cursor:pointer;">删除</button>
+          </div>
+        </div>
+        <div v-if="adminResources.length===0" class="empty"><div class="emoji">📂</div><div>暂无资源</div></div>
+      </div>
     </main>
   </template>
 
@@ -1429,6 +1452,9 @@ createApp({
 
       // 新动态推送
       socket.value.on('newPost', (post) => {
+        post.likesCount = Array.isArray(post.likes) ? post.likes.length : 0;
+        post.commentsCount = Array.isArray(post.comments) ? post.comments.length : 0;
+        post.isLiked = false;
         communityPosts.value.unshift(post);
       });
 
@@ -1436,13 +1462,16 @@ createApp({
       socket.value.on('postLiked', (data) => {
         const post = communityPosts.value.find(p => p._id === data.postId);
         if (post) {
-          post.likes = data.likesCount;
+          post.likesCount = data.likesCount || 0;
         }
       });
 
       // 新评论推送
       socket.value.on('postCommented', (data) => {
-        // 加载该帖子的评论
+        const post = communityPosts.value.find(p => p._id === data.postId);
+        if (post) {
+          post.commentsCount = (post.commentsCount || 0) + 1;
+        }
         loadComments(data.postId);
       });
 
@@ -2533,7 +2562,15 @@ createApp({
 
     const loadCommunityPosts = async () => {
       const r = await api('/posts');
-      if (r.success) communityPosts.value = r.data || [];
+      if (r.success) {
+        communityPosts.value = (r.data || []).map(p => {
+          // 将 likes 数组转为数字，方便显示
+          p.likesCount = Array.isArray(p.likes) ? p.likes.length : (p.likes || 0);
+          p.commentsCount = Array.isArray(p.comments) ? p.comments.length : (p.commentCount || 0);
+          p.isLiked = Array.isArray(p.likes) && p.likes.some(l => l.userId === (currentUser.value?._id || currentUser.value?.id));
+          return p;
+        });
+      }
     };
 
     const submitPost = async () => {
@@ -2553,19 +2590,8 @@ createApp({
     const toggleLike = async (post) => {
       const r = await api('/posts/' + post._id + '/like', { method: 'POST' });
       if (r.success) {
-        post.isLiked = !post.isLiked;
-        // likes 可能是数组或数字
-        if (Array.isArray(post.likes)) {
-          if (r.action === 'liked') {
-            post.isLiked = true;
-          } else {
-            post.isLiked = false;
-          }
-          // 后端返回最新的 likesCount
-          post.likes = r.likesCount || post.likes.length;
-        } else {
-          post.likes = (post.likes || 0) + (r.action === 'liked' ? 1 : -1);
-        }
+        post.isLiked = r.action === 'liked';
+        post.likesCount = r.likesCount || 0;
       }
     };
 
@@ -2632,7 +2658,7 @@ createApp({
     };
 
     const onResourceFilesSelected = (e) => {
-      const files = Array.from(e.target.files);
+      const files = Array.from(e.target.files).map(f => ({ file: f, name: f.name, customName: '' }));
       resourceFiles.value = [...resourceFiles.value, ...files];
       e.target.value = '';
     };
@@ -2642,7 +2668,10 @@ createApp({
       resourceUploading.value = true;
       try {
         const formData = new FormData();
-        resourceFiles.value.forEach(f => formData.append('files', f));
+        resourceFiles.value.forEach((f, i) => {
+          formData.append('files', f.file);
+          formData.append('customNames', f.customName || '');
+        });
         const tokenVal = token.value;
         const res = await fetch(API + '/upload-resource', {
           method: 'POST',
@@ -2700,6 +2729,27 @@ createApp({
       return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
     };
 
+    // 资源包评分
+    const resourcePackRating = ref(0);
+    const resourcePackRatingCount = ref(0);
+
+    // 管理员资源管理
+    const adminResources = ref([]);
+    const loadAdminResources = async () => {
+      const r = await api('/resources');
+      if (r.success) adminResources.value = r.data;
+    };
+    const deleteResource = async (doc) => {
+      if (!confirm('确定删除「' + doc.fileName + '」？')) return;
+      const r = await api('/resources/' + doc._id, { method: 'DELETE' });
+      if (r.success) {
+        adminResources.value = adminResources.value.filter(d => d._id !== doc._id);
+        await loadResources();
+      } else {
+        alert('删除失败：' + (r.error || '未知错误'));
+      }
+    };
+
     return {
       token, currentUser, authTab, authForm, authError, code, countdown, sendCode, doAuth, logout, showSuggest,
       isDrawerOpen, isEditingProfile, editForm, clearStats, clearWrongQuestions, clearFavoritesAction, upcomingFeature, startEditProfile, saveProfile,
@@ -2736,6 +2786,7 @@ createApp({
       formatPostTime, loadCommunityPosts, submitPost, toggleLike, deletePost, toggleComments, loadComments, submitComment,
       leaderboard, loadLeaderboard,
       showUploadResource, resourceFileInput, resourceFiles, resourceUploading, openResourcePack, onResourceFilesSelected, uploadResources, resourceList, resourceLoading, downloadResource, formatFileSize,
+      resourcePackRating, resourcePackRatingCount, adminResources, loadAdminResources, deleteResource,
     };
   }
 }).mount('#app');
