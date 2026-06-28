@@ -2574,7 +2574,7 @@ createApp({
           // 将 likes 数组转为数字，方便显示
           p.likesCount = Array.isArray(p.likes) ? p.likes.length : (p.likes || 0);
           p.commentsCount = p.commentCount || (Array.isArray(p.comments) ? p.comments.length : 0);
-          p.isLiked = Array.isArray(p.likes) && p.likes.some(l => l.userId === (currentUser.value?._id || currentUser.value?.id));
+          p.isLiked = Array.isArray(p.likes) && p.likes.some(l => String(l.userId) === String(currentUser.value?._id || currentUser.value?.id));
           return p;
         });
       }
@@ -2625,6 +2625,9 @@ createApp({
       const r = await api('/posts/' + id + '/comments');
       if (r.success) {
         postComments.value = { ...postComments.value, [id]: r.data || [] };
+        // 同步更新帖子的评论数
+        const post = communityPosts.value.find(p => p._id === id);
+        if (post) post.commentsCount = (r.data || []).length;
       }
     };
 
