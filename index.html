@@ -1743,6 +1743,11 @@ createApp({
       const r = await api('/me');
       if (r.success) {
         meData.value = r.data;
+        // 同步更新 currentUser，确保 _id 等信息是最新的
+        if (r.data._id) {
+          currentUser.value = { ...currentUser.value, _id: r.data._id, role: r.data.role, nickname: r.data.nickname };
+          localStorage.setItem('quiz_user', JSON.stringify(currentUser.value));
+        }
         // 保存进度数据，进入具体题库时再弹窗
         const p = r.data.practiceProgress;
         if (p && p.bankId && p.step > 0) {
@@ -1779,7 +1784,17 @@ createApp({
     const loadFavorites = async () => { const r = await api('/favorites'); if (r.success) favoriteList.value = r.data; };
     const goHome = () => { page.value = 'home'; homeTab.value = 'banks'; searchQuery.value = ''; activeTagFilter.value = ''; fetchBanks(); };
 
-    onMounted(() => { if (token.value) { fetchBanks(); loadMe(); connectSocket(); } });
+    onMounted(async () => {
+      if (token.value) {
+        fetchBanks(); loadMe(); connectSocket();
+        // 加载资源包评分
+        const rr = await api('/resource-rating');
+        if (rr.success) {
+          resourcePackRating.value = rr.avgRating;
+          resourcePackRatingCount.value = rr.count;
+        }
+      }
+    });
 
     const maskEmail = (email) => {
       if (!email || typeof email !== 'string') return '';
@@ -2665,6 +2680,13 @@ createApp({
     const openResourcePack = async () => {
       page.value = 'resourcePack';
       await loadResources();
+      // 加载评分
+      const rr = await api('/resource-rating');
+      if (rr.success) {
+        resourcePackRating.value = rr.avgRating;
+        resourcePackRatingCount.value = rr.count;
+        myResourceRating.value = rr.myRating || 0;
+      }
     };
 
     const onResourceFilesSelected = (e) => {
@@ -2743,11 +2765,16 @@ createApp({
     const resourcePackRating = ref(0);
     const resourcePackRatingCount = ref(0);
     const myResourceRating = ref(0);
-    const rateResourcePack = (score) => {
+    const rateResourcePack = async (score) => {
       myResourceRating.value = score;
-      // TODO: 未来可以存到数据库，目前仅本地
-      resourcePackRating.value = score;
-      resourcePackRatingCount.value = (resourcePackRatingCount.value || 0) + 1;
+      const r = await api('/resource-rating', {
+        method: 'POST',
+        body: JSON.stringify({ score })
+      });
+      if (r.success) {
+        resourcePackRating.value = r.avgRating;
+        resourcePackRatingCount.value = r.count;
+      }
     };
 
     // 管理员资源管理
