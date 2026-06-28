@@ -1581,17 +1581,18 @@ createApp({
       if (r.success) banks.value = r.data;
     };
     const resumeProgress = ref(null); // 存储未完成的进度
+    const savedProgress = ref(null); // loadMe 时保存进度数据，不弹窗
 
     const loadMe = async () => {
       const r = await api('/me');
       if (r.success) {
         meData.value = r.data;
-        // 检查是否有未完成的练习进度
+        // 保存进度数据，进入具体题库时再弹窗
         const p = r.data.practiceProgress;
-        if (p && p.bankId && p.step > 0 && p.step < p.total) {
-          resumeProgress.value = p;
+        if (p && p.bankId && p.step > 0) {
+          savedProgress.value = p;
         } else {
-          resumeProgress.value = null;
+          savedProgress.value = null;
         }
       }
     };
@@ -1603,13 +1604,10 @@ createApp({
       // 加载题库
       const r = await api('/get-bank/' + p.bankId);
       if (!r.success) { alert('题库加载失败'); return; }
-      // 找到对应的bank对象
       const bank = banks.value.find(b => b._id === p.bankId) || { _id: p.bankId, bankName: p.bankName };
       currentBank.value = bank;
       currentBankQuestions.value = r.data;
-      // 用保存的mode开始练习
       startPractice(p.mode || 'sequential');
-      // 跳到保存的step
       if (p.step > 0 && p.step < practiceQuestions.value.length) {
         practiceStep.value = p.step;
         sessionCorrect.value = p.correct || 0;
@@ -1617,11 +1615,9 @@ createApp({
       }
     };
 
-    const dismissProgress = async () => {
-      if (resumeProgress.value) {
-        await api('/clear-progress', { method: 'POST' });
-        resumeProgress.value = null;
-      }
+    const dismissProgress = () => {
+      // 放弃不删进度，下次进入还会弹
+      resumeProgress.value = null;
     };
     const loadWrong = async () => { const r = await api('/wrong-questions'); if (r.success) wrongList.value = r.data; };
     const loadFavorites = async () => { const r = await api('/favorites'); if (r.success) favoriteList.value = r.data; };
@@ -1722,6 +1718,14 @@ createApp({
     const openBank = async (bank) => {
       const r = await api('/get-bank/' + bank._id);
       if (r.success) { currentBank.value = bank; currentBankQuestions.value = r.data; page.value = 'selectMode'; }
+      // 检查是否有该题库的未完成进度
+      if (savedProgress.value && savedProgress.value.bankId === bank._id && savedProgress.value.step > 0) {
+        const total = r.data.length;
+        if (savedProgress.value.step < total) {
+          savedProgress.value.total = total;
+          resumeProgress.value = savedProgress.value;
+        }
+      }
     };
 
     const practiceMode = ref('sequential');
@@ -2499,7 +2503,7 @@ createApp({
       selectOption, selectJudge, getJudgeClass, toggleMultipleOption, getMultipleOptionClass, confirmMultiple,
       readingSubIndex, currentSubQuestion, wordbankAnswers, renderWordbankSentence, renderWordbankPassage, isWordUsed, submitWordbank, vocabInput, submitVocab,
       memoInput, memoPeekShow, peekMemoAnswer, submitMemo, markMemoKnown, markMemoUnknown,
-      resumeProgress, resumePractice, dismissProgress,
+      resumeProgress, resumePractice, dismissProgress, savedProgress,
       examSelectOption, examSelectJudge, examToggleMultiple, isExamMultipleSelected,
       getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
       isExamCorrect,
