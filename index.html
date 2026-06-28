@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刷题宝 Pro · 天津职业技术师范大学</title>
 <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.prod.min.js"></script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <style>
@@ -834,10 +835,10 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
           <div class="post-content">{{ post.content }}</div>
           <div class="post-actions">
             <button :class="{ liked: post.isLiked }" @click="toggleLike(post)">
-              {{ post.isLiked ? '❤️' : '🤍' }} {{ post.likes || 0 }}
+              {{ post.isLiked ? '❤️' : '🤍' }} {{ Array.isArray(post.likes) ? post.likes.length : (post.likes || 0) }}
             </button>
             <button @click="toggleComments(post._id)">
-              💬 {{ (postComments[post._id] || []).length || post.commentCount || 0 }}
+              💬 {{ (postComments[post._id] || []).length || (Array.isArray(post.comments) ? post.comments.length : 0) }}
             </button>
             <button v-if="post.authorId === adminSelfId" class="delete-btn" @click="deletePost(post._id)">🗑 删除</button>
           </div>
@@ -1339,6 +1340,48 @@ const API = 'https://quiz-server-ulpb.onrender.com/api';
 createApp({
   setup() {
     const token = ref(localStorage.getItem('quiz_token') || '');
+    const socket = ref(null);
+
+    const connectSocket = () => {
+      if (socket.value) return;
+      const API_BASE = window.location.origin;
+      socket.value = io(API_BASE, {
+        auth: { token: token.value },
+        transports: ['websocket', 'polling']
+      });
+
+      // 新动态推送
+      socket.value.on('newPost', (post) => {
+        communityPosts.value.unshift(post);
+      });
+
+      // 点赞变化推送
+      socket.value.on('postLiked', (data) => {
+        const post = communityPosts.value.find(p => p._id === data.postId);
+        if (post) {
+          post.likes = data.likesCount;
+        }
+      });
+
+      // 新评论推送
+      socket.value.on('postCommented', (data) => {
+        // 加载该帖子的评论
+        loadComments(data.postId);
+      });
+
+      // 删帖推送
+      socket.value.on('postDeleted', (data) => {
+        communityPosts.value = communityPosts.value.filter(p => p._id !== data.postId);
+      });
+    };
+
+    const disconnectSocket = () => {
+      if (socket.value) {
+        socket.value.disconnect();
+        socket.value = null;
+      }
+    };
+
     const practiceLimit = ref(20);
     const examLimit = ref(20);
     const currentUser = ref(JSON.parse(localStorage.getItem('quiz_user') || '{}'));
@@ -1445,6 +1488,7 @@ createApp({
       wrongList.value = []; favoriteList.value = [];
       page.value = 'home'; homeTab.value = 'banks'; isDrawerOpen.value = false; isEditingProfile.value = false;
       localStorage.removeItem('quiz_token'); localStorage.removeItem('quiz_user');
+      disconnectSocket();
     };
 
     const api = async (path, options = {}) => {
@@ -1515,7 +1559,7 @@ createApp({
         localStorage.setItem('quiz_user', JSON.stringify(currentUser.value));
         authForm.value = { email: '', password: '' };
         code.value = '';
-        fetchBanks(); loadMe();
+        fetchBanks(); loadMe(); connectSocket();
       } else { authError.value = result.error; }
     };
 
@@ -1623,7 +1667,7 @@ createApp({
     const loadFavorites = async () => { const r = await api('/favorites'); if (r.success) favoriteList.value = r.data; };
     const goHome = () => { page.value = 'home'; homeTab.value = 'banks'; searchQuery.value = ''; activeTagFilter.value = ''; fetchBanks(); };
 
-    onMounted(() => { if (token.value) { fetchBanks(); loadMe(); } });
+    onMounted(() => { if (token.value) { fetchBanks(); loadMe(); connectSocket(); } });
 
     const maskEmail = (email) => {
       if (!email || typeof email !== 'string') return '';
@@ -2433,7 +2477,18 @@ createApp({
       const r = await api('/posts/' + post._id + '/like', { method: 'POST' });
       if (r.success) {
         post.isLiked = !post.isLiked;
-        post.likes = (post.likes || 0) + (post.isLiked ? 1 : -1);
+        // likes 可能是数组或数字
+        if (Array.isArray(post.likes)) {
+          if (r.action === 'liked') {
+            post.isLiked = true;
+          } else {
+            post.isLiked = false;
+          }
+          // 后端返回最新的 likesCount
+          post.likes = r.likesCount || post.likes.length;
+        } else {
+          post.likes = (post.likes || 0) + (r.action === 'liked' ? 1 : -1);
+        }
       }
     };
 
