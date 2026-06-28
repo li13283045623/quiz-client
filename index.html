@@ -619,6 +619,22 @@ main { flex: 1; overflow-y: auto; padding: 16px 16px 80px; }
       </div>
     </div>
 
+    <!-- 恢复练习进度弹窗 -->
+    <div v-if="resumeProgress" class="support-modal-overlay">
+      <div class="support-modal" style="max-width:360px;">
+        <h3>📊 检测到未完成的练习</h3>
+        <p style="margin:12px 0;color:var(--gray-600);font-size:14px;">
+          你上次在练习「<b>{{ resumeProgress.bankName }}</b>」，<br>
+          刷到了第 <b>{{ resumeProgress.step + 1 }}</b> / {{ resumeProgress.total }} 题，<br>
+          答对 {{ resumeProgress.correct }} 题，答错 {{ resumeProgress.wrong }} 题。
+        </p>
+        <div style="display:flex; gap:8px;">
+          <button @click="resumePractice" class="btn-primary" style="flex:1;">继续练习</button>
+          <button @click="dismissProgress" class="btn-close-modal" style="flex:1;">放弃</button>
+        </div>
+      </div>
+    </div>
+
     <div :class="['drawer-content', isDrawerOpen?'active':'']">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <span style="font-size: 15px; font-weight: 800; color: var(--gray-700);">👤 个人中心</span>
@@ -1564,7 +1580,49 @@ createApp({
       const r = await api(url);
       if (r.success) banks.value = r.data;
     };
-    const loadMe = async () => { const r = await api('/me'); if (r.success) meData.value = r.data; };
+    const resumeProgress = ref(null); // 存储未完成的进度
+
+    const loadMe = async () => {
+      const r = await api('/me');
+      if (r.success) {
+        meData.value = r.data;
+        // 检查是否有未完成的练习进度
+        const p = r.data.practiceProgress;
+        if (p && p.bankId && p.step > 0 && p.step < p.total) {
+          resumeProgress.value = p;
+        } else {
+          resumeProgress.value = null;
+        }
+      }
+    };
+
+    const resumePractice = async () => {
+      const p = resumeProgress.value;
+      if (!p) return;
+      resumeProgress.value = null;
+      // 加载题库
+      const r = await api('/get-bank/' + p.bankId);
+      if (!r.success) { alert('题库加载失败'); return; }
+      // 找到对应的bank对象
+      const bank = banks.value.find(b => b._id === p.bankId) || { _id: p.bankId, bankName: p.bankName };
+      currentBank.value = bank;
+      currentBankQuestions.value = r.data;
+      // 用保存的mode开始练习
+      startPractice(p.mode || 'sequential');
+      // 跳到保存的step
+      if (p.step > 0 && p.step < practiceQuestions.value.length) {
+        practiceStep.value = p.step;
+        sessionCorrect.value = p.correct || 0;
+        sessionWrong.value = p.wrong || 0;
+      }
+    };
+
+    const dismissProgress = async () => {
+      if (resumeProgress.value) {
+        await api('/clear-progress', { method: 'POST' });
+        resumeProgress.value = null;
+      }
+    };
     const loadWrong = async () => { const r = await api('/wrong-questions'); if (r.success) wrongList.value = r.data; };
     const loadFavorites = async () => { const r = await api('/favorites'); if (r.success) favoriteList.value = r.data; };
     const goHome = () => { page.value = 'home'; homeTab.value = 'banks'; searchQuery.value = ''; activeTagFilter.value = ''; fetchBanks(); };
@@ -2087,6 +2145,25 @@ createApp({
       return userAns === q.answer;
     };
 
+    const saveProgress = async () => {
+      if (!currentBank.value || !currentBank.value._id) return;
+      try {
+        await api('/save-progress', {
+          method: 'POST',
+          body: JSON.stringify({
+            bankId: currentBank.value._id,
+            bankName: currentBank.value.bankName || '',
+            bankType: currentBank.value.bankType || '',
+            step: practiceStep.value,
+            total: practiceQuestions.value.length,
+            correct: sessionCorrect.value,
+            wrong: sessionWrong.value,
+            mode: practiceMode.value
+          })
+        });
+      } catch(e) { /* 静默失败 */ }
+    };
+
     const nextQuestion = async () => {
       if (practiceStep.value < practiceQuestions.value.length - 1) {
         practiceStep.value++; practiceAnswered.value = false; practiceSelectedOption.value = null;
@@ -2098,8 +2175,10 @@ createApp({
         memoInput.value = '';
         memoPeekShow.value = false;
         if (memoPeekTimer) { clearTimeout(memoPeekTimer); memoPeekTimer = null; }
+        saveProgress(); // 自动保存进度
       } else {
         if (sessionResults.value.length > 0) await api('/submit-results', { method: 'POST', body: JSON.stringify({ bankId: currentBank.value._id, results: sessionResults.value }) });
+        await api('/clear-progress', { method: 'POST' }); // 完成时清除进度
         await loadMe();
         alert(`练习完成！共${practiceQuestions.value.length}题，答对${sessionCorrect.value}题`);
         goHome();
@@ -2420,6 +2499,7 @@ createApp({
       selectOption, selectJudge, getJudgeClass, toggleMultipleOption, getMultipleOptionClass, confirmMultiple,
       readingSubIndex, currentSubQuestion, wordbankAnswers, renderWordbankSentence, renderWordbankPassage, isWordUsed, submitWordbank, vocabInput, submitVocab,
       memoInput, memoPeekShow, peekMemoAnswer, submitMemo, markMemoKnown, markMemoUnknown,
+      resumeProgress, resumePractice, dismissProgress,
       examSelectOption, examSelectJudge, examToggleMultiple, isExamMultipleSelected,
       getPracticeOptionClass, nextQuestion, nextExamQuestion, prevQuestion, exitPractice,
       isExamCorrect,
