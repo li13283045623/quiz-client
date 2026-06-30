@@ -1791,6 +1791,7 @@ createApp({
       // 放弃，清除进度
       resumeProgress.value = null;
       savedProgress.value = null;
+      if (meData.value) meData.value.practiceProgress = null;
       try { await api('/clear-progress', { method: 'POST' }); } catch(e) {}
     };
     const loadWrong = async () => { const r = await api('/wrong-questions'); if (r.success) wrongList.value = r.data; };
@@ -1902,12 +1903,12 @@ createApp({
     const openBank = async (bank) => {
       const r = await api('/get-bank/' + bank._id);
       if (r.success) { currentBank.value = bank; currentBankQuestions.value = r.data; page.value = 'selectMode'; }
-      // 检查是否有该题库的未完成进度
-      if (savedProgress.value && savedProgress.value.bankId === bank._id && savedProgress.value.step > 0) {
+      // 检查是否有该题库的未完成进度（直接从 meData 获取最新）
+      const p = meData.value?.practiceProgress;
+      if (p && p.bankId === bank._id && p.step > 0) {
         const total = r.data.length;
-        if (savedProgress.value.step < total) {
-          savedProgress.value.total = total;
-          resumeProgress.value = savedProgress.value;
+        if (p.step < total) {
+          resumeProgress.value = { ...p, total };
         }
       }
     };
@@ -2350,6 +2351,19 @@ createApp({
             mode: practiceMode.value
           })
         });
+        // 同步更新本地 meData，确保下次 openBank 能读到最新进度
+        if (meData.value) {
+          meData.value.practiceProgress = {
+            bankId: currentBank.value._id,
+            bankName: currentBank.value.bankName || '',
+            bankType: currentBank.value.bankType || '',
+            step: practiceStep.value,
+            total: practiceQuestions.value.length,
+            correct: sessionCorrect.value,
+            wrong: sessionWrong.value,
+            mode: practiceMode.value
+          };
+        }
       } catch(e) { /* 静默失败 */ }
     };
 
