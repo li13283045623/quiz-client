@@ -1787,9 +1787,11 @@ createApp({
       }
     };
 
-    const dismissProgress = () => {
-      // 放弃不删进度，下次进入还会弹
+    const dismissProgress = async () => {
+      // 放弃，清除进度
       resumeProgress.value = null;
+      savedProgress.value = null;
+      try { await api('/clear-progress', { method: 'POST' }); } catch(e) {}
     };
     const loadWrong = async () => { const r = await api('/wrong-questions'); if (r.success) wrongList.value = r.data; };
     const loadFavorites = async () => { const r = await api('/favorites'); if (r.success) favoriteList.value = r.data; };
