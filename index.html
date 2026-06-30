@@ -1469,6 +1469,11 @@ createApp({
         const post = communityPosts.value.find(p => p._id === data.postId);
         if (post) {
           post.likesCount = data.likesCount || 0;
+          // 如果是当前用户点的赞，同步更新 isLiked
+          const myId = String(currentUser.value?._id || currentUser.value?.id);
+          if (data.likedBy && data.likedBy === myId) {
+            post.isLiked = data.action === 'liked';
+          }
         }
       });
 
@@ -1484,6 +1489,12 @@ createApp({
       // 删帖推送
       socket.value.on('postDeleted', (data) => {
         communityPosts.value = communityPosts.value.filter(p => p._id !== data.postId);
+      });
+
+      // 资源包评分变化推送
+      socket.value.on('resourceRated', (data) => {
+        resourcePackRating.value = data.avgRating || 0;
+        resourcePackRatingCount.value = data.count || 0;
       });
     };
 
